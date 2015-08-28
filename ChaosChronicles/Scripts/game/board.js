@@ -29,6 +29,8 @@ Board.AddNewBoard = function (data) {
     Board.currentBoard.anchor = new Object();
     Board.currentBoard.anchor.x = 0.5; //centered
     Board.currentBoard.anchor.y = 0.5; //centered
+    Board.currentBoard.width = GameConstants.CANVAS_WIDTH;
+    Board.currentBoard.height = GameConstants.CANVAS_HEIGHT;
 
     GameGlobals.stage.addChild(Board.currentBoard);
 }
@@ -36,16 +38,30 @@ Board.AddNewBoard = function (data) {
 Board.OnDragStart = function (event) {
     this.data = event.data;
     //this.alpha = 0.5;
-    var oldPositionX = this.position.x - ((this.width * this.anchor.x));
-    var oldPositionY = this.position.y - ((this.height * this.anchor.y));
+    this.start = new Object();
+    this.start.x = this.position.x;
+    this.start.y = this.position.y;
+    //var oldPositionX = this.position.x - ((this.width * this.anchor.x));
+    //var oldPositionY = this.position.y - ((this.height * this.anchor.y));
     var xOffset = event.data.getLocalPosition(this.parent).x;
     var yOffset = event.data.getLocalPosition(this.parent).y;
-    this.anchor.x = (xOffset - oldPositionX) / this.width;
-    this.anchor.y = (yOffset - oldPositionY) / this.height;
-    var newPositionX = xOffset;
-    var newPositionY = yOffset;
-    this.position.x = newPositionX;
-    this.position.y = newPositionY;
+
+    //this.anchor.x = (xOffset - oldPositionX) / this.width;
+    //this.anchor.y = (yOffset - oldPositionY) / this.height;
+    this.anchor.x = xOffset;
+    this.anchor.y = yOffset;
+
+    var texture = PIXI.Texture.fromImage(GameConstants.IMAGESROOT + "bunny.png");
+    var bunny = new PIXI.Sprite(texture);
+    bunny.anchor.set(0.5);
+    bunny.position.x = xOffset;
+    bunny.position.y = yOffset;
+    GameGlobals.stage.addChild(bunny);
+
+    //var newPositionX = xOffset;// - (this.width * this.anchor.x);
+    //var newPositionY = yOffset;// - (this.height * this.anchor.y);
+    //this.position.x = newPositionX;
+    //this.position.y = newPositionY;
     this.dragging = true;
 }
 
@@ -60,7 +76,7 @@ Board.OnDragMove = function () {
         //var oldPositionY = this.position.y - ((this.height * this.anchor.y) + 10);
         var xOffset = this.data.getLocalPosition(this.parent).x;
         var yOffset = this.data.getLocalPosition(this.parent).y;
-        this.position.x = xOffset;
-        this.position.y = yOffset;
+        this.position.x = xOffset + Board.FRAMEOFFSET - this.anchor.x;
+        this.position.y = yOffset + Board.FRAMEOFFSET - this.anchor.y;
     }
 }
