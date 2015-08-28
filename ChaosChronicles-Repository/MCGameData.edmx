@@ -1,0 +1,1180 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="MCGameDataModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Armor">
+          <Key>
+            <PropertyRef Name="ArmorID" />
+          </Key>
+          <Property Name="ArmorID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ArmorSetID" Type="int" Nullable="false" />
+          <Property Name="Rank" Type="int" Nullable="false" />
+          <Property Name="DamageReduction" Type="int" />
+        </EntityType>
+        <EntityType Name="ArmorSet">
+          <Key>
+            <PropertyRef Name="ArmorSetID" />
+          </Key>
+          <Property Name="ArmorSetID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Cell">
+          <Key>
+            <PropertyRef Name="CellID" />
+          </Key>
+          <Property Name="CellID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SectorID" Type="int" Nullable="false" />
+          <Property Name="CellX" Type="int" Nullable="false" />
+          <Property Name="CellY" Type="int" Nullable="false" />
+          <Property Name="HasNorthWall" Type="bit" Nullable="false" />
+          <Property Name="HasWestWall" Type="bit" Nullable="false" />
+          <Property Name="HasSouthWall" Type="bit" Nullable="false" />
+          <Property Name="HasEastWall" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Corporation">
+          <Key>
+            <PropertyRef Name="CorporationID" />
+          </Key>
+          <Property Name="CorporationID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="ImgLogoPath" Type="nvarchar(max)" />
+          <Property Name="ImgSplashPath" Type="nvarchar(max)" />
+          <Property Name="ImgAlternatePath" Type="nvarchar(max)" />
+          <Property Name="ImgTrayPath" Type="nvarchar(max)" />
+          <Property Name="ImgTurnMarkerPath" Type="nvarchar(max)" />
+          <Property Name="BonusName" Type="nvarchar" MaxLength="50" />
+          <Property Name="BonusDescription" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="Defense">
+          <Key>
+            <PropertyRef Name="DefenseID" />
+          </Key>
+          <Property Name="DefenseID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DefenseSetID" Type="int" Nullable="false" />
+          <Property Name="Rank" Type="int" Nullable="false" />
+          <Property Name="DiceCount" Type="int" Nullable="false" />
+          <Property Name="DiceColor" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DefenseSet">
+          <Key>
+            <PropertyRef Name="DefenseSetID" />
+          </Key>
+          <Property Name="DefenseSetID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Entrance">
+          <Key>
+            <PropertyRef Name="EntranceID" />
+          </Key>
+          <Property Name="EntranceID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SectorID" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Cell1X" Type="int" Nullable="false" />
+          <Property Name="Cell1Y" Type="int" Nullable="false" />
+          <Property Name="Cell2X" Type="int" Nullable="false" />
+          <Property Name="Cell2Y" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Item">
+          <Key>
+            <PropertyRef Name="ItemID" />
+          </Key>
+          <Property Name="ItemID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ItemSetID" Type="int" />
+          <Property Name="Type" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="Cost" Type="int" Nullable="false" />
+          <Property Name="RankRequired" Type="int" />
+          <Property Name="ImgShopPath" Type="nvarchar(max)" />
+          <Property Name="ImgIconPath" Type="nvarchar(max)" />
+          <Property Name="ImgLargePath" Type="nvarchar(max)" />
+          <Property Name="ImgAlternatePath" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="ItemSet">
+          <Key>
+            <PropertyRef Name="ItemSetID" />
+          </Key>
+          <Property Name="ItemSetID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="ItemStat">
+          <Key>
+            <PropertyRef Name="ItemStatID" />
+          </Key>
+          <Property Name="ItemStatID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ItemID" Type="int" Nullable="false" />
+          <Property Name="StatType" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Rank" Type="int" />
+          <Property Name="DiceCount" Type="int" />
+          <Property Name="DiceReroll" Type="int" />
+          <Property Name="DiceColor" Type="nvarchar" MaxLength="50" />
+          <Property Name="ArmorPenetration" Type="int" />
+          <Property Name="Special" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Mission">
+          <Key>
+            <PropertyRef Name="MissionID" />
+          </Key>
+          <Property Name="MissionID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MissionNumber" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="TextBriefing" Type="nvarchar(max)" />
+          <Property Name="TextDescription" Type="nvarchar(max)" />
+          <Property Name="TextTimeLimit" Type="nvarchar(max)" />
+          <Property Name="TextDarkLegion" Type="nvarchar(max)" />
+          <Property Name="TextRewards" Type="nvarchar(max)" />
+          <Property Name="Difficulty" Type="int" />
+          <Property Name="IsSecondaryMissions" Type="bit" />
+          <Property Name="ImgMissionPath" Type="nvarchar(max)" />
+          <Property Name="ImgMapPath" Type="nvarchar(max)" />
+          <Property Name="RewardDoomtrooperCredits" Type="int" />
+          <Property Name="RewardDoomtrooperPromotionPoints" Type="int" />
+          <Property Name="RewardDoomtrooperItemID" Type="int" />
+          <Property Name="RewardLegionCredits" Type="int" />
+          <Property Name="RewardLegionPromotionPoints" Type="int" />
+          <Property Name="RewardLegionItemID" Type="int" />
+        </EntityType>
+        <EntityType Name="Objective">
+          <Key>
+            <PropertyRef Name="ObjectiveID" />
+          </Key>
+          <Property Name="ObjectiveID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MissionID" Type="int" Nullable="false" />
+          <Property Name="Type" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="TimeLimitRound" Type="int" />
+          <Property Name="TimeLimitIsStartOfRound" Type="bit" />
+          <Property Name="RequiredCount1" Type="int" />
+          <Property Name="RequiredCount2" Type="int" />
+          <Property Name="RequiredCount3" Type="int" />
+          <Property Name="RequiredUnitType1" Type="nvarchar" MaxLength="50" />
+          <Property Name="RequiredUnitType2" Type="nvarchar" MaxLength="50" />
+          <Property Name="RequiredUnitType3" Type="nvarchar" MaxLength="50" />
+          <Property Name="RequiredSectorID1" Type="int" />
+          <Property Name="RequiredSectorID2" Type="int" />
+          <Property Name="RequiredSectorID3" Type="int" />
+          <Property Name="RequiredSectorID4" Type="int" />
+          <Property Name="RequiredCellX" Type="int" />
+          <Property Name="RequiredCellY" Type="int" />
+          <Property Name="Special1" Type="nvarchar(max)" />
+          <Property Name="Special2" Type="nvarchar(max)" />
+          <Property Name="Special3" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="Sector">
+          <Key>
+            <PropertyRef Name="SectorID" />
+          </Key>
+          <Property Name="SectorID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SectorNumber" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="SectorName" Type="nvarchar" MaxLength="50" />
+          <Property Name="SectorDescription" Type="nvarchar(max)" />
+          <Property Name="Width" Type="int" />
+          <Property Name="Height" Type="int" />
+          <Property Name="ImgPath" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="SectorMap">
+          <Key>
+            <PropertyRef Name="SectorMapID" />
+          </Key>
+          <Property Name="SectorMapID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MissionID" Type="int" Nullable="false" />
+          <Property Name="SectorID" Type="int" Nullable="false" />
+          <Property Name="LocationX" Type="int" />
+          <Property Name="LocationY" Type="int" />
+          <Property Name="IsEntranceTBlocked" Type="bit" />
+          <Property Name="IsEntranceTForDoomtroopers" Type="bit" />
+          <Property Name="IsEntranceTForLegion" Type="bit" />
+          <Property Name="IsEntranceRBlocked" Type="bit" />
+          <Property Name="IsEntranceRForDoomtroopers" Type="bit" />
+          <Property Name="IsEntranceRForLegion" Type="bit" />
+          <Property Name="IsEntranceBBlocked" Type="bit" />
+          <Property Name="IsEntranceBForDoomtroopers" Type="bit" />
+          <Property Name="IsEntranceBForLegion" Type="bit" />
+          <Property Name="IsEntranceLBlocked" Type="bit" />
+          <Property Name="IsEntranceLForDoomtroopers" Type="bit" />
+          <Property Name="IsEntranceLForLegion" Type="bit" />
+        </EntityType>
+        <EntityType Name="Unit">
+          <Key>
+            <PropertyRef Name="UnitID" />
+          </Key>
+          <Property Name="UnitID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="Type" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="CorporationID" Type="int" />
+          <Property Name="CombatType" Type="nvarchar" MaxLength="50" />
+          <Property Name="ArmorSetID" Type="int" />
+          <Property Name="DefenseSetID" Type="int" Nullable="false" />
+          <Property Name="DefaultHealth" Type="int" />
+          <Property Name="DefaultActions" Type="int" />
+          <Property Name="DefaultStepsPerAction" Type="int" />
+          <Property Name="DefaultItemSetID" Type="int" />
+          <Property Name="KillPromotionPoints" Type="int" />
+          <Property Name="DamagePromotionPoints" Type="int" />
+          <Property Name="ImgFigurePath" Type="nvarchar(max)" />
+          <Property Name="ImgPosterPath" Type="nvarchar(max)" />
+          <Property Name="ImgIconPath" Type="nvarchar(max)" />
+          <Property Name="ImgAlternatePath" Type="nvarchar(max)" />
+        </EntityType>
+        <Association Name="FK_ArmorSet">
+          <End Role="ArmorSet" Type="Self.ArmorSet" Multiplicity="0..1" />
+          <End Role="Unit" Type="Self.Unit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ArmorSet">
+              <PropertyRef Name="ArmorSetID" />
+            </Principal>
+            <Dependent Role="Unit">
+              <PropertyRef Name="ArmorSetID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ArmorSetArmor">
+          <End Role="ArmorSet" Type="Self.ArmorSet" Multiplicity="1" />
+          <End Role="Armor" Type="Self.Armor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ArmorSet">
+              <PropertyRef Name="ArmorSetID" />
+            </Principal>
+            <Dependent Role="Armor">
+              <PropertyRef Name="ArmorSetID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Corporation">
+          <End Role="Corporation" Type="Self.Corporation" Multiplicity="0..1" />
+          <End Role="Unit" Type="Self.Unit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Corporation">
+              <PropertyRef Name="CorporationID" />
+            </Principal>
+            <Dependent Role="Unit">
+              <PropertyRef Name="CorporationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DefenseSet">
+          <End Role="DefenseSet" Type="Self.DefenseSet" Multiplicity="1" />
+          <End Role="Unit" Type="Self.Unit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DefenseSet">
+              <PropertyRef Name="DefenseSetID" />
+            </Principal>
+            <Dependent Role="Unit">
+              <PropertyRef Name="DefenseSetID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DefenseSetDefenseRoll">
+          <End Role="DefenseSet" Type="Self.DefenseSet" Multiplicity="1" />
+          <End Role="Defense" Type="Self.Defense" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DefenseSet">
+              <PropertyRef Name="DefenseSetID" />
+            </Principal>
+            <Dependent Role="Defense">
+              <PropertyRef Name="DefenseSetID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Item">
+          <End Role="ItemSet" Type="Self.ItemSet" Multiplicity="0..1" />
+          <End Role="Item" Type="Self.Item" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ItemSet">
+              <PropertyRef Name="ItemSetID" />
+            </Principal>
+            <Dependent Role="Item">
+              <PropertyRef Name="ItemSetID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ItemSet">
+          <End Role="ItemSet" Type="Self.ItemSet" Multiplicity="0..1" />
+          <End Role="Unit" Type="Self.Unit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ItemSet">
+              <PropertyRef Name="ItemSetID" />
+            </Principal>
+            <Dependent Role="Unit">
+              <PropertyRef Name="DefaultItemSetID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ItemStat">
+          <End Role="Item" Type="Self.Item" Multiplicity="1" />
+          <End Role="ItemStat" Type="Self.ItemStat" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Item">
+              <PropertyRef Name="ItemID" />
+            </Principal>
+            <Dependent Role="ItemStat">
+              <PropertyRef Name="ItemID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Mission">
+          <End Role="Mission" Type="Self.Mission" Multiplicity="1" />
+          <End Role="Objective" Type="Self.Objective" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Mission">
+              <PropertyRef Name="MissionID" />
+            </Principal>
+            <Dependent Role="Objective">
+              <PropertyRef Name="MissionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Sector">
+          <End Role="Sector" Type="Self.Sector" Multiplicity="1" />
+          <End Role="Cell" Type="Self.Cell" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sector">
+              <PropertyRef Name="SectorID" />
+            </Principal>
+            <Dependent Role="Cell">
+              <PropertyRef Name="SectorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SectorEntrance">
+          <End Role="Sector" Type="Self.Sector" Multiplicity="1" />
+          <End Role="Entrance" Type="Self.Entrance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sector">
+              <PropertyRef Name="SectorID" />
+            </Principal>
+            <Dependent Role="Entrance">
+              <PropertyRef Name="SectorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SectorMapMission">
+          <End Role="Mission" Type="Self.Mission" Multiplicity="1" />
+          <End Role="SectorMap" Type="Self.SectorMap" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Mission">
+              <PropertyRef Name="MissionID" />
+            </Principal>
+            <Dependent Role="SectorMap">
+              <PropertyRef Name="MissionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SectorMapSector">
+          <End Role="Sector" Type="Self.Sector" Multiplicity="1" />
+          <End Role="SectorMap" Type="Self.SectorMap" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sector">
+              <PropertyRef Name="SectorID" />
+            </Principal>
+            <Dependent Role="SectorMap">
+              <PropertyRef Name="SectorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="MCGameDataModelStoreContainer">
+          <EntitySet Name="Armor" EntityType="Self.Armor" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ArmorSet" EntityType="Self.ArmorSet" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Cell" EntityType="Self.Cell" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Corporation" EntityType="Self.Corporation" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Defense" EntityType="Self.Defense" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DefenseSet" EntityType="Self.DefenseSet" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Entrance" EntityType="Self.Entrance" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Item" EntityType="Self.Item" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ItemSet" EntityType="Self.ItemSet" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ItemStat" EntityType="Self.ItemStat" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Mission" EntityType="Self.Mission" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Objective" EntityType="Self.Objective" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Sector" EntityType="Self.Sector" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SectorMap" EntityType="Self.SectorMap" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Unit" EntityType="Self.Unit" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_ArmorSet" Association="Self.FK_ArmorSet">
+            <End Role="ArmorSet" EntitySet="ArmorSet" />
+            <End Role="Unit" EntitySet="Unit" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ArmorSetArmor" Association="Self.FK_ArmorSetArmor">
+            <End Role="ArmorSet" EntitySet="ArmorSet" />
+            <End Role="Armor" EntitySet="Armor" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Corporation" Association="Self.FK_Corporation">
+            <End Role="Corporation" EntitySet="Corporation" />
+            <End Role="Unit" EntitySet="Unit" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DefenseSet" Association="Self.FK_DefenseSet">
+            <End Role="DefenseSet" EntitySet="DefenseSet" />
+            <End Role="Unit" EntitySet="Unit" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DefenseSetDefenseRoll" Association="Self.FK_DefenseSetDefenseRoll">
+            <End Role="DefenseSet" EntitySet="DefenseSet" />
+            <End Role="Defense" EntitySet="Defense" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Item" Association="Self.FK_Item">
+            <End Role="ItemSet" EntitySet="ItemSet" />
+            <End Role="Item" EntitySet="Item" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ItemSet" Association="Self.FK_ItemSet">
+            <End Role="ItemSet" EntitySet="ItemSet" />
+            <End Role="Unit" EntitySet="Unit" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ItemStat" Association="Self.FK_ItemStat">
+            <End Role="Item" EntitySet="Item" />
+            <End Role="ItemStat" EntitySet="ItemStat" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Mission" Association="Self.FK_Mission">
+            <End Role="Mission" EntitySet="Mission" />
+            <End Role="Objective" EntitySet="Objective" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Sector" Association="Self.FK_Sector">
+            <End Role="Sector" EntitySet="Sector" />
+            <End Role="Cell" EntitySet="Cell" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SectorEntrance" Association="Self.FK_SectorEntrance">
+            <End Role="Sector" EntitySet="Sector" />
+            <End Role="Entrance" EntitySet="Entrance" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SectorMapMission" Association="Self.FK_SectorMapMission">
+            <End Role="Mission" EntitySet="Mission" />
+            <End Role="SectorMap" EntitySet="SectorMap" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SectorMapSector" Association="Self.FK_SectorMapSector">
+            <End Role="Sector" EntitySet="Sector" />
+            <End Role="SectorMap" EntitySet="SectorMap" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="MCGameDataModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Cell">
+          <Key>
+            <PropertyRef Name="CellID" />
+          </Key>
+          <Property Name="CellID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SectorID" Type="Int32" Nullable="false" />
+          <Property Name="CellX" Type="Int32" Nullable="false" />
+          <Property Name="CellY" Type="Int32" Nullable="false" />
+          <Property Name="HasNorthWall" Type="Boolean" Nullable="false" />
+          <Property Name="HasWestWall" Type="Boolean" Nullable="false" />
+          <Property Name="HasSouthWall" Type="Boolean" Nullable="false" />
+          <Property Name="HasEastWall" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Sector" Relationship="Self.FK_Sector" FromRole="Cell" ToRole="Sector" />
+        </EntityType>
+        <EntityType Name="Sector">
+          <Key>
+            <PropertyRef Name="SectorID" />
+          </Key>
+          <Property Name="SectorID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SectorNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="SectorName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SectorDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Width" Type="Int32" />
+          <Property Name="Height" Type="Int32" />
+          <NavigationProperty Name="Cells" Relationship="Self.FK_Sector" FromRole="Sector" ToRole="Cell" />
+          <Property Name="ImgPath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Entrances" Relationship="MCGameDataModel.FK_SectorEntrance" FromRole="Sector" ToRole="Entrance" />
+          <NavigationProperty Name="SectorMaps" Relationship="MCGameDataModel.FK_SectorMapSector" FromRole="Sector" ToRole="SectorMap" />
+        </EntityType>
+        <Association Name="FK_Sector">
+          <End Role="Sector" Type="Self.Sector" Multiplicity="1" />
+          <End Role="Cell" Type="Self.Cell" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sector">
+              <PropertyRef Name="SectorID" />
+            </Principal>
+            <Dependent Role="Cell">
+              <PropertyRef Name="SectorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="MCGameDataEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Cells" EntityType="Self.Cell" />
+          <EntitySet Name="Sectors" EntityType="Self.Sector" />
+          <AssociationSet Name="FK_Sector" Association="Self.FK_Sector">
+            <End Role="Sector" EntitySet="Sectors" />
+            <End Role="Cell" EntitySet="Cells" />
+          </AssociationSet>
+          <EntitySet Name="Missions" EntityType="MCGameDataModel.Mission" />
+          <EntitySet Name="Armors" EntityType="MCGameDataModel.Armor" />
+          <EntitySet Name="ArmorSets" EntityType="MCGameDataModel.ArmorSet" />
+          <EntitySet Name="Corporations" EntityType="MCGameDataModel.Corporation" />
+          <EntitySet Name="Defenses" EntityType="MCGameDataModel.Defense" />
+          <EntitySet Name="DefenseSets" EntityType="MCGameDataModel.DefenseSet" />
+          <EntitySet Name="ItemSets" EntityType="MCGameDataModel.ItemSet" />
+          <EntitySet Name="Units" EntityType="MCGameDataModel.Unit" />
+          <AssociationSet Name="FK_ArmorSetArmor" Association="MCGameDataModel.FK_ArmorSetArmor">
+            <End Role="ArmorSet" EntitySet="ArmorSets" />
+            <End Role="Armor" EntitySet="Armors" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Armor" Association="MCGameDataModel.FK_Armor">
+            <End Role="ArmorSet" EntitySet="ArmorSets" />
+            <End Role="Unit" EntitySet="Units" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Corporation" Association="MCGameDataModel.FK_Corporation">
+            <End Role="Corporation" EntitySet="Corporations" />
+            <End Role="Unit" EntitySet="Units" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DefenseSetDefenseRoll" Association="MCGameDataModel.FK_DefenseSetDefenseRoll">
+            <End Role="DefenseSet" EntitySet="DefenseSets" />
+            <End Role="Defense" EntitySet="Defenses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DefenseSet" Association="MCGameDataModel.FK_DefenseSet">
+            <End Role="DefenseSet" EntitySet="DefenseSets" />
+            <End Role="Unit" EntitySet="Units" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ItemSet" Association="MCGameDataModel.FK_ItemSet">
+            <End Role="ItemSet" EntitySet="ItemSets" />
+            <End Role="Unit" EntitySet="Units" />
+          </AssociationSet>
+          <EntitySet Name="Items" EntityType="MCGameDataModel.Item" />
+          <AssociationSet Name="FK_Item" Association="MCGameDataModel.FK_Item">
+            <End Role="ItemSet" EntitySet="ItemSets" />
+            <End Role="Item" EntitySet="Items" />
+          </AssociationSet>
+          <EntitySet Name="ItemStats" EntityType="MCGameDataModel.ItemStat" />
+          <AssociationSet Name="FK_ItemStat" Association="MCGameDataModel.FK_ItemStat">
+            <End Role="Item" EntitySet="Items" />
+            <End Role="ItemStat" EntitySet="ItemStats" />
+          </AssociationSet>
+          <EntitySet Name="Entrances" EntityType="MCGameDataModel.Entrance" />
+          <AssociationSet Name="FK_SectorEntrance" Association="MCGameDataModel.FK_SectorEntrance">
+            <End Role="Sector" EntitySet="Sectors" />
+            <End Role="Entrance" EntitySet="Entrances" />
+          </AssociationSet>
+          <EntitySet Name="SectorMaps" EntityType="MCGameDataModel.SectorMap" />
+          <AssociationSet Name="FK_SectorMapMission" Association="MCGameDataModel.FK_SectorMapMission">
+            <End Role="Mission" EntitySet="Missions" />
+            <End Role="SectorMap" EntitySet="SectorMaps" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SectorMapSector" Association="MCGameDataModel.FK_SectorMapSector">
+            <End Role="Sector" EntitySet="Sectors" />
+            <End Role="SectorMap" EntitySet="SectorMaps" />
+          </AssociationSet>
+          <EntitySet Name="Objectives" EntityType="MCGameDataModel.Objective" />
+          <AssociationSet Name="FK_Mission" Association="MCGameDataModel.FK_Mission">
+            <End Role="Mission" EntitySet="Missions" />
+            <End Role="Objective" EntitySet="Objectives" />
+          </AssociationSet>
+          </EntityContainer>
+        <EntityType Name="Mission">
+          <Key>
+            <PropertyRef Name="MissionID" />
+          </Key>
+          <Property Name="MissionID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MissionNumber" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TextBriefing" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TextDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TextTimeLimit" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TextDarkLegion" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TextRewards" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Difficulty" Type="Int32" />
+          <Property Name="IsSecondaryMissions" Type="Boolean" />
+          <Property Name="ImgMissionPath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ImgMapPath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="RewardDoomtrooperCredits" Type="Int32" />
+          <Property Name="RewardDoomtrooperPromotionPoints" Type="Int32" />
+          <Property Name="RewardDoomtrooperItemID" Type="Int32" />
+          <Property Name="RewardLegionCredits" Type="Int32" />
+          <Property Name="RewardLegionPromotionPoints" Type="Int32" />
+          <Property Name="RewardLegionItemID" Type="Int32" />
+          <NavigationProperty Name="SectorMaps" Relationship="MCGameDataModel.FK_SectorMapMission" FromRole="Mission" ToRole="SectorMap" />
+          <NavigationProperty Name="Objectives" Relationship="MCGameDataModel.FK_Mission" FromRole="Mission" ToRole="Objective" />
+        </EntityType>
+        <EntityType Name="Armor">
+          <Key>
+            <PropertyRef Name="ArmorID" />
+          </Key>
+          <Property Name="ArmorID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ArmorSetID" Type="Int32" Nullable="false" />
+          <Property Name="Rank" Type="Int32" Nullable="false" />
+          <Property Name="DamageReduction" Type="Int32" />
+          <NavigationProperty Name="ArmorSet" Relationship="MCGameDataModel.FK_ArmorSetArmor" FromRole="Armor" ToRole="ArmorSet" />
+        </EntityType>
+        <EntityType Name="ArmorSet">
+          <Key>
+            <PropertyRef Name="ArmorSetID" />
+          </Key>
+          <Property Name="ArmorSetID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Armors" Relationship="MCGameDataModel.FK_ArmorSetArmor" FromRole="ArmorSet" ToRole="Armor" />
+          <NavigationProperty Name="Units" Relationship="MCGameDataModel.FK_Armor" FromRole="ArmorSet" ToRole="Unit" />
+        </EntityType>
+        <EntityType Name="Corporation">
+          <Key>
+            <PropertyRef Name="CorporationID" />
+          </Key>
+          <Property Name="CorporationID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ImgLogoPath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ImgSplashPath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ImgAlternatePath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ImgTrayPath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ImgTurnMarkerPath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="BonusDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Units" Relationship="MCGameDataModel.FK_Corporation" FromRole="Corporation" ToRole="Unit" />
+          <Property Name="BonusName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Defense">
+          <Key>
+            <PropertyRef Name="DefenseID" />
+          </Key>
+          <Property Name="DefenseID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DefenseSetID" Type="Int32" Nullable="false" />
+          <Property Name="Rank" Type="Int32" Nullable="false" />
+          <Property Name="DiceCount" Type="Int32" Nullable="false" />
+          <Property Name="DiceColor" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="DefenseSet" Relationship="MCGameDataModel.FK_DefenseSetDefenseRoll" FromRole="Defense" ToRole="DefenseSet" />
+        </EntityType>
+        <EntityType Name="DefenseSet">
+          <Key>
+            <PropertyRef Name="DefenseSetID" />
+          </Key>
+          <Property Name="DefenseSetID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Defenses" Relationship="MCGameDataModel.FK_DefenseSetDefenseRoll" FromRole="DefenseSet" ToRole="Defense" />
+          <NavigationProperty Name="Units" Relationship="MCGameDataModel.FK_DefenseSet" FromRole="DefenseSet" ToRole="Unit" />
+        </EntityType>
+        <EntityType Name="ItemSet">
+          <Key>
+            <PropertyRef Name="ItemSetID" />
+          </Key>
+          <Property Name="ItemSetID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Units" Relationship="MCGameDataModel.FK_ItemSet" FromRole="ItemSet" ToRole="Unit" />
+          <NavigationProperty Name="Items" Relationship="MCGameDataModel.FK_Item" FromRole="ItemSet" ToRole="Item" />
+        </EntityType>
+        <EntityType Name="Unit">
+          <Key>
+            <PropertyRef Name="UnitID" />
+          </Key>
+          <Property Name="UnitID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Type" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CorporationID" Type="Int32" />
+          <Property Name="CombatType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ArmorSetID" Type="Int32" />
+          <Property Name="DefenseSetID" Type="Int32" Nullable="false" />
+          <Property Name="DefaultHealth" Type="Int32" />
+          <Property Name="DefaultActions" Type="Int32" />
+          <Property Name="DefaultStepsPerAction" Type="Int32" />
+          <Property Name="DefaultItemSetID" Type="Int32" />
+          <Property Name="KillPromotionPoints" Type="Int32" />
+          <Property Name="DamagePromotionPoints" Type="Int32" />
+          <NavigationProperty Name="ArmorSet" Relationship="MCGameDataModel.FK_Armor" FromRole="Unit" ToRole="ArmorSet" />
+          <NavigationProperty Name="Corporation" Relationship="MCGameDataModel.FK_Corporation" FromRole="Unit" ToRole="Corporation" />
+          <NavigationProperty Name="DefenseSet" Relationship="MCGameDataModel.FK_DefenseSet" FromRole="Unit" ToRole="DefenseSet" />
+          <NavigationProperty Name="ItemSet" Relationship="MCGameDataModel.FK_ItemSet" FromRole="Unit" ToRole="ItemSet" />
+          <Property Name="ImgFigurePath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ImgPosterPath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ImgIconPath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ImgAlternatePath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <Association Name="FK_ArmorSetArmor">
+          <End Type="MCGameDataModel.ArmorSet" Role="ArmorSet" Multiplicity="1" />
+          <End Type="MCGameDataModel.Armor" Role="Armor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ArmorSet">
+              <PropertyRef Name="ArmorSetID" />
+            </Principal>
+            <Dependent Role="Armor">
+              <PropertyRef Name="ArmorSetID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Armor">
+          <End Type="MCGameDataModel.ArmorSet" Role="ArmorSet" Multiplicity="0..1" />
+          <End Type="MCGameDataModel.Unit" Role="Unit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ArmorSet">
+              <PropertyRef Name="ArmorSetID" />
+            </Principal>
+            <Dependent Role="Unit">
+              <PropertyRef Name="ArmorSetID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Corporation">
+          <End Type="MCGameDataModel.Corporation" Role="Corporation" Multiplicity="0..1" />
+          <End Type="MCGameDataModel.Unit" Role="Unit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Corporation">
+              <PropertyRef Name="CorporationID" />
+            </Principal>
+            <Dependent Role="Unit">
+              <PropertyRef Name="CorporationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DefenseSetDefenseRoll">
+          <End Type="MCGameDataModel.DefenseSet" Role="DefenseSet" Multiplicity="1" />
+          <End Type="MCGameDataModel.Defense" Role="Defense" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DefenseSet">
+              <PropertyRef Name="DefenseSetID" />
+            </Principal>
+            <Dependent Role="Defense">
+              <PropertyRef Name="DefenseSetID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DefenseSet">
+          <End Type="MCGameDataModel.DefenseSet" Role="DefenseSet" Multiplicity="1" />
+          <End Type="MCGameDataModel.Unit" Role="Unit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DefenseSet">
+              <PropertyRef Name="DefenseSetID" />
+            </Principal>
+            <Dependent Role="Unit">
+              <PropertyRef Name="DefenseSetID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ItemSet">
+          <End Type="MCGameDataModel.ItemSet" Role="ItemSet" Multiplicity="0..1" />
+          <End Type="MCGameDataModel.Unit" Role="Unit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ItemSet">
+              <PropertyRef Name="ItemSetID" />
+            </Principal>
+            <Dependent Role="Unit">
+              <PropertyRef Name="DefaultItemSetID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Item">
+          <Key>
+            <PropertyRef Name="ItemID" />
+          </Key>
+          <Property Name="ItemID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ItemSetID" Type="Int32" />
+          <Property Name="Type" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Cost" Type="Int32" Nullable="false" />
+          <Property Name="RankRequired" Type="Int32" />
+          <Property Name="ImgShopPath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ImgIconPath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ImgLargePath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ImgAlternatePath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ItemSet" Relationship="MCGameDataModel.FK_Item" FromRole="Item" ToRole="ItemSet" />
+          <NavigationProperty Name="ItemStats" Relationship="MCGameDataModel.FK_ItemStat" FromRole="Item" ToRole="ItemStat" />
+        </EntityType>
+        <Association Name="FK_Item">
+          <End Type="MCGameDataModel.ItemSet" Role="ItemSet" Multiplicity="0..1" />
+          <End Type="MCGameDataModel.Item" Role="Item" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ItemSet">
+              <PropertyRef Name="ItemSetID" />
+            </Principal>
+            <Dependent Role="Item">
+              <PropertyRef Name="ItemSetID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ItemStat">
+          <Key>
+            <PropertyRef Name="ItemStatID" />
+          </Key>
+          <Property Name="ItemStatID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ItemID" Type="Int32" Nullable="false" />
+          <Property Name="StatType" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Rank" Type="Int32" />
+          <Property Name="DiceCount" Type="Int32" />
+          <Property Name="DiceReroll" Type="Int32" />
+          <Property Name="DiceColor" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ArmorPenetration" Type="Int32" />
+          <Property Name="Special" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Item" Relationship="MCGameDataModel.FK_ItemStat" FromRole="ItemStat" ToRole="Item" />
+        </EntityType>
+        <Association Name="FK_ItemStat">
+          <End Type="MCGameDataModel.Item" Role="Item" Multiplicity="1" />
+          <End Type="MCGameDataModel.ItemStat" Role="ItemStat" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Item">
+              <PropertyRef Name="ItemID" />
+            </Principal>
+            <Dependent Role="ItemStat">
+              <PropertyRef Name="ItemID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Entrance">
+          <Key>
+            <PropertyRef Name="EntranceID" />
+          </Key>
+          <Property Name="EntranceID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SectorID" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Cell1X" Type="Int32" Nullable="false" />
+          <Property Name="Cell1Y" Type="Int32" Nullable="false" />
+          <Property Name="Cell2X" Type="Int32" Nullable="false" />
+          <Property Name="Cell2Y" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Sector" Relationship="MCGameDataModel.FK_SectorEntrance" FromRole="Entrance" ToRole="Sector" />
+        </EntityType>
+        <Association Name="FK_SectorEntrance">
+          <End Type="MCGameDataModel.Sector" Role="Sector" Multiplicity="1" />
+          <End Type="MCGameDataModel.Entrance" Role="Entrance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sector">
+              <PropertyRef Name="SectorID" />
+            </Principal>
+            <Dependent Role="Entrance">
+              <PropertyRef Name="SectorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="SectorMap">
+          <Key>
+            <PropertyRef Name="SectorMapID" />
+          </Key>
+          <Property Name="SectorMapID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MissionID" Type="Int32" Nullable="false" />
+          <Property Name="SectorID" Type="Int32" Nullable="false" />
+          <Property Name="LocationX" Type="Int32" />
+          <Property Name="LocationY" Type="Int32" />
+          <Property Name="IsEntranceTBlocked" Type="Boolean" />
+          <Property Name="IsEntranceTForDoomtroopers" Type="Boolean" />
+          <Property Name="IsEntranceTForLegion" Type="Boolean" />
+          <Property Name="IsEntranceRBlocked" Type="Boolean" />
+          <Property Name="IsEntranceRForDoomtroopers" Type="Boolean" />
+          <Property Name="IsEntranceRForLegion" Type="Boolean" />
+          <Property Name="IsEntranceBBlocked" Type="Boolean" />
+          <Property Name="IsEntranceBForDoomtroopers" Type="Boolean" />
+          <Property Name="IsEntranceBForLegion" Type="Boolean" />
+          <Property Name="IsEntranceLBlocked" Type="Boolean" />
+          <Property Name="IsEntranceLForDoomtroopers" Type="Boolean" />
+          <Property Name="IsEntranceLForLegion" Type="Boolean" />
+          <NavigationProperty Name="Mission" Relationship="MCGameDataModel.FK_SectorMapMission" FromRole="SectorMap" ToRole="Mission" />
+          <NavigationProperty Name="Sector" Relationship="MCGameDataModel.FK_SectorMapSector" FromRole="SectorMap" ToRole="Sector" />
+        </EntityType>
+        <Association Name="FK_SectorMapMission">
+          <End Type="MCGameDataModel.Mission" Role="Mission" Multiplicity="1" />
+          <End Type="MCGameDataModel.SectorMap" Role="SectorMap" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Mission">
+              <PropertyRef Name="MissionID" />
+            </Principal>
+            <Dependent Role="SectorMap">
+              <PropertyRef Name="MissionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SectorMapSector">
+          <End Type="MCGameDataModel.Sector" Role="Sector" Multiplicity="1" />
+          <End Type="MCGameDataModel.SectorMap" Role="SectorMap" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sector">
+              <PropertyRef Name="SectorID" />
+            </Principal>
+            <Dependent Role="SectorMap">
+              <PropertyRef Name="SectorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Objective">
+          <Key>
+            <PropertyRef Name="ObjectiveID" />
+          </Key>
+          <Property Name="ObjectiveID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MissionID" Type="Int32" Nullable="false" />
+          <Property Name="Type" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TimeLimitRound" Type="Int32" />
+          <Property Name="TimeLimitIsStartOfRound" Type="Boolean" />
+          <Property Name="RequiredCount1" Type="Int32" />
+          <Property Name="RequiredCount2" Type="Int32" />
+          <Property Name="RequiredCount3" Type="Int32" />
+          <Property Name="RequiredUnitType1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="RequiredUnitType2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="RequiredUnitType3" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="RequiredSectorID1" Type="Int32" />
+          <Property Name="RequiredSectorID2" Type="Int32" />
+          <Property Name="RequiredSectorID3" Type="Int32" />
+          <Property Name="RequiredSectorID4" Type="Int32" />
+          <Property Name="RequiredCellX" Type="Int32" />
+          <Property Name="RequiredCellY" Type="Int32" />
+          <Property Name="Special1" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Special2" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Special3" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Mission" Relationship="MCGameDataModel.FK_Mission" FromRole="Objective" ToRole="Mission" />
+        </EntityType>
+        <Association Name="FK_Mission">
+          <End Type="MCGameDataModel.Mission" Role="Mission" Multiplicity="1" />
+          <End Type="MCGameDataModel.Objective" Role="Objective" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Mission">
+              <PropertyRef Name="MissionID" />
+            </Principal>
+            <Dependent Role="Objective">
+              <PropertyRef Name="MissionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="MCGameDataModelStoreContainer" CdmEntityContainer="MCGameDataEntities">
+          <EntitySetMapping Name="Cells">
+            <EntityTypeMapping TypeName="MCGameDataModel.Cell">
+              <MappingFragment StoreEntitySet="Cell">
+                <ScalarProperty Name="CellID" ColumnName="CellID" />
+                <ScalarProperty Name="SectorID" ColumnName="SectorID" />
+                <ScalarProperty Name="CellX" ColumnName="CellX" />
+                <ScalarProperty Name="CellY" ColumnName="CellY" />
+                <ScalarProperty Name="HasNorthWall" ColumnName="HasNorthWall" />
+                <ScalarProperty Name="HasWestWall" ColumnName="HasWestWall" />
+                <ScalarProperty Name="HasSouthWall" ColumnName="HasSouthWall" />
+                <ScalarProperty Name="HasEastWall" ColumnName="HasEastWall" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Sectors">
+            <EntityTypeMapping TypeName="MCGameDataModel.Sector">
+              <MappingFragment StoreEntitySet="Sector">
+                <ScalarProperty Name="ImgPath" ColumnName="ImgPath" />
+                <ScalarProperty Name="SectorID" ColumnName="SectorID" />
+                <ScalarProperty Name="SectorNumber" ColumnName="SectorNumber" />
+                <ScalarProperty Name="SectorName" ColumnName="SectorName" />
+                <ScalarProperty Name="SectorDescription" ColumnName="SectorDescription" />
+                <ScalarProperty Name="Width" ColumnName="Width" />
+                <ScalarProperty Name="Height" ColumnName="Height" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Missions">
+            <EntityTypeMapping TypeName="MCGameDataModel.Mission">
+              <MappingFragment StoreEntitySet="Mission">
+                <ScalarProperty Name="RewardLegionItemID" ColumnName="RewardLegionItemID" />
+                <ScalarProperty Name="RewardLegionPromotionPoints" ColumnName="RewardLegionPromotionPoints" />
+                <ScalarProperty Name="RewardLegionCredits" ColumnName="RewardLegionCredits" />
+                <ScalarProperty Name="RewardDoomtrooperItemID" ColumnName="RewardDoomtrooperItemID" />
+                <ScalarProperty Name="RewardDoomtrooperPromotionPoints" ColumnName="RewardDoomtrooperPromotionPoints" />
+                <ScalarProperty Name="RewardDoomtrooperCredits" ColumnName="RewardDoomtrooperCredits" />
+                <ScalarProperty Name="ImgMapPath" ColumnName="ImgMapPath" />
+                <ScalarProperty Name="ImgMissionPath" ColumnName="ImgMissionPath" />
+                <ScalarProperty Name="IsSecondaryMissions" ColumnName="IsSecondaryMissions" />
+                <ScalarProperty Name="Difficulty" ColumnName="Difficulty" />
+                <ScalarProperty Name="TextRewards" ColumnName="TextRewards" />
+                <ScalarProperty Name="TextDarkLegion" ColumnName="TextDarkLegion" />
+                <ScalarProperty Name="TextTimeLimit" ColumnName="TextTimeLimit" />
+                <ScalarProperty Name="TextDescription" ColumnName="TextDescription" />
+                <ScalarProperty Name="TextBriefing" ColumnName="TextBriefing" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="MissionNumber" ColumnName="MissionNumber" />
+                <ScalarProperty Name="MissionID" ColumnName="MissionID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Armors">
+            <EntityTypeMapping TypeName="MCGameDataModel.Armor">
+              <MappingFragment StoreEntitySet="Armor">
+                <ScalarProperty Name="DamageReduction" ColumnName="DamageReduction" />
+                <ScalarProperty Name="Rank" ColumnName="Rank" />
+                <ScalarProperty Name="ArmorSetID" ColumnName="ArmorSetID" />
+                <ScalarProperty Name="ArmorID" ColumnName="ArmorID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ArmorSets">
+            <EntityTypeMapping TypeName="MCGameDataModel.ArmorSet">
+              <MappingFragment StoreEntitySet="ArmorSet">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ArmorSetID" ColumnName="ArmorSetID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Corporations">
+            <EntityTypeMapping TypeName="MCGameDataModel.Corporation">
+              <MappingFragment StoreEntitySet="Corporation">
+                <ScalarProperty Name="BonusName" ColumnName="BonusName" />
+                <ScalarProperty Name="BonusDescription" ColumnName="BonusDescription" />
+                <ScalarProperty Name="ImgTurnMarkerPath" ColumnName="ImgTurnMarkerPath" />
+                <ScalarProperty Name="ImgTrayPath" ColumnName="ImgTrayPath" />
+                <ScalarProperty Name="ImgAlternatePath" ColumnName="ImgAlternatePath" />
+                <ScalarProperty Name="ImgSplashPath" ColumnName="ImgSplashPath" />
+                <ScalarProperty Name="ImgLogoPath" ColumnName="ImgLogoPath" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="CorporationID" ColumnName="CorporationID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Defenses">
+            <EntityTypeMapping TypeName="MCGameDataModel.Defense">
+              <MappingFragment StoreEntitySet="Defense">
+                <ScalarProperty Name="DiceColor" ColumnName="DiceColor" />
+                <ScalarProperty Name="DiceCount" ColumnName="DiceCount" />
+                <ScalarProperty Name="Rank" ColumnName="Rank" />
+                <ScalarProperty Name="DefenseSetID" ColumnName="DefenseSetID" />
+                <ScalarProperty Name="DefenseID" ColumnName="DefenseID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DefenseSets">
+            <EntityTypeMapping TypeName="MCGameDataModel.DefenseSet">
+              <MappingFragment StoreEntitySet="DefenseSet">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="DefenseSetID" ColumnName="DefenseSetID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ItemSets">
+            <EntityTypeMapping TypeName="MCGameDataModel.ItemSet">
+              <MappingFragment StoreEntitySet="ItemSet">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ItemSetID" ColumnName="ItemSetID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Units">
+            <EntityTypeMapping TypeName="MCGameDataModel.Unit">
+              <MappingFragment StoreEntitySet="Unit">
+                <ScalarProperty Name="ImgAlternatePath" ColumnName="ImgAlternatePath" />
+                <ScalarProperty Name="ImgIconPath" ColumnName="ImgIconPath" />
+                <ScalarProperty Name="ImgPosterPath" ColumnName="ImgPosterPath" />
+                <ScalarProperty Name="ImgFigurePath" ColumnName="ImgFigurePath" />
+                <ScalarProperty Name="DamagePromotionPoints" ColumnName="DamagePromotionPoints" />
+                <ScalarProperty Name="KillPromotionPoints" ColumnName="KillPromotionPoints" />
+                <ScalarProperty Name="DefaultItemSetID" ColumnName="DefaultItemSetID" />
+                <ScalarProperty Name="DefaultStepsPerAction" ColumnName="DefaultStepsPerAction" />
+                <ScalarProperty Name="DefaultActions" ColumnName="DefaultActions" />
+                <ScalarProperty Name="DefaultHealth" ColumnName="DefaultHealth" />
+                <ScalarProperty Name="DefenseSetID" ColumnName="DefenseSetID" />
+                <ScalarProperty Name="ArmorSetID" ColumnName="ArmorSetID" />
+                <ScalarProperty Name="CombatType" ColumnName="CombatType" />
+                <ScalarProperty Name="CorporationID" ColumnName="CorporationID" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="UnitID" ColumnName="UnitID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Items">
+            <EntityTypeMapping TypeName="MCGameDataModel.Item">
+              <MappingFragment StoreEntitySet="Item">
+                <ScalarProperty Name="ImgAlternatePath" ColumnName="ImgAlternatePath" />
+                <ScalarProperty Name="ImgLargePath" ColumnName="ImgLargePath" />
+                <ScalarProperty Name="ImgIconPath" ColumnName="ImgIconPath" />
+                <ScalarProperty Name="ImgShopPath" ColumnName="ImgShopPath" />
+                <ScalarProperty Name="RankRequired" ColumnName="RankRequired" />
+                <ScalarProperty Name="Cost" ColumnName="Cost" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="ItemSetID" ColumnName="ItemSetID" />
+                <ScalarProperty Name="ItemID" ColumnName="ItemID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ItemStats">
+            <EntityTypeMapping TypeName="MCGameDataModel.ItemStat">
+              <MappingFragment StoreEntitySet="ItemStat">
+                <ScalarProperty Name="Special" ColumnName="Special" />
+                <ScalarProperty Name="ArmorPenetration" ColumnName="ArmorPenetration" />
+                <ScalarProperty Name="DiceColor" ColumnName="DiceColor" />
+                <ScalarProperty Name="DiceReroll" ColumnName="DiceReroll" />
+                <ScalarProperty Name="DiceCount" ColumnName="DiceCount" />
+                <ScalarProperty Name="Rank" ColumnName="Rank" />
+                <ScalarProperty Name="StatType" ColumnName="StatType" />
+                <ScalarProperty Name="ItemID" ColumnName="ItemID" />
+                <ScalarProperty Name="ItemStatID" ColumnName="ItemStatID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Entrances">
+            <EntityTypeMapping TypeName="MCGameDataModel.Entrance">
+              <MappingFragment StoreEntitySet="Entrance">
+                <ScalarProperty Name="Cell2Y" ColumnName="Cell2Y" />
+                <ScalarProperty Name="Cell2X" ColumnName="Cell2X" />
+                <ScalarProperty Name="Cell1Y" ColumnName="Cell1Y" />
+                <ScalarProperty Name="Cell1X" ColumnName="Cell1X" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="SectorID" ColumnName="SectorID" />
+                <ScalarProperty Name="EntranceID" ColumnName="EntranceID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SectorMaps">
+            <EntityTypeMapping TypeName="MCGameDataModel.SectorMap">
+              <MappingFragment StoreEntitySet="SectorMap">
+                <ScalarProperty Name="IsEntranceLForLegion" ColumnName="IsEntranceLForLegion" />
+                <ScalarProperty Name="IsEntranceLForDoomtroopers" ColumnName="IsEntranceLForDoomtroopers" />
+                <ScalarProperty Name="IsEntranceLBlocked" ColumnName="IsEntranceLBlocked" />
+                <ScalarProperty Name="IsEntranceBForLegion" ColumnName="IsEntranceBForLegion" />
+                <ScalarProperty Name="IsEntranceBForDoomtroopers" ColumnName="IsEntranceBForDoomtroopers" />
+                <ScalarProperty Name="IsEntranceBBlocked" ColumnName="IsEntranceBBlocked" />
+                <ScalarProperty Name="IsEntranceRForLegion" ColumnName="IsEntranceRForLegion" />
+                <ScalarProperty Name="IsEntranceRForDoomtroopers" ColumnName="IsEntranceRForDoomtroopers" />
+                <ScalarProperty Name="IsEntranceRBlocked" ColumnName="IsEntranceRBlocked" />
+                <ScalarProperty Name="IsEntranceTForLegion" ColumnName="IsEntranceTForLegion" />
+                <ScalarProperty Name="IsEntranceTForDoomtroopers" ColumnName="IsEntranceTForDoomtroopers" />
+                <ScalarProperty Name="IsEntranceTBlocked" ColumnName="IsEntranceTBlocked" />
+                <ScalarProperty Name="LocationY" ColumnName="LocationY" />
+                <ScalarProperty Name="LocationX" ColumnName="LocationX" />
+                <ScalarProperty Name="SectorID" ColumnName="SectorID" />
+                <ScalarProperty Name="MissionID" ColumnName="MissionID" />
+                <ScalarProperty Name="SectorMapID" ColumnName="SectorMapID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Objectives">
+            <EntityTypeMapping TypeName="MCGameDataModel.Objective">
+              <MappingFragment StoreEntitySet="Objective">
+                <ScalarProperty Name="Special3" ColumnName="Special3" />
+                <ScalarProperty Name="Special2" ColumnName="Special2" />
+                <ScalarProperty Name="Special1" ColumnName="Special1" />
+                <ScalarProperty Name="RequiredCellY" ColumnName="RequiredCellY" />
+                <ScalarProperty Name="RequiredCellX" ColumnName="RequiredCellX" />
+                <ScalarProperty Name="RequiredSectorID4" ColumnName="RequiredSectorID4" />
+                <ScalarProperty Name="RequiredSectorID3" ColumnName="RequiredSectorID3" />
+                <ScalarProperty Name="RequiredSectorID2" ColumnName="RequiredSectorID2" />
+                <ScalarProperty Name="RequiredSectorID1" ColumnName="RequiredSectorID1" />
+                <ScalarProperty Name="RequiredUnitType3" ColumnName="RequiredUnitType3" />
+                <ScalarProperty Name="RequiredUnitType2" ColumnName="RequiredUnitType2" />
+                <ScalarProperty Name="RequiredUnitType1" ColumnName="RequiredUnitType1" />
+                <ScalarProperty Name="RequiredCount3" ColumnName="RequiredCount3" />
+                <ScalarProperty Name="RequiredCount2" ColumnName="RequiredCount2" />
+                <ScalarProperty Name="RequiredCount1" ColumnName="RequiredCount1" />
+                <ScalarProperty Name="TimeLimitIsStartOfRound" ColumnName="TimeLimitIsStartOfRound" />
+                <ScalarProperty Name="TimeLimitRound" ColumnName="TimeLimitRound" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="MissionID" ColumnName="MissionID" />
+                <ScalarProperty Name="ObjectiveID" ColumnName="ObjectiveID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

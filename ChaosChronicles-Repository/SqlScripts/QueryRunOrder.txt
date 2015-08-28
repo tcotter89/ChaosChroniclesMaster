@@ -1,0 +1,17 @@
+query run order:
+
+CreateUnit
+CreateCorporation
+CreateDefenseRoll
+CreateDefenseSet
+CreateArmor
+CreateArmorSet
+CreateItem
+CreateItemStat
+CreateItemSet
+
+InsertItems
+InsertArmor
+InsertDefense
+InsertCorporation
+InsertUnit
