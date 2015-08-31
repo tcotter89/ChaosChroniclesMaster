@@ -51,12 +51,12 @@ Board.OnDragStart = function (event) {
     this.anchor.x = xOffset;
     this.anchor.y = yOffset;
 
-    var texture = PIXI.Texture.fromImage(GameConstants.IMAGESROOT + "bunny.png");
-    var bunny = new PIXI.Sprite(texture);
-    bunny.anchor.set(0.5);
-    bunny.position.x = xOffset;
-    bunny.position.y = yOffset;
-    GameGlobals.stage.addChild(bunny);
+    //var texture = PIXI.Texture.fromImage(GameConstants.IMAGESROOT + "bunny.png");
+    //var bunny = new PIXI.Sprite(texture);
+    //bunny.anchor.set(0.5);
+    //bunny.position.x = xOffset;
+    //bunny.position.y = yOffset;
+    //GameGlobals.stage.addChild(bunny);
 
     //var newPositionX = xOffset;// - (this.width * this.anchor.x);
     //var newPositionY = yOffset;// - (this.height * this.anchor.y);
