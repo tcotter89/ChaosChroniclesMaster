@@ -97,6 +97,8 @@ namespace ChaosChronicles_Repository.Converters {
         internal static SharedCell ToSharedModel(this Cell repo) {
             return new SharedCell() {
                 CellID = repo.CellID,
+                x = repo.CellX,
+                y = repo.CellY,
                 HasEastWall = repo.HasEastWall,
                 HasNorthWall = repo.HasNorthWall,
                 HasSouthWall = repo.HasSouthWall,
@@ -133,15 +135,20 @@ namespace ChaosChronicles_Repository.Converters {
             }
 
             var sharedCells = new SharedCell[repoWidth][];
-            if (repo.Cells != null && repo.Cells.Count > 0) {
-                for (int x = 0; x < repoWidth; x++) {
-                    sharedCells[x] = new SharedCell[repoHeight];
-                    for (int y = 0; y < repoHeight; y++) {
-                        //Cells[x][y] = new SharedCell();
-                        var cell = repo.Cells.Where(c => c.CellX == x && c.CellY == y).FirstOrDefault();
-                        var sharedCell = cell.ToSharedModel();
-                        sharedCells[x][y] = sharedCell;
+            for (int x = 0; x < repoWidth; x++) {
+                sharedCells[x] = new SharedCell[repoHeight];
+                for (int y = 0; y < repoHeight; y++) {
+                    //Cells[x][y] = new SharedCell();
+                    var cell = repo.Cells.Where(c => c.CellX == x && c.CellY == y).FirstOrDefault();
+                    SharedCell sharedCell;
+                    if (cell != null) {
+                        sharedCell = cell.ToSharedModel();
+                    } else {
+                        sharedCell = new SharedCell();
+                        sharedCell.x = x;
+                        sharedCell.y = y;
                     }
+                    sharedCells[x][y] = sharedCell;
                 }
             }
 

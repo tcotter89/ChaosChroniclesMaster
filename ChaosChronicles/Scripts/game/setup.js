@@ -16,9 +16,9 @@ GameGlobals.error = $("#ErrorMessage");
 GameConstants.LOADINGSTEP_MISSIONS = 0;
 //GameConstants.LOADINGSTEP_SECTORS = 1;
 GameConstants.LOADINGSTEP_PLAYERS = 1;
-GameConstants.LOADINGSTEP_DOOMTROOPERS = 5;
-GameConstants.LOADINGSTEP_LEGION = 7;
-GameConstants.LOADINGSTEP_COMPLETE = 1;
+GameConstants.LOADINGSTEP_DOOMTROOPERS = 4;
+GameConstants.LOADINGSTEP_LEGION = 6;
+GameConstants.LOADINGSTEP_COMPLETE = 6;
 Setup.loadingStep = 0;
 //Setup.sector5Index = -1;
 //Setup.dummyPlayer = -1;
@@ -57,15 +57,16 @@ Setup.ProcessLoadingQueue = function () {
     //else if (Setup.loadingStep == GameConstants.LOADINGSTEP_SECTORS) {
     //    Board.Sectors.AddNewSector('5', true);
     //} 
-    //else if (Setup.loadingStep == GameConstants.LOADINGSTEP_PLAYERS) {
-    //    Players.AddNewPlayer('Placeholder', 'None', 0, 0, true);
-    //    Players.AddNewPlayer('Thomas', 'Bauhaus', 0, 2, true);
-    //    Players.AddNewPlayer('Ryan', 'Imperial', 0, 2, true);
-    //} 
-    //else if (Setup.loadingStep == GameConstants.LOADINGSTEP_DOOMTROOPERS) {
-    //    Units.AddNewUnit('Steiner', Players.playerList[1].index, Board.Sectors.sectorList[0], new Object({ x: 1, y: 1 }), true);
-    //    Units.AddNewUnit('Valerie', Players.playerList[1].index, Board.Sectors.sectorList[0], new Object({ x: 3, y: 4 }), true);
-    //}
+    else if (Setup.loadingStep == GameConstants.LOADINGSTEP_PLAYERS) {
+        Players.AddNewPlayer('Placeholder', 'None', 0, 0, true);
+        Players.AddNewPlayer('Thomas', 'Bauhaus', 0, 2, true);
+        Players.AddNewPlayer('Ryan', 'Imperial', 0, 2, true);
+    } 
+    else if (Setup.loadingStep == GameConstants.LOADINGSTEP_DOOMTROOPERS) {
+        var sector = $.grep(Board.currentBoard.sectorMap, function (e) { return e.Sector.sectorNumber == "5" })[0].Sector;
+        Units.AddNewUnit('Steiner', Players.playerList[1].index, sector, new Object({ x: 1, y: 1 }), true);
+        Units.AddNewUnit('Valerie', Players.playerList[1].index, sector, new Object({ x: 3, y: 4 }), true);
+    }
     //else if (Setup.loadingStep == GameConstants.LOADINGSTEP_LEGION) {
     //    Units.AddNewUnit('Legionnaire', Players.playerList[2].index, Board.Sectors.sectorList[0], new Object({ x: 6, y: 6 }), true);
     //}

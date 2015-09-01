@@ -103,13 +103,14 @@ Units.AddNewUnit = function (name, playerIndex, sector, cell, firstTimeLoad) {
 
                         unit.width = Board.Sectors.CELLWIDTH;
                         unit.height = Board.Sectors.CELLHEIGHT;
-                        unit.position.x = cell.x * Board.Sectors.CELLWIDTH;
-                        unit.position.y = cell.y * Board.Sectors.CELLHEIGHT;
+                        unit.position.x = (cell.x * Board.Sectors.CELLWIDTH );
+                        unit.position.y = (cell.y * Board.Sectors.CELLHEIGHT);
 
                         unit.boardLocation = new Object();
                         unit.boardLocation.x = cell.x;
                         unit.boardLocation.y = cell.y;
                         unit.boardLocation.sectorIndex = sector.index;
+                        unit.boardLocation.sectorNumber = sector.sectorNumber;
 
                         //save to array and find index
                         unit.index = Units.unitList.length;   //the length will find the index that the new unit will be pushed to
@@ -119,7 +120,7 @@ Units.AddNewUnit = function (name, playerIndex, sector, cell, firstTimeLoad) {
                         sector.cells[cell.x][cell.y].type = unit.type;
                         sector.cells[cell.x][cell.y].index = Units.unitList.length - 1;
 
-                        GameGlobals.stage.addChild(unit);
+                        sector.addChild(unit);
 
                         if (firstTimeLoad == true) {
                             Setup.loadingStep++;
@@ -247,22 +248,22 @@ Units.MoveUnit = function (unit, fromSector, toSector, destinationCell) {
     }
 
     //un-register the unit on the sector of the old spot
-    //var oldPosition = Utilities.ConvertCoordToCell(unit.position.x, unit.position.y);
-    //fromSector.cells[unit.boardLocation.x].splice(unit.boardLocation.y, 1);
-    //fromSector.cells[unit.boardLocation.y].length = 8;
     fromSector.cells[unit.boardLocation.x][unit.boardLocation.y].occupied = false;
+    fromSector.removeChild(unit);
 
     //move to new position
-    unit.position.x = destinationCell.x * Board.Sectors.CELLWIDTH;
-    unit.position.y = destinationCell.y * Board.Sectors.CELLHEIGHT;
+    unit.position.x = (destinationCell.x * Board.Sectors.CELLWIDTH );
+    unit.position.y = (destinationCell.y * Board.Sectors.CELLHEIGHT);
     unit.boardLocation.x = destinationCell.x;
     unit.boardLocation.y = destinationCell.y;
+    unit.boardLocation.sectorIndex = toSector.index;
+    unit.boardLocation.sectorNumber = toSector.sectorNumber;
 
     //register the unit on the sector of the new spot
-    //toSector.cells[destinationCell.x][destinationCell.y] = new Object();
     toSector.cells[destinationCell.x][destinationCell.y].occupied = true;
     toSector.cells[destinationCell.x][destinationCell.y].type = unit.type;
     toSector.cells[destinationCell.x][destinationCell.y].index = Units.unitList.length - 1;
+    toSector.addChild(unit);
 }
 
 Units.VerifyUnitMoveValid = function (unit, fromSector, toSector, destinationCell) {
@@ -282,13 +283,15 @@ Units.VerifyUnitMoveValid = function (unit, fromSector, toSector, destinationCel
     }
 
     //VERIFY THE DESTINATION IS ONE CELL AWAY FROM CURRENT CELL
-    var fromCell = new Object ({ x: unit.boardLocation.x, y: unit.boardLocation.y });
+    var fromCell = fromSector.cells[unit.boardLocation.x][unit.boardLocation.y];
     if (Board.Sectors.AreCellsWithinOne(fromCell, destinationCell, fromSector, toSector) == false) {
         return "You must move one square at a time";
     }
 
     //VERIFY A WALL IS NOT IN THE WAY
-
+    if (Board.Sectors.IsWallInWay(fromCell, destinationCell) == true) {
+        return "There is a wall in the way";
+    }
 
     return "Success";
 }

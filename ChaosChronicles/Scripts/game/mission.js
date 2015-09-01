@@ -1,5 +1,5 @@
 ﻿var Mission = {};
-Mission.missionList = [];
+Mission.currentMission;
 
 Mission.AddNewMission = function (missionNumber, firstTimeLoad) {
     var mission = new Object();
@@ -45,8 +45,7 @@ Mission.AddNewMission = function (missionNumber, firstTimeLoad) {
                     Board.AddNewBoard(result.Data);
 
                     //array logic
-                    mission.index = Mission.missionList.length;   //the length will find the index that the new mission will be pushed to
-                    Mission.missionList.push(mission);
+                    Mission.currentMission = mission;
 
                     //GameGlobals.stage.addChild(mission);
 
@@ -55,7 +54,7 @@ Mission.AddNewMission = function (missionNumber, firstTimeLoad) {
                         Setup.ProcessLoadingQueue();
                         break;
                     } else {
-                        return mission.index;
+                        return mission.missionNumber;
                     }
                 default:
                     GameGlobals.error.html("Mission " + missionNumber + " was not found in the database");

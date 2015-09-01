@@ -1,7 +1,8 @@
 ﻿var Board = {};
 Board.currentBoard = new Object();
 
-Board.FRAMEOFFSET = 10;
+Board.FRAMEOFFSETX = 10;
+Board.FRAMEOFFSETY = 10;
 
 $(function () {
     //alert('load doomtrooper script');
@@ -12,6 +13,7 @@ Board.AddNewBoard = function (data) {
     Board.currentBoard.sectorMap = data.SectorMaps;
     for (var i = 0; i < Board.currentBoard.sectorMap.length; i++) {
         Board.currentBoard.sectorMap[i].Sector = Board.Sectors.LoadSector(Board.currentBoard.sectorMap[i]);  //convert from c# to javascript version
+        Board.currentBoard.sectorMap[i].Sector.index = i;
         Board.currentBoard.addChild(Board.currentBoard.sectorMap[i].Sector);
     }
     Board.currentBoard.interactive = true;
@@ -31,6 +33,8 @@ Board.AddNewBoard = function (data) {
     Board.currentBoard.anchor.y = 0.5; //centered
     Board.currentBoard.width = GameConstants.CANVAS_WIDTH;
     Board.currentBoard.height = GameConstants.CANVAS_HEIGHT;
+    Board.currentBoard.scale.x = 1;
+    Board.currentBoard.scale.y = 1;
 
     GameGlobals.stage.addChild(Board.currentBoard);
 }
@@ -76,7 +80,7 @@ Board.OnDragMove = function () {
         //var oldPositionY = this.position.y - ((this.height * this.anchor.y) + 10);
         var xOffset = this.data.getLocalPosition(this.parent).x;
         var yOffset = this.data.getLocalPosition(this.parent).y;
-        this.position.x = xOffset + Board.FRAMEOFFSET - this.anchor.x;
-        this.position.y = yOffset + Board.FRAMEOFFSET - this.anchor.y;
+        this.position.x = this.start.x + xOffset + Board.FRAMEOFFSETX - this.anchor.x;
+        this.position.y = this.start.y + yOffset + Board.FRAMEOFFSETY - this.anchor.y;
     }
 }

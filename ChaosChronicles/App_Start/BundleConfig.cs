@@ -27,7 +27,7 @@ namespace ChaosChronicles {
                       "~/Scripts/game/pixi.js",
                       "~/Scripts/game/variables.js",
                       "~/Scripts/game/networking.js",
-                      "~/Scripts/Game/utilities.js",
+                      "~/Scripts/game/utilities.js",
                       "~/Scripts/game/mission.js",
                       "~/Scripts/game/board.js",
                       "~/Scripts/game/sector.js",

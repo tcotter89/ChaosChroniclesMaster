@@ -64,12 +64,20 @@ Interaction.SelectSector = function (data, sector) {
 //}
 
 Interaction.AttemptMove = function (data) {
-    GameGlobals.mouse.x = data.global.x;
-    GameGlobals.mouse.y = data.global.y;
+    var sectorCoordinates = data.getLocalPosition(Interaction.currentSector);
 
     if (Interaction.currentSelected.type != undefined) {
-        cellCoords = Utilities.ConvertCoordToCell(GameGlobals.mouse.x, GameGlobals.mouse.y);
-        var movementCheck = Units.VerifyUnitMoveValid(Interaction.currentSelected, Board.Sectors.sectorList[Interaction.currentSelected.boardLocation.sectorIndex], Interaction.currentSector, cellCoords);
+        cellCoords = Utilities.ConvertCoordToCellWithScale(sectorCoordinates.x, sectorCoordinates.y, Interaction.currentSector.scale);
+        console.log("Click: (" + cellCoords.x + "," + cellCoords.y + ") Sector " + Interaction.currentSector.sectorNumber +
+            " with global coords (" + data.global.x + "," + data.global.y + ")");
+
+        //parameter setup
+        var unit = Interaction.currentSelected;
+        var fromSector = $.grep(Board.currentBoard.sectorMap, function (e) { return e.Sector.sectorNumber == Interaction.currentSelected.boardLocation.sectorNumber })[0].Sector;
+        var toSector = Interaction.currentSector;
+        var destinationCell = Board.currentBoard.sectorMap[Interaction.currentSector.index].Sector.cells[cellCoords.x][cellCoords.y];
+
+        var movementCheck = Units.VerifyUnitMoveValid(unit, fromSector, toSector, destinationCell);
         if (movementCheck == "Success") {
             //Interaction.PerformMove(Interaction.currentSelected.index, Interaction.currentSector.index, cellCoords.x, cellCoords.y);
             //Doomtroopers.MoveDoomtrooper(Interaction.currentSelected, Board.Sectors.sectorList[Interaction.currentSelected.boardLocation.sectorIndex], Interaction.currentSector, cellCoords);
@@ -97,7 +105,7 @@ Interaction.PerformMove = function (unitIndex, toSectorIndex, gridCellX, gridCel
     cellCoords.x = gridCellX;
     cellCoords.y = gridCellY;
     var fromSectorIndex = Units.unitList[unitIndex].boardLocation.sectorIndex;
-    Units.MoveUnit(Units.unitList[unitIndex], Board.Sectors.sectorList[fromSectorIndex], Board.Sectors.sectorList[toSectorIndex], cellCoords);
+    Units.MoveUnit(Units.unitList[unitIndex], Board.currentBoard.sectorMap[fromSectorIndex].Sector, Board.currentBoard.sectorMap[toSectorIndex].Sector, cellCoords);
 }
 
 //Interaction.HandleLeftClick = function (event) {
