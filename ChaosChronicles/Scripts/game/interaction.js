@@ -24,7 +24,10 @@ Interaction.AttackUnit = function () {
     //first determine attack type: ranged or melee
     var attackerBoardLocation = Interaction.currentSelected.boardLocation;
     var victimBoardLocation = Interaction.currentSelected.boardLocation;
-    var inMeleeRange = Board.Sectors.AreCellsWithinOne(attackerBoardLocation, victimBoardLocation, Board.Sectors.sectorList[attackerBoardLocation.sectorIndex], Board.Sectors.sectorList[victimBoardLocation.sectorIndex]);
+    var fromSector = $.grep(Board.currentBoard.sectorMap, function (e) { return e.Sector.sectorNumber == attackerBoardLocation.sectorNumber })[0].Sector;
+    var toSector = $.grep(Board.currentBoard.sectorMap, function (e) { return e.Sector.sectorNumber == victimBoardLocation.sectorNumber })[0].Sector;
+    var miniGrid = Board.Sectors.ConstructMiniGrid(attackerBoardLocation, victimBoardLocation, fromSector, toSector, GameConstants.MOVEMENTGRIDSIZEX, GameConstants.MOVEMENTGRIDSIZEY);
+    var inMeleeRange = Board.Sectors.AreCellsWithinOne(miniGrid);
     if (inMeleeRange == true) {
         Units.AttackUnit(Interaction.currentSelected, Interaction.currentTargeted, 'Melee');
     } else {
@@ -68,8 +71,8 @@ Interaction.AttemptMove = function (data) {
 
     if (Interaction.currentSelected.type != undefined) {
         cellCoords = Utilities.ConvertCoordToCellWithScale(sectorCoordinates.x, sectorCoordinates.y, Interaction.currentSector.scale);
-        console.log("Click: (" + cellCoords.x + "," + cellCoords.y + ") Sector " + Interaction.currentSector.sectorNumber +
-            " with global coords (" + data.global.x + "," + data.global.y + ")");
+        //console.log("Click: (" + cellCoords.x + "," + cellCoords.y + ") Sector " + Interaction.currentSector.sectorNumber +
+        //    " with global coords (" + data.global.x + "," + data.global.y + ")");
 
         //parameter setup
         var unit = Interaction.currentSelected;
@@ -104,6 +107,7 @@ Interaction.PerformMove = function (unitIndex, toSectorIndex, gridCellX, gridCel
     var cellCoords = new Object();
     cellCoords.x = gridCellX;
     cellCoords.y = gridCellY;
+
     var fromSectorIndex = Units.unitList[unitIndex].boardLocation.sectorIndex;
     Units.MoveUnit(Units.unitList[unitIndex], Board.currentBoard.sectorMap[fromSectorIndex].Sector, Board.currentBoard.sectorMap[toSectorIndex].Sector, cellCoords);
 }

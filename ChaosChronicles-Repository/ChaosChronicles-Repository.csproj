@@ -104,6 +104,7 @@
     <Compile Include="SectorMap.cs">
       <DependentUpon>MCGameData.tt</DependentUpon>
     </Compile>
+    <Compile Include="ItemRepository.cs" />
     <Compile Include="UnitRepository.cs" />
     <Compile Include="Sector.cs">
       <DependentUpon>MCGameData.tt</DependentUpon>

@@ -30,6 +30,8 @@ namespace ChaosChronicles_Repository
         public string ImgIconPath { get; set; }
         public string ImgLargePath { get; set; }
         public string ImgAlternatePath { get; set; }
+        public string CorporationRequired { get; set; }
+        public bool IsSoldInShop { get; set; }
     
         public virtual ItemSet ItemSet { get; set; }
         public virtual ICollection<ItemStat> ItemStats { get; set; }

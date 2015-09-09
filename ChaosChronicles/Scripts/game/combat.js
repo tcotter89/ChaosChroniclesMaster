@@ -4,14 +4,37 @@ GameConstants.DICEWHITEPROBABILITY = 2;   //how many sides of a D6 dice are hits
 GameConstants.DICEREDPROBABILITY =   3;   //how many sides of a D6 dice are hits
 GameConstants.DICEBLACKPROBABILITY = 4;   //how many sides of a D6 dice are hits
 
-Combat.RollDice = function (weaponStats) {
+Combat.RollDice = function (weaponStats, bufferStats) {
     var hits = 0;
     var probability = Combat.GetDiceProbability(weaponStats.DiceColor);
-    for (var i = 0; i < weaponStats.DiceCount; i++) {
+
+    var diceCount = weaponStats.DiceCount;
+    for (i = 0; i < bufferStats.length; i++) {
+        if (typeof (bufferStats[i].DiceCount) != "undefined") {
+            diceCount += bufferStats[i].DiceCount;
+        }
+    }
+
+    for (i = 0; i < weaponStats.DiceCount; i++) {
         if (Combat.PerformDiceRoll(probability, 6) == true) {
             hits++;
         }
     }
+
+    var diceRerolls = weaponStats.DiceReroll;
+    for (i = 0; i < bufferStats.length; i++) {
+        if (typeof (bufferStats[i].DiceReroll) != "undefined") {
+            diceRerolls += bufferStats[i].DiceReroll;
+        }
+    }
+
+    for (i = 0; i < diceCount - hits && diceRerolls > 0; i++) {
+        if (Combat.PerformDiceRoll(probability, 6) == true) {
+            hits++;
+        }
+        diceRerolls--;
+    }
+
     return hits;
 }
 

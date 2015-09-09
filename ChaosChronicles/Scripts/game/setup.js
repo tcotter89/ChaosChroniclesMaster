@@ -1,24 +1,14 @@
 ﻿var Setup = {};
 
-// constants
-GameConstants.CONTAINER = $('#gameContainer');
-GameConstants.CANVAS_WIDTH = 1600;
-GameConstants.CANVAS_HEIGHT = 900;
-GameConstants.IMAGESROOT = "../Images/";
-
 // globals
 GameGlobals.stage;
 GameGlobals.renderer;
 GameGlobals.canvas;
+GameGlobals.container = $('#gameContainer');
 GameGlobals.mouse = new PIXI.Point();
 GameGlobals.error = $("#ErrorMessage");
 
-GameConstants.LOADINGSTEP_MISSIONS = 0;
-//GameConstants.LOADINGSTEP_SECTORS = 1;
-GameConstants.LOADINGSTEP_PLAYERS = 1;
-GameConstants.LOADINGSTEP_DOOMTROOPERS = 4;
-GameConstants.LOADINGSTEP_LEGION = 6;
-GameConstants.LOADINGSTEP_COMPLETE = 6;
+
 Setup.loadingStep = 0;
 //Setup.sector5Index = -1;
 //Setup.dummyPlayer = -1;
@@ -29,7 +19,7 @@ $(function () {
 
     GameGlobals.renderer = PIXI.autoDetectRenderer(GameConstants.CANVAS_WIDTH, GameConstants.CANVAS_HEIGHT, { backgroundColor: 0x1099bb });
 
-    GameConstants.CONTAINER.append(GameGlobals.renderer.view);
+    GameGlobals.container.append(GameGlobals.renderer.view);
     GameGlobals.canvas = $('canvas');
     GameGlobals.canvas.attr('oncontextmenu', 'return false;');
 
@@ -63,14 +53,22 @@ Setup.ProcessLoadingQueue = function () {
         Players.AddNewPlayer('Ryan', 'Imperial', 0, 2, true);
     } 
     else if (Setup.loadingStep == GameConstants.LOADINGSTEP_DOOMTROOPERS) {
-        var sector = $.grep(Board.currentBoard.sectorMap, function (e) { return e.Sector.sectorNumber == "5" })[0].Sector;
+        var sector = $.grep(Board.currentBoard.sectorMap, function (e) { return e.Sector.sectorNumber == "1" })[0].Sector;
         Units.AddNewUnit('Steiner', Players.playerList[1].index, sector, new Object({ x: 1, y: 1 }), true);
         Units.AddNewUnit('Valerie', Players.playerList[1].index, sector, new Object({ x: 3, y: 4 }), true);
     }
     //else if (Setup.loadingStep == GameConstants.LOADINGSTEP_LEGION) {
     //    Units.AddNewUnit('Legionnaire', Players.playerList[2].index, Board.Sectors.sectorList[0], new Object({ x: 6, y: 6 }), true);
     //}
+    else if (Setup.loadingStep == GameConstants.LOADINGSTEP_ITEMS) {
+        Items.AddAllItems(true);
+    }
     else if (Setup.loadingStep == GameConstants.LOADINGSTEP_COMPLETE) {
+
+        var laserSight = $.grep(Items.itemList, function (e) { return e.Name.toUpperCase() == "LASER SIGHT" })[0];
+        var steiner = $.grep(Units.unitList, function (e) { return e.name.toUpperCase() == "STEINER" })[0];
+        Units.GiveItemToUnit(laserSight, steiner);
+
         Engine.RunApplication();
     }
 }

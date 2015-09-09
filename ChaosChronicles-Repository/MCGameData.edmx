@@ -89,6 +89,8 @@
           <Property Name="Description" Type="nvarchar(max)" />
           <Property Name="Cost" Type="int" Nullable="false" />
           <Property Name="RankRequired" Type="int" />
+          <Property Name="CorporationRequired" Type="nvarchar" MaxLength="50" />
+          <Property Name="IsSoldInShop" Type="bit" Nullable="false" />
           <Property Name="ImgShopPath" Type="nvarchar(max)" />
           <Property Name="ImgIconPath" Type="nvarchar(max)" />
           <Property Name="ImgLargePath" Type="nvarchar(max)" />
@@ -764,6 +766,8 @@
           <Property Name="ImgAlternatePath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="ItemSet" Relationship="MCGameDataModel.FK_Item" FromRole="Item" ToRole="ItemSet" />
           <NavigationProperty Name="ItemStats" Relationship="MCGameDataModel.FK_ItemStat" FromRole="Item" ToRole="ItemStat" />
+          <Property Name="CorporationRequired" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IsSoldInShop" Type="Boolean" Nullable="false" />
         </EntityType>
         <Association Name="FK_Item">
           <End Type="MCGameDataModel.ItemSet" Role="ItemSet" Multiplicity="0..1" />
@@ -1061,6 +1065,8 @@
           <EntitySetMapping Name="Items">
             <EntityTypeMapping TypeName="MCGameDataModel.Item">
               <MappingFragment StoreEntitySet="Item">
+                <ScalarProperty Name="IsSoldInShop" ColumnName="IsSoldInShop" />
+                <ScalarProperty Name="CorporationRequired" ColumnName="CorporationRequired" />
                 <ScalarProperty Name="ImgAlternatePath" ColumnName="ImgAlternatePath" />
                 <ScalarProperty Name="ImgLargePath" ColumnName="ImgLargePath" />
                 <ScalarProperty Name="ImgIconPath" ColumnName="ImgIconPath" />

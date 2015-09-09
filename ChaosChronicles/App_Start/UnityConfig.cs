@@ -42,6 +42,7 @@ namespace ChaosChronicles.App_Start
             container.RegisterType<ISectorRepository, SectorRepository>();
             container.RegisterType<IMissionRepository, MissionRepository>();
             container.RegisterType<IUnitRepository, UnitRepository>();
+            container.RegisterType<IItemRepository, ItemRepository>();
         }
     }
 }

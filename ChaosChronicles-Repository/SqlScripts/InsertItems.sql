@@ -3,8 +3,8 @@ INSERT INTO ItemSet (ItemSetID, Name)
              VALUES (1, 'Default Items Ranged')
 SET IDENTITY_INSERT ItemSet OFF
 SET IDENTITY_INSERT Item ON
-INSERT INTO Item (ItemID, ItemSetID,     Type,             Name,                                 Description, Cost, RankRequired, ImgShopPath, ImgIconPath, ImgLargePath, ImgAlternatePath)
-          VALUES (     1,         1, 'Weapon', 'Punisher Rifle', 'Standard issue weaponry for ranged combat',    1,            1,        null,        null,         null,             null)
+INSERT INTO Item (ItemID, ItemSetID,     Type,             Name,                                                          Description, Cost, RankRequired, CorporationRequired, IsSoldInShop,                              ImgShopPath,                              ImgIconPath, ImgLargePath,                         ImgAlternatePath)
+          VALUES (     1,         1, 'Weapon', 'Plasma Carbine', 'This reliable carbine is the standard firearm for the Doomtroopers',    1,            1,                null,            1, 'cards/equipment/Shop-PlasmaCarbine.jpg', 'cards/equipment/Icon-PlasmaCarbine.jpg',         null, 'cards/equipment/Icon-PlasmaCarbine.jpg')
 INSERT INTO ItemStat (ItemID,   StatType, Rank, DiceCount, DiceReroll, DiceColor, ArmorPenetration, Special)
               VALUES (     1, 'Firearms',    1,         3,          0,   'White',                0,    null)
 INSERT INTO ItemStat (ItemID,   StatType, Rank, DiceCount, DiceReroll, DiceColor, ArmorPenetration, Special)
@@ -24,8 +24,8 @@ INSERT INTO ItemSet (ItemSetID, Name)
              VALUES (2, 'Default Items Melee')
 SET IDENTITY_INSERT ItemSet OFF
 SET IDENTITY_INSERT Item ON
-INSERT INTO Item (ItemID, ItemSetID,     Type,             Name,                        Description, Cost, RankRequired, ImgShopPath, ImgIconPath, ImgLargePath, ImgAlternatePath)
-          VALUES (     2,         2, 'Weapon', 'Punisher Sword', 'Mechanically enhanced vibroblade',    1,            1,        null,        null,         null,             null)
+INSERT INTO Item (ItemID, ItemSetID,     Type,                  Name,                                                          Description, Cost, RankRequired, CorporationRequired, IsSoldInShop,                                   ImgShopPath,                                   ImgIconPath, ImgLargePath,                              ImgAlternatePath)
+          VALUES (     2,         2, 'Weapon', 'Punisher Shortsword', 'The Punisher is the standard sword of the close combat specialists',    1,            1,                null,            1, 'cards/equipment/Shop-PunisherSwordsword.jpg', 'cards/equipment/Icon-PunisherSwordsword.jpg',         null, 'cards/equipment/Icon-PunisherSwordsword.jpg')
 INSERT INTO ItemStat (ItemID,   StatType, Rank, DiceCount, DiceReroll, DiceColor, ArmorPenetration, Special)
               VALUES (     2,    'Melee',    1,         3,          0,   'White',                0,    null)
 INSERT INTO ItemStat (ItemID,   StatType, Rank, DiceCount, DiceReroll, DiceColor, ArmorPenetration, Special)
@@ -45,8 +45,8 @@ INSERT INTO ItemSet (ItemSetID, Name)
              VALUES (3, 'Default Items Both')
 SET IDENTITY_INSERT ItemSet OFF
 SET IDENTITY_INSERT Item ON
-INSERT INTO Item (ItemID, ItemSetID,     Type,             Name,                                          Description, Cost, RankRequired, ImgShopPath, ImgIconPath, ImgLargePath, ImgAlternatePath)
-          VALUES (     3,         3, 'Weapon', 'Punisher Combo', 'A balanced combination of ranged and melee weapons',    2,            1,        null,        null,         null,             null)
+INSERT INTO Item (ItemID, ItemSetID,     Type,             Name,                                                                                                           Description, Cost, RankRequired, CorporationRequired, IsSoldInShop,                              ImgShopPath,                              ImgIconPath, ImgLargePath,                         ImgAlternatePath)
+          VALUES (     3,         3, 'Weapon', 'Punisher Combo', 'This effective combination of an armor-piercing sword and a reliable gun gives the Doomtrooper a deadly flexibility',    2,            1,                null,            1, 'cards/equipment/Shop-PunisherCombo.jpg', 'cards/equipment/Icon-PunisherCombo.jpg',         null, 'cards/equipment/Icon-PunisherCombo.jpg')
 INSERT INTO ItemStat (ItemID,   StatType, Rank, DiceCount, DiceReroll, DiceColor, ArmorPenetration, Special)
               VALUES (     3, 'Firearms',    1,         3,          0,   'White',                0,    null)
 INSERT INTO ItemStat (ItemID,   StatType, Rank, DiceCount, DiceReroll, DiceColor, ArmorPenetration, Special)
@@ -78,8 +78,8 @@ INSERT INTO ItemSet (ItemSetID, Name)
              VALUES (4, 'Legionnaire')
 SET IDENTITY_INSERT ItemSet OFF
 SET IDENTITY_INSERT Item ON
-INSERT INTO Item (ItemID, ItemSetID,     Type,            Name,                                        Description, Cost, RankRequired, ImgShopPath, ImgIconPath, ImgLargePath, ImgAlternatePath)
-          VALUES (     4,         4, 'Weapon', 'Terror Pistol', 'The common spreader of terror among legionnaires',    1,            1,        null,        null,         null,             null)
+INSERT INTO Item (ItemID, ItemSetID,     Type,            Name,                                        Description, Cost, RankRequired, CorporationRequired, IsSoldInShop, ImgShopPath, ImgIconPath, ImgLargePath, ImgAlternatePath)
+          VALUES (     4,         4, 'Weapon', 'Terror Pistol', 'The common spreader of terror among legionnaires',    1,            1,            'Legion',            0,        null,        null,         null,             null)
 INSERT INTO ItemStat (ItemID,   StatType, Rank, DiceCount, DiceReroll, DiceColor, ArmorPenetration, Special)
               VALUES (     4, 'Firearms',    1,         3,          0,   'White',                0,    null)
 INSERT INTO ItemStat (ItemID,   StatType, Rank, DiceCount, DiceReroll, DiceColor, ArmorPenetration, Special)
@@ -111,8 +111,8 @@ INSERT INTO ItemSet (ItemSetID, Name)
              VALUES (5, 'Necromutant')
 SET IDENTITY_INSERT ItemSet OFF
 SET IDENTITY_INSERT Item ON
-INSERT INTO Item (ItemID, ItemSetID,     Type,           Name,                     Description, Cost, RankRequired, ImgShopPath, ImgIconPath, ImgLargePath, ImgAlternatePath)
-          VALUES (     5,         5, 'Weapon', 'Barbed Rifle', 'A bayonet-equipped long rifle',    1,            1,        null,        null,         null,             null)
+INSERT INTO Item (ItemID, ItemSetID,     Type,           Name,                     Description, Cost, RankRequired, CorporationRequired, IsSoldInShop, ImgShopPath, ImgIconPath, ImgLargePath, ImgAlternatePath)
+          VALUES (     5,         5, 'Weapon', 'Barbed Rifle', 'A bayonet-equipped long rifle',    1,            1,            'Legion',            0,        null,        null,         null,             null)
 INSERT INTO ItemStat (ItemID,   StatType, Rank, DiceCount, DiceReroll, DiceColor, ArmorPenetration, Special)
               VALUES (     5, 'Firearms',    1,         3,          0,   'White',                0,    null)
 INSERT INTO ItemStat (ItemID,   StatType, Rank, DiceCount, DiceReroll, DiceColor, ArmorPenetration, Special)
@@ -144,8 +144,8 @@ INSERT INTO ItemSet (ItemSetID, Name)
              VALUES (6, 'Centurion')
 SET IDENTITY_INSERT ItemSet OFF
 SET IDENTITY_INSERT Item ON
-INSERT INTO Item (ItemID, ItemSetID,     Type,           Name,                                        Description, Cost, RankRequired, ImgShopPath, ImgIconPath, ImgLargePath, ImgAlternatePath)
-          VALUES (     6,         6, 'Weapon', 'Officer''s Combo', 'High quality arms for officers of the Legion',    2,            1,        null,        null,         null,             null)
+INSERT INTO Item (ItemID, ItemSetID,     Type,           Name,                                        Description, Cost, RankRequired, CorporationRequired, IsSoldInShop, ImgShopPath, ImgIconPath, ImgLargePath, ImgAlternatePath)
+          VALUES (     6,         6, 'Weapon', 'Officer''s Combo', 'High quality arms for officers of the Legion',    2,            1,            'Legion',            0,        null,        null,         null,             null)
 INSERT INTO ItemStat (ItemID,   StatType, Rank, DiceCount, DiceReroll, DiceColor, ArmorPenetration, Special)
               VALUES (     6, 'Firearms',    1,         4,          0,   'White',                0,    null)
 INSERT INTO ItemStat (ItemID,   StatType, Rank, DiceCount, DiceReroll, DiceColor, ArmorPenetration, Special)
@@ -177,8 +177,8 @@ INSERT INTO ItemSet (ItemSetID, Name)
              VALUES (7, 'Razide')
 SET IDENTITY_INSERT ItemSet OFF
 SET IDENTITY_INSERT Item ON
-INSERT INTO Item (ItemID, ItemSetID,     Type,           Name,                                                   Description, Cost, RankRequired, ImgShopPath, ImgIconPath, ImgLargePath, ImgAlternatePath)
-          VALUES (     7,         7, 'Weapon', 'Heavy Bolter', 'A massive gun that only a bulky Razide could possibly weild',    3,            1,        null,        null,         null,             null)
+INSERT INTO Item (ItemID, ItemSetID,     Type,           Name,                                                   Description, Cost, RankRequired, CorporationRequired, IsSoldInShop, ImgShopPath, ImgIconPath, ImgLargePath, ImgAlternatePath)
+          VALUES (     7,         7, 'Weapon', 'Heavy Bolter', 'A massive gun that only a bulky Razide could possibly weild',    3,            1,            'Legion',            0,        null,        null,         null,             null)
 INSERT INTO ItemStat (ItemID,   StatType, Rank, DiceCount, DiceReroll, DiceColor, ArmorPenetration, Special)
               VALUES (     7, 'Firearms',    1,         4,          0,   'White',                0,    null)
 INSERT INTO ItemStat (ItemID,   StatType, Rank, DiceCount, DiceReroll, DiceColor, ArmorPenetration, Special)
@@ -210,8 +210,8 @@ INSERT INTO ItemSet (ItemSetID, Name)
              VALUES (8, 'Nepharite')
 SET IDENTITY_INSERT ItemSet OFF
 SET IDENTITY_INSERT Item ON
-INSERT INTO Item (ItemID, ItemSetID,     Type,           Name,                             Description, Cost, RankRequired, ImgShopPath, ImgIconPath, ImgLargePath, ImgAlternatePath)
-          VALUES (     8,         8, 'Weapon', 'Buzzsaw', 'A truly fearsome sight to behold in action',    3,            1,        null,        null,         null,             null)
+INSERT INTO Item (ItemID, ItemSetID,     Type,           Name,                             Description, Cost, RankRequired, CorporationRequired, IsSoldInShop, ImgShopPath, ImgIconPath, ImgLargePath, ImgAlternatePath)
+          VALUES (     8,         8, 'Weapon', 'Buzzsaw', 'A truly fearsome sight to behold in action',    3,            1,            'Legion',            0,        null,        null,         null,             null)
 INSERT INTO ItemStat (ItemID,   StatType, Rank, DiceCount, DiceReroll, DiceColor, ArmorPenetration, Special)
               VALUES (     8, 'Firearms',    1,         5,          0,   'White',                0,    null)
 INSERT INTO ItemStat (ItemID,   StatType, Rank, DiceCount, DiceReroll, DiceColor, ArmorPenetration, Special)
@@ -243,8 +243,8 @@ INSERT INTO ItemSet (ItemSetID, Name)
              VALUES (9, 'Ezoghoul')
 SET IDENTITY_INSERT ItemSet OFF
 SET IDENTITY_INSERT Item ON
-INSERT INTO Item (ItemID, ItemSetID,     Type,                Name,                                              Description, Cost, RankRequired, ImgShopPath, ImgIconPath, ImgLargePath, ImgAlternatePath)
-          VALUES (     9,         9, 'Weapon', 'Berserker''s Arms', 'Massive weapons for devastating ranged or melee combat',    4,            1,        null,        null,         null,             null)
+INSERT INTO Item (ItemID, ItemSetID,     Type,                Name,                                              Description, Cost, RankRequired, CorporationRequired, IsSoldInShop, ImgShopPath, ImgIconPath, ImgLargePath, ImgAlternatePath)
+          VALUES (     9,         9, 'Weapon', 'Berserker''s Arms', 'Massive weapons for devastating ranged or melee combat',    4,            1,            'Legion',            0,        null,        null,         null,             null)
 INSERT INTO ItemStat (ItemID,   StatType, Rank, DiceCount, DiceReroll, DiceColor, ArmorPenetration, Special)
               VALUES (     9, 'Firearms',    1,         5,          0,   'White',                0,    null)
 INSERT INTO ItemStat (ItemID,   StatType, Rank, DiceCount, DiceReroll, DiceColor, ArmorPenetration, Special)
@@ -269,4 +269,22 @@ INSERT INTO ItemStat (ItemID,   StatType, Rank, DiceCount, DiceReroll, DiceColor
               VALUES (     9,    'Melee',    5,         4,          0,   'Black',                0,    null)
 INSERT INTO ItemStat (ItemID,   StatType, Rank, DiceCount, DiceReroll, DiceColor, ArmorPenetration, Special)
               VALUES (     9,    'Melee',    6,         4,          0,   'Black',                0,    null)
+SET IDENTITY_INSERT Item OFF
+
+-- MISC ITEMS ---------------------------------------------------------------------------------------------------------
+SET IDENTITY_INSERT Item ON
+INSERT INTO Item (ItemID, ItemSetID,         Type,          Name,                                                                                                                                                     Description, Cost, RankRequired, CorporationRequired, IsSoldInShop,                           ImgShopPath,                           ImgIconPath, ImgLargePath,                      ImgAlternatePath)
+          VALUES (    10,      null, 'Attachment', 'Laser Sight', 'The sight projects a red dot on your target, directing your fire. Can be mounted on any missile weapon. You may re-roll 1 attack die in every firearm attack.',    1,            1,                null,            1, 'cards/equipment/Shop-LaserSight.jpg', 'cards/equipment/Icon-LaserSight.jpg',         null, 'cards/equipment/Icon-LaserSight.jpg')
+INSERT INTO ItemStat (ItemID,   StatType, Rank, DiceCount, DiceReroll, DiceColor, ArmorPenetration, Special)
+              VALUES (    10, 'Firearms',    1,         0,          1,      null,                0,    null)
+INSERT INTO ItemStat (ItemID,   StatType, Rank, DiceCount, DiceReroll, DiceColor, ArmorPenetration, Special)
+              VALUES (    10, 'Firearms',    2,         0,          1,      null,                0,    null)
+INSERT INTO ItemStat (ItemID,   StatType, Rank, DiceCount, DiceReroll, DiceColor, ArmorPenetration, Special)
+              VALUES (    10, 'Firearms',    3,         0,          1,      null,                0,    null)
+INSERT INTO ItemStat (ItemID,   StatType, Rank, DiceCount, DiceReroll, DiceColor, ArmorPenetration, Special)
+              VALUES (    10, 'Firearms',    4,         0,          1,      null,                0,    null)
+INSERT INTO ItemStat (ItemID,   StatType, Rank, DiceCount, DiceReroll, DiceColor, ArmorPenetration, Special)
+              VALUES (    10, 'Firearms',    5,         0,          1,      null,                0,    null)
+INSERT INTO ItemStat (ItemID,   StatType, Rank, DiceCount, DiceReroll, DiceColor, ArmorPenetration, Special)
+              VALUES (    10, 'Firearms',    6,         0,          1,      null,                0,    null)
 SET IDENTITY_INSERT Item OFF

@@ -104,6 +104,8 @@ Board.Sectors.LoadSector = function (sectorMap) {
     boardSector.scale.y = 1;
     //boardSector.anchor.set(0.5); //centered
 
+    boardSector.LocationX = sectorMap.LocationX;
+    boardSector.LocationY = sectorMap.LocationY;
     var boardLocationX = sectorMap.LocationX;   //this is the offset of the sector map. if sector is at top left, next to it, etc
     var boardLocationY = sectorMap.LocationY;
     var anchorOffsetX = 0;//boardSector.width * boardSector.anchor.x;   //this is the offset to fix positioning for the anchor. (difficult to understand)
@@ -162,175 +164,458 @@ Board.Sectors.SelectSector = function (event) {
     Interaction.SelectSector(event.data, sector);
 }
 
-Board.Sectors.AreCellsWithinOne = function (fromCell, toCell, fromSector, toSector) {
-    if (fromSector.sectorNumber == toSector.sectorNumber) { //in-sector movement
-
-        //check for adjacent cells
-        if (Math.abs(fromCell.x - toCell.x) <= 1) {
-            if (Math.abs(fromCell.y - toCell.y) <= 1) {
-                return true;
-            }
-        }
-    } else {    //otherwise check for adjacent sectors
-        var fromSectorMap = Board.currentBoard.sectorMap[fromSector.index];
-        var toSectorMap   = Board.currentBoard.sectorMap[  toSector.index];
-        if (Math.abs(fromSectorMap.LocationX - toSectorMap.LocationX) <= 1 && Math.abs(fromSectorMap.LocationY - toSectorMap.LocationY) <= 1) {
-            //A: fromSector below toSector
-            if (fromSectorMap.LocationX == toSectorMap.LocationX && fromSectorMap.LocationY < toSectorMap.LocationY) {
-                //check for adjacent cells
-                if (Math.abs(fromCell.x - toCell.x) <= 1) {
-                    if (((toCell.y + toSector.cellsY) - fromCell.y) == 1) {
-                        return true;
-                    }
-                }
-            }
-            //B: fromSector below and right of toSector
-            else if (fromSectorMap.LocationX > toSectorMap.LocationX && fromSectorMap.LocationY > toSectorMap.LocationY) {
-                //check for adjacent cells
-                if (((toCell.x + toSector.cellsX) - fromCell.x) == 1) {
-                    if (((toCell.y + toSector.cellsY) - fromCell.y) == 1) {
-                        return true;
-                    }
-                }
-            }
-            //C: fromSector right of toSector
-            else if (fromSectorMap.LocationX > toSectorMap.LocationX && fromSectorMap.LocationY == toSectorMap.LocationY) {
-                //check for adjacent cells
-                if (((fromCell.x + fromSector.cellsX) - toCell.x) == 1) {
-                    if (Math.abs(fromCell.y - toCell.y) <= 1) {
-                        return true;
-                    }
-                }
-            }
-            //D: fromSector above and right of toSector
-            else if (fromSectorMap.LocationX > toSectorMap.LocationX && fromSectorMap.LocationY < toSectorMap.LocationY) {
-                //check for adjacent cells
-                if (((fromCell.x + fromSector.cellsX) - toCell.x) == 1) {
-                    if (((toCell.y + toSector.cellsY) - fromCell.y) == 1) {
-                        return true;
-                    }
-                }
-            }
-            //E: fromSector above toSector
-            else if (fromSectorMap.LocationX == toSectorMap.LocationX && fromSectorMap.LocationY > toSectorMap.LocationY) {
-                //check for adjacent cells
-                if (Math.abs(fromCell.x - toCell.x) <= 1) {
-                    if (((toCell.y + toSector.cellsY) - fromCell.y) == 1) {
-                        return true;
-                    }
-                }
-            }
-            //F: fromSector above and left of toSector
-            else if (fromSectorMap.LocationX < toSectorMap.LocationX && fromSectorMap.LocationY < toSectorMap.LocationY) {
-                //check for adjacent cells
-                if (((toCell.x + toSector.cellsX) - fromCell.x) == 1) {
-                    if (((toCell.y + toSector.cellsY) - fromCell.y) == 1) {
-                        return true;
-                    }
-                }
-            }
-            //G: fromSector left of toSector
-            else if (fromSectorMap.LocationX < toSectorMap.LocationX && fromSectorMap.LocationY == toSectorMap.LocationY) {
-                //check for adjacent cells
-                if (((toCell.x + toSector.cellsX) - fromCell.x) == 1) {
-                    if (Math.abs(fromCell.y - toCell.y) <= 1) {
-                        return true;
-                    }
-                }
-            }
-            //H: fromSector below and left of toSector
-            else if (fromSectorMap.LocationX < toSectorMap.LocationX && fromSectorMap.LocationY > toSectorMap.LocationY) {
-                //check for adjacent cells
-                if (((toCell.x + toSector.cellsX) - fromCell.x) == 1) {
-                    if (((fromCell.y + fromSector.cellsY) - fromCell.y) == 1) {
-                        return true;
-                    }
-                }
-            }
-        }
+Board.Sectors.AreCellsWithinOne = function (miniGrid) {
+    var fromCell;
+    for (i = 0; i < miniGrid.length && typeof(fromCell) === "undefined"; i++) {
+        fromCell = $.grep(miniGrid[i], function (e) { return e.isFromCell === true })[0];
     }
+    var toCell;
+    for (i = 0; i < miniGrid.length && typeof (toCell) === "undefined"; i++) {
+        toCell = $.grep(miniGrid[i], function (e) { return e.isToCell === true })[0];
+    }
+
+    if (typeof (toCell) == "undefined") {
+        return false;
+    } else if (Math.abs(fromCell.miniX - toCell.miniX) <= 1 &&
+             Math.abs(fromCell.miniY - toCell.miniY) <= 1) {
+        return true;
+    }
+
+    //else
     return false;
+
+    //if (fromSector.sectorNumber == toSector.sectorNumber) { //in-sector movement
+
+    //    //check for adjacent cells
+    //    if (Math.abs(fromCell.x - toCell.x) <= 1) {
+    //        if (Math.abs(fromCell.y - toCell.y) <= 1) {
+    //            return true;
+    //        }
+    //    }
+    //} else {    //otherwise check for adjacent sectors
+    //    var fromSectorMap = Board.currentBoard.sectorMap[fromSector.index];
+    //    var toSectorMap   = Board.currentBoard.sectorMap[  toSector.index];
+    //    if (Math.abs(fromSectorMap.LocationX - toSectorMap.LocationX) <= 1 && Math.abs(fromSectorMap.LocationY - toSectorMap.LocationY) <= 1) {
+    //        //A: fromSector below toSector
+    //        if (fromSectorMap.LocationX == toSectorMap.LocationX && fromSectorMap.LocationY < toSectorMap.LocationY) {
+    //            //check for adjacent cells
+    //            if (Math.abs(fromCell.x - toCell.x) <= 1) {
+    //                if (((toCell.y + toSector.cellsY) - fromCell.y) == 1) {
+    //                    return true;
+    //                }
+    //            }
+    //        }
+    //        //B: fromSector below and right of toSector
+    //        else if (fromSectorMap.LocationX > toSectorMap.LocationX && fromSectorMap.LocationY > toSectorMap.LocationY) {
+    //            //check for adjacent cells
+    //            if (((toCell.x + toSector.cellsX) - fromCell.x) == 1) {
+    //                if (((toCell.y + toSector.cellsY) - fromCell.y) == 1) {
+    //                    return true;
+    //                }
+    //            }
+    //        }
+    //        //C: fromSector right of toSector
+    //        else if (fromSectorMap.LocationX > toSectorMap.LocationX && fromSectorMap.LocationY == toSectorMap.LocationY) {
+    //            //check for adjacent cells
+    //            if (((fromCell.x + fromSector.cellsX) - toCell.x) == 1) {
+    //                if (Math.abs(fromCell.y - toCell.y) <= 1) {
+    //                    return true;
+    //                }
+    //            }
+    //        }
+    //        //D: fromSector above and right of toSector
+    //        else if (fromSectorMap.LocationX > toSectorMap.LocationX && fromSectorMap.LocationY < toSectorMap.LocationY) {
+    //            //check for adjacent cells
+    //            if (((fromCell.x + fromSector.cellsX) - toCell.x) == 1) {
+    //                if (((toCell.y + toSector.cellsY) - fromCell.y) == 1) {
+    //                    return true;
+    //                }
+    //            }
+    //        }
+    //        //E: fromSector above toSector
+    //        else if (fromSectorMap.LocationX == toSectorMap.LocationX && fromSectorMap.LocationY > toSectorMap.LocationY) {
+    //            //check for adjacent cells
+    //            if (Math.abs(fromCell.x - toCell.x) <= 1) {
+    //                if (((toCell.y + toSector.cellsY) - fromCell.y) == 1) {
+    //                    return true;
+    //                }
+    //            }
+    //        }
+    //        //F: fromSector above and left of toSector
+    //        else if (fromSectorMap.LocationX < toSectorMap.LocationX && fromSectorMap.LocationY < toSectorMap.LocationY) {
+    //            //check for adjacent cells
+    //            if (((toCell.x + toSector.cellsX) - fromCell.x) == 1) {
+    //                if (((toCell.y + toSector.cellsY) - fromCell.y) == 1) {
+    //                    return true;
+    //                }
+    //            }
+    //        }
+    //        //G: fromSector left of toSector
+    //        else if (fromSectorMap.LocationX < toSectorMap.LocationX && fromSectorMap.LocationY == toSectorMap.LocationY) {
+    //            //check for adjacent cells
+    //            if (((toCell.x + toSector.cellsX) - fromCell.x) == 1) {
+    //                if (Math.abs(fromCell.y - toCell.y) <= 1) {
+    //                    return true;
+    //                }
+    //            }
+    //        }
+    //        //H: fromSector below and left of toSector
+    //        else if (fromSectorMap.LocationX < toSectorMap.LocationX && fromSectorMap.LocationY > toSectorMap.LocationY) {
+    //            //check for adjacent cells
+    //            if (((toCell.x + toSector.cellsX) - fromCell.x) == 1) {
+    //                if (((fromCell.y + fromSector.cellsY) - fromCell.y) == 1) {
+    //                    return true;
+    //                }
+    //            }
+    //        }
+    //    }
+    //}
+    //return false;
 }
 
-Board.Sectors.IsWallInWay = function (fromCell, toCell, fromSector, toSector) {
+Board.Sectors.IsWallInWay = function (miniGrid) {
     //it has already been determined that the from and to cells are 1 away, the following logic takes this into account to make things easier
 
+    var fromCell;
+    for (i = 0; i < miniGrid.length && typeof(fromCell) === "undefined"; i++) {
+        fromCell = $.grep(miniGrid[i], function (e) { return e.isFromCell === true })[0];
+    }
+    var toCell;
+    for (i = 0; i < miniGrid.length && typeof (toCell) === "undefined"; i++) {
+        toCell = $.grep(miniGrid[i], function (e) { return e.isToCell === true })[0];
+    }
+
     //moving horizontally
-    if (fromCell.x != toCell.x && fromCell.y == toCell.y) {
-        if (fromSector == toSector) {
-            //fromCell right of toCell
-            if (fromCell.x > toCell.x && (fromCell.HasWestWall == false && toCell.HasEastWall == false)) {
-                return false;
-                //fromCell left of toCell
-            } else if (fromCell.x < toCell.x && (fromCell.HasEastWall == false && toCell.HasWestWall == false)) {
-                return false;
-            } else {
-                return true;
-            }
-        } else {    //sector-to-sector movement
-            //TODO: account for sector to sector movement
+    if (fromCell.miniX != toCell.miniX && fromCell.miniY == toCell.miniY) {
+        //fromCell right of toCell
+        if (fromCell.miniX > toCell.miniX && (!fromCell.HasWestWall && !toCell.HasEastWall)) {
+            return false;
+            //fromCell left of toCell
+        } else if (fromCell.miniX < toCell.miniX && (!fromCell.HasEastWall && !toCell.HasWestWall)) {
+            return false;
+        } else {
+            return true;
         }
     }
 
     //moving vertically
-    else if (fromCell.x == toCell.x && fromCell.y != toCell.y) {
-        if (fromSector == toSector) {
-            //fromCell below toCell
-            if (fromCell.y > toCell.y && (fromCell.HasNorthWall == false && toCell.HasSouthWall == false)) {
-                return false;
-                //fromCell above toCell
-            } else if (fromCell.y < toCell.y && (fromCell.HasSouthWall == false && toCell.HasNorthWall == false)) {
-                return false;
-            } else {
-                return true;
-            }
-        } else {    //sector-to-sector movement
-            //TODO: account for sector to sector movement
+    else if (fromCell.miniX == toCell.miniX && fromCell.miniY != toCell.miniY) {
+        //fromCell below toCell
+        if (fromCell.miniY > toCell.miniY && (!fromCell.HasNorthWall && !toCell.HasSouthWall)) {
+            return false;
+            //fromCell above toCell
+        } else if (fromCell.miniY < toCell.miniY && (!fromCell.HasSouthWall && !toCell.HasNorthWall)) {
+            return false;
+        } else {
+            return true;
         }
     }
 
     //moving diagonally
-    else if (fromCell.y != toCell.y && fromCell.y != toCell.y) {
-        if (fromSector == toSector) {
-            //fromCell below toCell
-            if (fromCell.y > toCell.y && fromCell.x < toCell.x) {
-                if (fromCell.HasEastWall && fromCell.HasNorthWall) {
-                    return true;
+    else if (fromCell.miniY != toCell.miniY && fromCell.miniY != toCell.miniY) {
+        //A: fromCell below and left of toCell
+        if (fromCell.miniY > toCell.miniY && fromCell.miniX < toCell.miniX) {
+            if (fromCell.HasEastWall || fromCell.HasNorthWall) { //detect fromCell L
+                return true;
+            }
+            else if (toCell.HasWestWall || toCell.HasSouthWall) { //detect toCell L
+                return true;
+            }
+            else if (miniGrid[fromCell.miniX][fromCell.miniY - 1].HasSouthWall && miniGrid[fromCell.miniX + 1][fromCell.miniY].HasNorthWall) { //detect __
+                return true;
+            }
+            else if (miniGrid[fromCell.miniX][fromCell.miniY - 1].HasEastWall && miniGrid[fromCell.miniX + 1][fromCell.miniY].HasWestWall) { //detect |
+                return true;
+            } else {
+                return false;
+            }
+        }
+        //B: fromCell below and right of toCell
+        if (fromCell.miniY > toCell.miniY && fromCell.miniX > toCell.miniX) {
+            if (fromCell.HasWestWall || fromCell.HasNorthWall) { //detect fromCell L
+                return true;
+            }
+            else if (toCell.HasEastWall || toCell.HasSouthWall) { //detect toCell L
+                return true;
+            }
+            else if (miniGrid[fromCell.miniX][fromCell.miniY - 1].HasSouthWall  && miniGrid[fromCell.miniX - 1][fromCell.miniY].HasNorthWall) { //detect __
+                return true;
+            }
+            else if (miniGrid[fromCell.miniX - 1][fromCell.miniY].HasEastWall && miniGrid[fromCell.miniX][fromCell.miniY - 1].HasWestWall) { //detect |
+                return true;
+            } else {
+                return false;
+            }
+        }
+        //C: fromCell above and left of toCell
+        if (fromCell.miniY < toCell.miniY && fromCell.miniX < toCell.miniX) {
+            if (fromCell.HasEastWall || fromCell.HasSouthWall) { //detect fromCell L
+                return true;
+            }
+            else if (toCell.HasWestWall || toCell.HasNorthWall) { //detect toCell L
+                return true;
+            }
+            else if (miniGrid[fromCell.miniX + 1][fromCell.miniY].HasSouthWall && miniGrid[fromCell.miniX][fromCell.miniY + 1].HasNorthWall) { //detect __
+                return true;
+            }
+            else if (miniGrid[fromCell.miniX][fromCell.miniY + 1].HasEastWall && miniGrid[fromCell.miniX + 1][fromCell.miniY].HasWestWall) { //detect |
+                return true;
+            } else {
+                return false;
+            }
+        }
+        //D: fromCell above and right of toCell
+        if (fromCell.miniY < toCell.miniY && fromCell.miniX > toCell.miniX) {
+            if (fromCell.HasWestWall || fromCell.HasSouthWall) { //detect fromCell L
+                return true;
+            }
+            else if (toCell.HasEastWall || toCell.HasNorthWall) { //detect toCell L
+                return true;
+            }
+            else if (miniGrid[fromCell.miniX - 1][fromCell.miniY].HasSouthWall && miniGrid[fromCell.miniX][fromCell.miniY + 1].HasNorthWall) { //detect __
+                return true;
+            }
+            else if (miniGrid[fromCell.miniX][fromCell.miniY + 1].HasWestWall && miniGrid[fromCell.miniX - 1][fromCell.miniY].HasEastWall) { //detect |
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
+    //unknown movement
+    return true;
+
+    ////moving horizontally
+    //if (fromCell.x != toCell.x && fromCell.y == toCell.y) {
+    //    if (fromSector == toSector) {
+    //        //fromCell right of toCell
+    //        if (fromCell.x > toCell.x && (fromCell.HasWestWall == false && toCell.HasEastWall == false)) {
+    //            return false;
+    //            //fromCell left of toCell
+    //        } else if (fromCell.x < toCell.x && (fromCell.HasEastWall == false && toCell.HasWestWall == false)) {
+    //            return false;
+    //        } else {
+    //            return true;
+    //        }
+    //    } else {    //sector-to-sector movement
+    //        //TODO: account for sector to sector movement
+    //    }
+    //}
+
+    ////moving vertically
+    //else if (fromCell.x == toCell.x && fromCell.y != toCell.y) {
+    //    if (fromSector == toSector) {
+    //        //fromCell below toCell
+    //        if (fromCell.y > toCell.y && (fromCell.HasNorthWall == false && toCell.HasSouthWall == false)) {
+    //            return false;
+    //            //fromCell above toCell
+    //        } else if (fromCell.y < toCell.y && (fromCell.HasSouthWall == false && toCell.HasNorthWall == false)) {
+    //            return false;
+    //        } else {
+    //            return true;
+    //        }
+    //    } else {    //sector-to-sector movement
+    //        //TODO: account for sector to sector movement
+    //    }
+    //}
+
+    ////moving diagonally
+    //else if (fromCell.y != toCell.y && fromCell.y != toCell.y) {
+    //    //A: fromCell below and left of toCell
+    //    if ((fromSector == toSector && fromCell.y > toCell.y && fromCell.x < toCell.x) || 
+    //        (fromSector != toSector && fromCell.x == (fromSector.cellsX - 1) && toCell.x == 0 && fromCell.y > toCell.y)) {
+    //        if (fromCell.HasEastWall && fromCell.HasNorthWall) { //detect fromCell L
+    //            return true;
+    //        }
+    //        else if (toCell.HasWestWall && toCell.HasSouthWall) { //detect toCell L
+    //            return true;
+    //        }
+    //        else if (fromCell.HasEastWall && toCell.HasWestWall) { //detect |
+    //            return true;
+    //        }
+    //        else if (fromCell.HasNorthWall && toCell.HasSouthWall) { //detect __
+    //            return true;
+    //        } else {
+    //            return false;
+    //        }
+    //    }
+    //    //B: fromCell below and right of toCell
+    //    if ((fromSector == toSector && fromCell.y > toCell.y && fromCell.x > toCell.x) ||
+    //        (fromSector != toSector && toCell.x == (toSector.cellsX - 1) && fromCell.x == 0 && fromCell.y > toCell.y)) {
+    //        if (fromCell.HasWestWall && fromCell.HasNorthWall) { //detect fromCell L
+    //            return true;
+    //        }
+    //        else if (toCell.HasEastWall && toCell.HasSouthWall) { //detect toCell L
+    //            return true;
+    //        }
+    //        else if (fromCell.HasWestWall && toCell.HasEastWall) { //detect |
+    //            return true;
+    //        }
+    //        else if (fromCell.HasNorthWall && toCell.HasSouthWall) { //detect __
+    //            return true;
+    //        } else {
+    //            return false;
+    //        }
+    //    }
+    //    //C: fromCell above and left of toCell
+    //    if ((fromSector == toSector && fromCell.y < toCell.y && fromCell.x < toCell.x) ||
+    //        (fromSector != toSector && fromCell.x == (fromSector.cellsX - 1) && toCell.x == 0 && fromCell.y < toCell.y)) {
+    //        if (fromCell.HasEastWall && fromCell.HasSouthWall) { //detect fromCell L
+    //            return true;
+    //        }
+    //        else if (toCell.HasWestWall && toCell.HasNorthWall) { //detect toCell L
+    //            return true;
+    //        }
+    //        else if (fromCell.HasEastWall && toCell.HasWestWall) { //detect |
+    //            return true;
+    //        }
+    //        else if (fromCell.HasSouthWall && toCell.HasNorthWall) { //detect __
+    //            return true;
+    //        } else {
+    //            return false;
+    //        }
+    //    }
+    //    //D: fromCell above and right of toCell
+    //    if ((fromSector == toSector && fromCell.y < toCell.y && fromCell.x > toCell.x) ||
+    //        (fromSector != toSector && toCell.x == (toSector.cellsX - 1) && fromCell.x == 0 && fromCell.y < toCell.y)) {
+    //        if (fromCell.HasWestWall && fromCell.HasSouthWall) { //detect fromCell L
+    //            return true;
+    //        }
+    //        else if (toCell.HasEastWall && toCell.HasNorthWall) { //detect toCell L
+    //            return true;
+    //        }
+    //        else if (fromCell.HasWestWall && toCell.HasEastWall) { //detect |
+    //            return true;
+    //        }
+    //        else if (fromCell.HasSouthWall && toCell.HasNorthWall) { //detect __
+    //            return true;
+    //        } else {
+    //            return false;
+    //        }
+    //    }
+    //}
+
+    ////unknown movement
+    //return true;
+}
+
+Board.Sectors.ConstructMiniGrid = function (fromCell, toCell, fromSector, toSector, gridSizeX, gridSizeY) {
+    var miniGrid = new Array(gridSizeX); //2d array of gridSizeX by gridSizeY cells
+    for (x = 0; x < gridSizeX; x++) {
+        miniGrid[x] = new Array(gridSizeY);
+    }
+
+    var middleX = Math.ceil((gridSizeX - 1) / 2);
+    var middleY = Math.ceil((gridSizeY - 1) / 2);
+    //miniGrid[middleX][middleY] = fromCell;  //the middle is always the fromCell
+
+    for (x = -middleX; x <= middleX; x++) {
+        for (y = -middleY; y <= middleY; y++) {
+            //verify the spot we are about to access is a valid cell on the sector
+            if (fromCell.x + x < fromSector.cellsX && fromCell.x + x >= 0 &&
+                fromCell.y + y < fromSector.cellsY && fromCell.y + y >= 0) {
+                var nearbyCell = fromSector.cells[fromCell.x + x][fromCell.y + y];
+                Board.Sectors.CreateMiniGridCell(fromCell, toCell, nearbyCell, miniGrid, middleX, x, middleY, y);
+            } else {
+                //load sector above and right
+                if (fromCell.y + y < 0 && fromCell.x + x > (fromSector.cellsX - 1)) {
+                    var newSector = $.grep(Board.currentBoard.sectorMap, function (e) { return e.LocationX == fromSector.LocationX + 1 && e.LocationY == fromSector.LocationY - 1 })[0];
+                    if (typeof (newSector) != "undefined") {
+                        newSector = newSector.Sector;
+                        var nearbyCell = newSector.cells[0 - 1 + x][(newSector.cellsY - 1) + 1 + y];    //the - 1 & + 1 is because it takes a step to get here
+                        Board.Sectors.CreateMiniGridCell(fromCell, toCell, nearbyCell, miniGrid, middleX, x, middleY, y);
+                    } else { Board.Sectors.CreateEmptyCell(fromCell, toCell, miniGrid, middleX, x, middleY, y); }   //empty cell
                 }
-                else if (toCell.HasWestWall && toCell.HasSouthWall) {
-                    return true;
+                //load sector above and left
+                else if (fromCell.y + y < 0 && fromCell.x + x < 0) {
+                    var newSector = $.grep(Board.currentBoard.sectorMap, function (e) { return e.LocationX == fromSector.LocationX - 1 && e.LocationY == fromSector.LocationY - 1 })[0];
+                    if (typeof (newSector) != "undefined") {
+                        newSector = newSector.Sector;
+                        var nearbyCell = newSector.cells[0 - 1 + x][0 - 1 + y];    //the - 1 is because it takes a step to get here
+                        Board.Sectors.CreateMiniGridCell(fromCell, toCell, nearbyCell, miniGrid, middleX, x, middleY, y);
+                    } else { Board.Sectors.CreateEmptyCell(fromCell, toCell, miniGrid, middleX, x, middleY, y); }   //empty cell
                 }
-                else if (fromCell.HasEastWall && toCell.HasWestWall) {
-                    return true;
+                //load sector below and right
+                else if (fromCell.y + y > (fromSector.cellsY - 1) && fromCell.x + x > (fromSector.cellsX - 1)) {
+                    var newSector = $.grep(Board.currentBoard.sectorMap, function (e) { return e.LocationX == fromSector.LocationX + 1 && e.LocationY == fromSector.LocationY + 1 })[0];
+                    if (typeof (newSector) != "undefined") {
+                        newSector = newSector.Sector;
+                        var nearbyCell = newSector.cells[(newSector.cellsX - 1) + 1 + x][(newSector.cellsY - 1) + 1 + y];    //the + 1 is because it takes a step to get here
+                        Board.Sectors.CreateMiniGridCell(fromCell, toCell, nearbyCell, miniGrid, middleX, x, middleY, y);
+                    } else { Board.Sectors.CreateEmptyCell(fromCell, toCell, miniGrid, middleX, x, middleY, y); }   //empty cell
                 }
-                else if (fromCell.HasNorthWall && toCell.HasSouthWall) {
-                    return true;
+                //load sector below and left
+                else if (fromCell.y + y > (fromSector.cellsY - 1) && fromCell.x + x < 0) {
+                    var newSector = $.grep(Board.currentBoard.sectorMap, function (e) { return e.LocationX == fromSector.LocationX - 1 && e.LocationY == fromSector.LocationY + 1 })[0];
+                    if (typeof (newSector) != "undefined") {
+                        newSector = newSector.Sector;
+                        var nearbyCell = newSector.cells[(newSector.cellsX - 1) + 1 + x][0 - 1 + y];    //the - 1 & + 1 is because it takes a step to get here
+                        Board.Sectors.CreateMiniGridCell(fromCell, toCell, nearbyCell, miniGrid, middleX, x, middleY, y);
+                    } else { Board.Sectors.CreateEmptyCell(fromCell, toCell, miniGrid, middleX, x, middleY, y); }   //empty cell
+                }
+                //load sector to the left
+                else if (fromCell.x + x < 0 && (fromCell.y + y >= 0 && fromCell.y + y < fromSector.cellsY)) {
+                    var newSector = $.grep(Board.currentBoard.sectorMap, function (e) { return e.LocationX == fromSector.LocationX - 1 && e.LocationY == fromSector.LocationY })[0];
+                    if (typeof (newSector) != "undefined") {
+                        newSector = newSector.Sector;
+                        var nearbyCell = newSector.cells[(newSector.cellsX - 1) + 1 + x][fromCell.y + y];   //the  + 1 is because it takes a step to get here
+                        Board.Sectors.CreateMiniGridCell(fromCell, toCell, nearbyCell, miniGrid, middleX, x, middleY, y);
+                    } else { Board.Sectors.CreateEmptyCell(fromCell, toCell, miniGrid, middleX, x, middleY, y); }   //empty cell
+                }
+                //load sector to the right
+                else if (fromCell.x + x > (fromSector.cellsX - 1) && (fromCell.y + y >= 0 && fromCell.y + y < fromSector.cellsY)) {
+                    var newSector = $.grep(Board.currentBoard.sectorMap, function (e) { return e.LocationX == fromSector.LocationX + 1 && e.LocationY == fromSector.LocationY })[0];
+                    if (typeof (newSector) != "undefined") {
+                        newSector = newSector.Sector;
+                        var nearbyCell = newSector.cells[0 - 1 + x][fromCell.y + y];    //the - 1 is because it takes a step to get here
+                        Board.Sectors.CreateMiniGridCell(fromCell, toCell, nearbyCell, miniGrid, middleX, x, middleY, y);
+                    } else { Board.Sectors.CreateEmptyCell(fromCell, toCell, miniGrid, middleX, x, middleY, y); }   //empty cell
+                }
+                //load sector below
+                else if (fromCell.y + y > (fromSector.cellsY - 1) && (fromCell.x + x >= 0 && fromCell.x + x < fromSector.cellsX)) {
+                    var newSector = $.grep(Board.currentBoard.sectorMap, function (e) { return e.LocationX == fromSector.LocationX && e.LocationY == fromSector.LocationY + 1 })[0];
+                    if (typeof (newSector) != "undefined") {
+                        newSector = newSector.Sector;
+                        var nearbyCell = newSector.cells[fromCell.x + x][0 - 1 + y];    //the - 1 is because it takes a step to get here
+                        Board.Sectors.CreateMiniGridCell(fromCell, toCell, nearbyCell, miniGrid, middleX, x, middleY, y);
+                    } else { Board.Sectors.CreateEmptyCell(fromCell, toCell, miniGrid, middleX, x, middleY, y); }   //empty cell
+                }
+                //load sector above
+                else if (fromCell.y + y < 0 && (fromCell.x + x >= 0 && fromCell.x + x < fromSector.cellsX)) {
+                    var newSector = $.grep(Board.currentBoard.sectorMap, function (e) { return e.LocationX == fromSector.LocationX && e.LocationY == fromSector.LocationY - 1 })[0];
+                    if (typeof (newSector) != "undefined") {
+                        newSector = newSector.Sector;
+                        var nearbyCell = newSector.cells[fromCell.x + x][(newSector.cellsY - 1) + 1 + y];    //the + 1 is because it takes a step to get here
+                        Board.Sectors.CreateMiniGridCell(fromCell, toCell, nearbyCell, miniGrid, middleX, x, middleY, y);
+                    } else { Board.Sectors.CreateEmptyCell(fromCell, toCell, miniGrid, middleX, x, middleY, y); }   //empty cell
                 } else {
-                    return false;
+                    Board.Sectors.CreateEmptyCell(fromCell, toCell, miniGrid, middleX, x, middleY, y); //empty cell
                 }
             }
-                //fromCell below and right of toCell
-            else if (fromCell.y > toCell.y && fromCell.x < toCell.x) {
-                if (fromCell.HasEastWall && fromCell.HasNorthWall) {
-                    return true;
-                }
-                else if (toCell.HasWestWall && toCell.HasSouthWall) {
-                    return true;
-                }
-                else if (fromCell.HasEastWall && toCell.HasWestWall) {
-                    return true;
-                }
-                else if (fromCell.HasNorthWall && toCell.HasSouthWall) {
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-        } else {    //sector-to-sector movement
-            //TODO: account for sector to sector movement
         }
     }
 
-    //unknown movement
-    return true;
+
+    return miniGrid;
+}
+
+Board.Sectors.CreateEmptyCell = function (fromCell, toCell, miniGrid, middleX, x, middleY, y) {
+    Board.Sectors.CreateMiniGridCell(fromCell, toCell, new Object(), miniGrid, middleX, x, middleY, y);
+}
+
+Board.Sectors.CreateMiniGridCell = function (fromCell, toCell, nearbyCell, miniGrid, middleX, x, middleY, y) {
+    //set miniGrid x and y
+    nearbyCell.miniX = middleX + x;
+    nearbyCell.miniY = middleY + y;
+
+    //reset before assigning new values
+    nearbyCell.isFromCell = false;
+    nearbyCell.isToCell = false;
+    //set from and to cells
+    if (nearbyCell == fromCell) {
+        nearbyCell.isFromCell = true;
+    } else if (nearbyCell == toCell) {
+        nearbyCell.isToCell = true;
+    }
+    miniGrid[nearbyCell.miniX][nearbyCell.miniY] = nearbyCell;
 }

@@ -196,6 +196,10 @@ Units.AddNewUnit = function (name, playerIndex, sector, cell, firstTimeLoad) {
     }
 }
 
+Units.GiveItemToUnit = function (item, unit) {
+    unit.itemSet.Items.push(item);
+}
+
 Units.SelectUnit = function (event) {
     Interaction.SelectUnit(event.data, this);
 }
@@ -209,21 +213,30 @@ Units.AttackUnit = function (attackingUnit, victimUnit, combatType) {
 
     //filter through items to find the weapon (max 1 weapon per unit)
     var weapon = $.grep(attackingUnit.itemSet.Items, function (e) { return e.Type.toUpperCase() == "WEAPON" })[0];
-
     //filter based on what type of combat and what rank the attacking player is
     var weaponStats = $.grep(weapon.ItemStats, function (e) { return e.StatType.toUpperCase() == combatType.toUpperCase() })[Players.playerList[attackingUnit.playerIndex].rank];
 
+    //filter through items to find attachments/enhancements
+    var buffers = $.grep(attackingUnit.itemSet.Items, function (e) { return (e.Type.toUpperCase() == "ATTACHMENT" || e.Type.toUpperCase() == "ENHANCEMENT") });
+    //filter based on what type of combat and what rank the attacking player is
+    var bufferStats = [];
+    for (i = 0; i < buffers.length; i++) {
+        var bufferStat = $.grep(buffers[i].ItemStats, function (e) { return e.StatType.toUpperCase() == combatType.toUpperCase() })[Players.playerList[attackingUnit.playerIndex].rank]
+        bufferStats.push(bufferStat);
+    }
+
     results.diceColor = weaponStats.DiceColor;
-    results.hits = Combat.RollDice(weaponStats);
+    results.hits = Combat.RollDice(weaponStats, bufferStats);
     results.damage = Combat.CalculateDamage(results.hits, victimUnit.armorSet.Armor[Players.playerList[attackingUnit.playerIndex].rank].DamageReduction, victimUnit.defenseSet.Defenses[Players.playerList[attackingUnit.playerIndex].rank]);
     console.log(attackingUnit.name + " rolled " + results.hits + " hits and has dealt " + results.damage + " damage to " + victimUnit.name + " using " + results.diceColor + " dice");
     victimUnit.remainingHealth -= results.damage;
 
     if (victimUnit.remainingHealth <= 0) {
         console.log(attackingUnit.name + " has killed " + victimUnit.name);
-        Board.Sectors.sectorList[victimUnit.boardLocation.sectorIndex].cells[victimUnit.boardLocation.x][victimUnit.boardLocation.y].occupied = false;
+        var victimSector = $.grep(Board.currentBoard.sectorMap, function (e) { return e.Sector.sectorNumber.toUpperCase() == victimUnit.boardLocation.sectorNumber })[0].Sector;
+        victimSector.cells[victimUnit.boardLocation.x][victimUnit.boardLocation.y].occupied = false;
         victimUnit.dead = true;
-        GameGlobals.stage.removeChild(victimUnit);
+        victimSector.removeChild(victimUnit);
         results.dead = true;
     } else {
         results.dead = false;
@@ -248,7 +261,10 @@ Units.MoveUnit = function (unit, fromSector, toSector, destinationCell) {
     }
 
     //un-register the unit on the sector of the old spot
-    fromSector.cells[unit.boardLocation.x][unit.boardLocation.y].occupied = false;
+    fromSector.cells[unit.boardLocation.x][unit.boardLocation.y].occupied = false;      //reset to defaults
+    fromSector.cells[unit.boardLocation.x][unit.boardLocation.y].isFromCell = false;    //reset to defaults
+    fromSector.cells[unit.boardLocation.x][unit.boardLocation.y].type = "none";         //reset to defaults
+    fromSector.cells[unit.boardLocation.x][unit.boardLocation.y].index = -1;            //reset to defaults
     fromSector.removeChild(unit);
 
     //move to new position
@@ -261,6 +277,7 @@ Units.MoveUnit = function (unit, fromSector, toSector, destinationCell) {
 
     //register the unit on the sector of the new spot
     toSector.cells[destinationCell.x][destinationCell.y].occupied = true;
+    toSector.cells[destinationCell.x][destinationCell.y].isToCell = false;
     toSector.cells[destinationCell.x][destinationCell.y].type = unit.type;
     toSector.cells[destinationCell.x][destinationCell.y].index = Units.unitList.length - 1;
     toSector.addChild(unit);
@@ -282,15 +299,20 @@ Units.VerifyUnitMoveValid = function (unit, fromSector, toSector, destinationCel
         return "Selected position is occupied or not valid";
     }
 
-    //VERIFY THE DESTINATION IS ONE CELL AWAY FROM CURRENT CELL
+    //construct mini-grid
     var fromCell = fromSector.cells[unit.boardLocation.x][unit.boardLocation.y];
-    if (Board.Sectors.AreCellsWithinOne(fromCell, destinationCell, fromSector, toSector) == false) {
+    var miniGrid = Board.Sectors.ConstructMiniGrid(fromCell, destinationCell, fromSector, toSector, GameConstants.MOVEMENTGRIDSIZEX, GameConstants.MOVEMENTGRIDSIZEY);
+
+    //VERIFY THE DESTINATION IS ONE CELL AWAY FROM CURRENT CELL
+    if (Board.Sectors.AreCellsWithinOne(miniGrid) == false) {
         return "You must move one square at a time";
     }
 
     //VERIFY A WALL IS NOT IN THE WAY
-    if (Board.Sectors.IsWallInWay(fromCell, destinationCell) == true) {
-        return "There is a wall in the way";
+    if (typeof (unit.phasing) === "undefined" || unit.phasing == false) {
+        if (Board.Sectors.IsWallInWay(miniGrid) == true) {
+            return "There is a wall in the way";
+        }
     }
 
     return "Success";

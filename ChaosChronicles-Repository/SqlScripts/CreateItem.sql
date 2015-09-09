@@ -18,6 +18,7 @@ CREATE TABLE dbo.Item
 	Description nvarchar(MAX) NULL,
 	Cost int NOT NULL,
 	RankRequired int NULL,
+	CorporationRequired nvarchar(50) NULL,
 	ImgShopPath nvarchar(MAX) NULL,
 	ImgIconPath nvarchar(MAX) NULL,
 	ImgLargePath nvarchar(MAX) NULL,

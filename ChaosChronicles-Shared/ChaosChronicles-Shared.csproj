@@ -40,6 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants.cs" />
+    <Compile Include="Interfaces\Repository\IItemRepository.cs" />
     <Compile Include="Interfaces\Repository\IUnitRepository.cs" />
     <Compile Include="Interfaces\Repository\IMissionRepository.cs" />
     <Compile Include="Interfaces\Repository\ISectorRepository.cs" />

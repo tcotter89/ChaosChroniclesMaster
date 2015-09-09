@@ -12,11 +12,13 @@ namespace ChaosChronicles.Controllers {
         private readonly IMissionRepository _missionRepository;
         private readonly ISectorRepository _sectorRepository;
         private readonly IUnitRepository _unitRepository;
+        private readonly IItemRepository _itemRepository;
 
-        public HomeController(IMissionRepository missionRepository, ISectorRepository sectorRepository, IUnitRepository unitRepository) {
+        public HomeController(IMissionRepository missionRepository, ISectorRepository sectorRepository, IUnitRepository unitRepository, IItemRepository itemRepository) {
             _missionRepository = missionRepository;
             _sectorRepository = sectorRepository;
             _unitRepository = unitRepository;
+            _itemRepository = itemRepository;
         }
 
         public ActionResult Index() {
@@ -54,6 +56,13 @@ namespace ChaosChronicles.Controllers {
         public JsonResult GetUnitData(JsonString jsonString) {
             var unit = _unitRepository.LoadUnitData(jsonString.ObjectIdentifier);
             return Json(new BasicJsonMessage { Data = unit, Result = true });
+        }
+
+        [HttpPost]
+        [ValidateInput(false)]
+        public JsonResult GetItemData() {
+            var items = _itemRepository.LoadItemData();
+            return Json(new BasicJsonMessage { Data = items, Result = true });
         }
     }
 }

@@ -247,6 +247,8 @@ namespace ChaosChronicles_Repository.Converters {
                 Description = RemoveNullable(repo.Description),
                 Cost = repo.Cost,
                 RankRequired = RemoveNullable(repo.RankRequired, 1),
+                CorporationRequired = RemoveNullable(repo.ImgShopPath, "None"),
+                IsSoldInShop = RemoveNullable(repo.IsSoldInShop, true),
                 ImgShopPath = RemoveNullable(repo.ImgShopPath, "missing.png"),
                 ImgIconPath = RemoveNullable(repo.ImgIconPath, "missing.png"),
                 ImgLargePath = RemoveNullable(repo.ImgLargePath, "missing.png"),
