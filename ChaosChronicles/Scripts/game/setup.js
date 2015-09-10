@@ -66,9 +66,9 @@ Setup.ProcessLoadingQueue = function () {
         Units.AddNewUnit('Murdoch', Players.playerList[3].index, sector4, murdochCell, true);
 
         var sector5 = $.grep(Board.currentBoard.sectorMap, function (e) { return e.Sector.sectorNumber == "5" })[0].Sector;
-        var tatsuCell = sector1.cells[0][3];
+        var tatsuCell = sector5.cells[0][3];
         Units.AddNewUnit('Tatsu', Players.playerList[2].index, sector5, tatsuCell, true);
-        var gallagherCell = sector1.cells[2][2];
+        var gallagherCell = sector5.cells[2][2];
         Units.AddNewUnit('Gallagher', Players.playerList[3].index, sector5, gallagherCell, true);
     }
         //else if (Setup.loadingStep == GameConstants.Setup.LOADINGSTEP_LEGION) {
