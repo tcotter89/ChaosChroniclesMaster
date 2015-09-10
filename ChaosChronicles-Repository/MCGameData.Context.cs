@@ -35,10 +35,11 @@ namespace ChaosChronicles_Repository
         public virtual DbSet<DefenseSet> DefenseSets { get; set; }
         public virtual DbSet<ItemSet> ItemSets { get; set; }
         public virtual DbSet<Unit> Units { get; set; }
-        public virtual DbSet<Item> Items { get; set; }
         public virtual DbSet<ItemStat> ItemStats { get; set; }
         public virtual DbSet<Entrance> Entrances { get; set; }
         public virtual DbSet<SectorMap> SectorMaps { get; set; }
         public virtual DbSet<Objective> Objectives { get; set; }
+        public virtual DbSet<ItemSetMapping> ItemSetMappings { get; set; }
+        public virtual DbSet<Item> Items { get; set; }
     }
 }

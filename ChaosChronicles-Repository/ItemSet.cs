@@ -17,6 +17,7 @@ namespace ChaosChronicles_Repository
         public ItemSet()
         {
             this.Units = new HashSet<Unit>();
+            this.ItemSetMappings = new HashSet<ItemSetMapping>();
             this.Items = new HashSet<Item>();
         }
     
@@ -24,6 +25,7 @@ namespace ChaosChronicles_Repository
         public string Name { get; set; }
     
         public virtual ICollection<Unit> Units { get; set; }
+        public virtual ICollection<ItemSetMapping> ItemSetMappings { get; set; }
         public virtual ICollection<Item> Items { get; set; }
     }
 }

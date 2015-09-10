@@ -12,13 +12,13 @@ GO
 CREATE TABLE dbo.Item
 	(
 	ItemID int NOT NULL IDENTITY (1, 1),
-	ItemSetID int NULL,
 	Type nvarchar(50) NOT NULL,
 	Name nvarchar(50) NOT NULL,
 	Description nvarchar(MAX) NULL,
 	Cost int NOT NULL,
 	RankRequired int NULL,
 	CorporationRequired nvarchar(50) NULL,
+	ItemSetRequired nvarchar(50) NULL,
 	ImgShopPath nvarchar(MAX) NULL,
 	ImgIconPath nvarchar(MAX) NULL,
 	ImgLargePath nvarchar(MAX) NULL,
@@ -35,10 +35,5 @@ ALTER TABLE dbo.Item ADD CONSTRAINT
 GO
 ALTER TABLE dbo.Item SET (LOCK_ESCALATION = TABLE)
 GO
-
-ALTER TABLE Item
-ADD CONSTRAINT FK_Item
-FOREIGN KEY (ItemSetID)
-REFERENCES ItemSet(ItemSetID)
 
 COMMIT

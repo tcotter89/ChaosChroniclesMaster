@@ -16,24 +16,26 @@ namespace ChaosChronicles_Repository
     {
         public Item()
         {
+            this.ItemSetMappings = new HashSet<ItemSetMapping>();
             this.ItemStats = new HashSet<ItemStat>();
         }
     
         public int ItemID { get; set; }
-        public Nullable<int> ItemSetID { get; set; }
         public string Type { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public int Cost { get; set; }
         public Nullable<int> RankRequired { get; set; }
+        public string CorporationRequired { get; set; }
+        public Nullable<int> ItemSetRequired { get; set; }
+        public bool IsSoldInShop { get; set; }
         public string ImgShopPath { get; set; }
         public string ImgIconPath { get; set; }
         public string ImgLargePath { get; set; }
         public string ImgAlternatePath { get; set; }
-        public string CorporationRequired { get; set; }
-        public bool IsSoldInShop { get; set; }
     
-        public virtual ItemSet ItemSet { get; set; }
+        public virtual ICollection<ItemSetMapping> ItemSetMappings { get; set; }
         public virtual ICollection<ItemStat> ItemStats { get; set; }
+        public virtual ItemSet ItemSet { get; set; }
     }
 }

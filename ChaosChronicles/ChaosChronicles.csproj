@@ -220,6 +220,7 @@
     <Content Include="Scripts\game\legion.js" />
     <Content Include="Scripts\game\board.js" />
     <Content Include="Scripts\game\mission.js" />
+    <Content Include="Scripts\game\overlay.js" />
     <Content Include="Scripts\game\player.js" />
     <Content Include="Scripts\game\unit.js" />
     <Content Include="Scripts\game\legionnaire.js" />

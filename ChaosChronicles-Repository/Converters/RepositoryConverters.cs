@@ -234,34 +234,46 @@ namespace ChaosChronicles_Repository.Converters {
 
         internal static SharedItem ToSharedModel(this Item repo) {
 
+            SharedItemSet sharedItemSet;
+            if (repo.ItemSet != null) {
+                sharedItemSet = repo.ItemSet.ToSharedModel();
+            } else {
+                sharedItemSet = new SharedItemSet() { Name = "None" };
+            }
             var sharedItemStats = new List<SharedItemStat>();
             foreach (var itemStat in repo.ItemStats) {
                 var sharedItemStat = itemStat.ToSharedModel();
                 sharedItemStats.Add(sharedItemStat);
             }
+            //var sharedItemSets = new List<SharedItemSet>();
+            //foreach (var itemSetMapping in repo.ItemSetMappings) {
+            //    var sharedItemSetTmp = itemSetMapping.ItemSet.ToSharedModel();
+            //    sharedItemSets.Add(sharedItemSetTmp);
+            //}
             return new SharedItem() {
                 ItemID = repo.ItemID,
-                ItemSetID = RemoveNullable(repo.ItemSetID, 0),
                 Type = repo.Type,
                 Name = repo.Name,
                 Description = RemoveNullable(repo.Description),
                 Cost = repo.Cost,
                 RankRequired = RemoveNullable(repo.RankRequired, 1),
                 CorporationRequired = RemoveNullable(repo.ImgShopPath, "None"),
+                ItemSetRequired = sharedItemSet,
                 IsSoldInShop = RemoveNullable(repo.IsSoldInShop, true),
                 ImgShopPath = RemoveNullable(repo.ImgShopPath, "missing.png"),
                 ImgIconPath = RemoveNullable(repo.ImgIconPath, "missing.png"),
                 ImgLargePath = RemoveNullable(repo.ImgLargePath, "missing.png"),
                 ImgAlternatePath = RemoveNullable(repo.ImgAlternatePath, "missing.png"),
-                ItemStats = sharedItemStats
+                ItemStats = sharedItemStats,
+                //ItemSets = sharedItemSets
             };
         }
 
         internal static SharedItemSet ToSharedModel(this ItemSet repo) {
 
             var sharedItems = new List<SharedItem>();
-            foreach (var item in repo.Items) {
-                var sharedItem = item.ToSharedModel();
+            foreach (var itemSetMapping in repo.ItemSetMappings) {
+                var sharedItem = itemSetMapping.Item.ToSharedModel();
                 sharedItems.Add(sharedItem);
             }
 
@@ -269,6 +281,17 @@ namespace ChaosChronicles_Repository.Converters {
                 ItemSetID = repo.ItemSetID,
                 Name = RemoveNullable(repo.Name),
                 Items = sharedItems
+            };
+        }
+
+        internal static SharedItemSetMapping ToSharedModel(this ItemSetMapping repo) {
+
+            var repoItemSet = repo.ItemSet.ToSharedModel();
+            var repoItem = repo.Item.ToSharedModel();
+
+            return new SharedItemSetMapping() {
+                ItemSet = repoItemSet,
+                Item = repoItem
             };
         }
 

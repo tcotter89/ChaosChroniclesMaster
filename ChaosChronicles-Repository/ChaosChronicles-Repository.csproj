@@ -77,6 +77,9 @@
     <Compile Include="ItemSet.cs">
       <DependentUpon>MCGameData.tt</DependentUpon>
     </Compile>
+    <Compile Include="ItemSetMapping.cs">
+      <DependentUpon>MCGameData.tt</DependentUpon>
+    </Compile>
     <Compile Include="ItemStat.cs">
       <DependentUpon>MCGameData.tt</DependentUpon>
     </Compile>
@@ -95,26 +98,26 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>MCGameData.edmx</DependentUpon>
     </Compile>
+    <Compile Include="ItemRepository.cs" />
     <Compile Include="Mission.cs">
       <DependentUpon>MCGameData.tt</DependentUpon>
     </Compile>
     <Compile Include="Objective.cs">
       <DependentUpon>MCGameData.tt</DependentUpon>
     </Compile>
-    <Compile Include="SectorMap.cs">
-      <DependentUpon>MCGameData.tt</DependentUpon>
-    </Compile>
-    <Compile Include="ItemRepository.cs" />
-    <Compile Include="UnitRepository.cs" />
     <Compile Include="Sector.cs">
       <DependentUpon>MCGameData.tt</DependentUpon>
     </Compile>
-    <Compile Include="MissionRepository.cs" />
-    <Compile Include="SectorRepository.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SectorMap.cs">
+      <DependentUpon>MCGameData.tt</DependentUpon>
+    </Compile>
     <Compile Include="Unit.cs">
       <DependentUpon>MCGameData.tt</DependentUpon>
     </Compile>
+    <Compile Include="UnitRepository.cs" />
+    <Compile Include="MissionRepository.cs" />
+    <Compile Include="SectorRepository.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <EntityDeploy Include="MCGameData.edmx">

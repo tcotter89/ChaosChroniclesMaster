@@ -83,13 +83,13 @@
             <PropertyRef Name="ItemID" />
           </Key>
           <Property Name="ItemID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="ItemSetID" Type="int" />
           <Property Name="Type" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Description" Type="nvarchar(max)" />
           <Property Name="Cost" Type="int" Nullable="false" />
           <Property Name="RankRequired" Type="int" />
           <Property Name="CorporationRequired" Type="nvarchar" MaxLength="50" />
+          <Property Name="ItemSetRequired" Type="int" />
           <Property Name="IsSoldInShop" Type="bit" Nullable="false" />
           <Property Name="ImgShopPath" Type="nvarchar(max)" />
           <Property Name="ImgIconPath" Type="nvarchar(max)" />
@@ -102,6 +102,14 @@
           </Key>
           <Property Name="ItemSetID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="ItemSetMapping">
+          <Key>
+            <PropertyRef Name="ItemSetMappingID" />
+          </Key>
+          <Property Name="ItemSetMappingID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ItemID" Type="int" Nullable="false" />
+          <Property Name="ItemSetID" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="ItemStat">
           <Key>
@@ -284,14 +292,14 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Item">
-          <End Role="ItemSet" Type="Self.ItemSet" Multiplicity="0..1" />
-          <End Role="Item" Type="Self.Item" Multiplicity="*" />
+          <End Role="Item" Type="Self.Item" Multiplicity="1" />
+          <End Role="ItemSetMapping" Type="Self.ItemSetMapping" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="ItemSet">
-              <PropertyRef Name="ItemSetID" />
+            <Principal Role="Item">
+              <PropertyRef Name="ItemID" />
             </Principal>
-            <Dependent Role="Item">
-              <PropertyRef Name="ItemSetID" />
+            <Dependent Role="ItemSetMapping">
+              <PropertyRef Name="ItemID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -304,6 +312,30 @@
             </Principal>
             <Dependent Role="Unit">
               <PropertyRef Name="DefaultItemSetID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ItemSetMapping">
+          <End Role="ItemSet" Type="Self.ItemSet" Multiplicity="1" />
+          <End Role="ItemSetMapping" Type="Self.ItemSetMapping" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ItemSet">
+              <PropertyRef Name="ItemSetID" />
+            </Principal>
+            <Dependent Role="ItemSetMapping">
+              <PropertyRef Name="ItemSetID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ItemSetRequired">
+          <End Role="ItemSet" Type="Self.ItemSet" Multiplicity="0..1" />
+          <End Role="Item" Type="Self.Item" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ItemSet">
+              <PropertyRef Name="ItemSetID" />
+            </Principal>
+            <Dependent Role="Item">
+              <PropertyRef Name="ItemSetRequired" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -389,6 +421,7 @@
           <EntitySet Name="Entrance" EntityType="Self.Entrance" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Item" EntityType="Self.Item" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ItemSet" EntityType="Self.ItemSet" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ItemSetMapping" EntityType="Self.ItemSetMapping" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ItemStat" EntityType="Self.ItemStat" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Mission" EntityType="Self.Mission" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Objective" EntityType="Self.Objective" Schema="dbo" store:Type="Tables" />
@@ -416,12 +449,20 @@
             <End Role="Defense" EntitySet="Defense" />
           </AssociationSet>
           <AssociationSet Name="FK_Item" Association="Self.FK_Item">
-            <End Role="ItemSet" EntitySet="ItemSet" />
             <End Role="Item" EntitySet="Item" />
+            <End Role="ItemSetMapping" EntitySet="ItemSetMapping" />
           </AssociationSet>
           <AssociationSet Name="FK_ItemSet" Association="Self.FK_ItemSet">
             <End Role="ItemSet" EntitySet="ItemSet" />
             <End Role="Unit" EntitySet="Unit" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ItemSetMapping" Association="Self.FK_ItemSetMapping">
+            <End Role="ItemSet" EntitySet="ItemSet" />
+            <End Role="ItemSetMapping" EntitySet="ItemSetMapping" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ItemSetRequired" Association="Self.FK_ItemSetRequired">
+            <End Role="ItemSet" EntitySet="ItemSet" />
+            <End Role="Item" EntitySet="Item" />
           </AssociationSet>
           <AssociationSet Name="FK_ItemStat" Association="Self.FK_ItemStat">
             <End Role="Item" EntitySet="Item" />
@@ -532,16 +573,7 @@
             <End Role="ItemSet" EntitySet="ItemSets" />
             <End Role="Unit" EntitySet="Units" />
           </AssociationSet>
-          <EntitySet Name="Items" EntityType="MCGameDataModel.Item" />
-          <AssociationSet Name="FK_Item" Association="MCGameDataModel.FK_Item">
-            <End Role="ItemSet" EntitySet="ItemSets" />
-            <End Role="Item" EntitySet="Items" />
-          </AssociationSet>
           <EntitySet Name="ItemStats" EntityType="MCGameDataModel.ItemStat" />
-          <AssociationSet Name="FK_ItemStat" Association="MCGameDataModel.FK_ItemStat">
-            <End Role="Item" EntitySet="Items" />
-            <End Role="ItemStat" EntitySet="ItemStats" />
-          </AssociationSet>
           <EntitySet Name="Entrances" EntityType="MCGameDataModel.Entrance" />
           <AssociationSet Name="FK_SectorEntrance" Association="MCGameDataModel.FK_SectorEntrance">
             <End Role="Sector" EntitySet="Sectors" />
@@ -560,6 +592,24 @@
           <AssociationSet Name="FK_Mission" Association="MCGameDataModel.FK_Mission">
             <End Role="Mission" EntitySet="Missions" />
             <End Role="Objective" EntitySet="Objectives" />
+          </AssociationSet>
+          <EntitySet Name="ItemSetMappings" EntityType="MCGameDataModel.ItemSetMapping" />
+          <AssociationSet Name="FK_ItemSetMapping" Association="MCGameDataModel.FK_ItemSetMapping">
+            <End Role="ItemSet" EntitySet="ItemSets" />
+            <End Role="ItemSetMapping" EntitySet="ItemSetMappings" />
+          </AssociationSet>
+          <EntitySet Name="Items" EntityType="MCGameDataModel.Item" />
+          <AssociationSet Name="FK_Item" Association="MCGameDataModel.FK_Item">
+            <End Role="Item" EntitySet="Items" />
+            <End Role="ItemSetMapping" EntitySet="ItemSetMappings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ItemStat" Association="MCGameDataModel.FK_ItemStat">
+            <End Role="Item" EntitySet="Items" />
+            <End Role="ItemStat" EntitySet="ItemStats" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ItemSetRequired" Association="MCGameDataModel.FK_ItemSetRequired">
+            <End Role="ItemSet" EntitySet="ItemSets" />
+            <End Role="Item" EntitySet="Items" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="Mission">
@@ -649,7 +699,8 @@
           <Property Name="ItemSetID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Units" Relationship="MCGameDataModel.FK_ItemSet" FromRole="ItemSet" ToRole="Unit" />
-          <NavigationProperty Name="Items" Relationship="MCGameDataModel.FK_Item" FromRole="ItemSet" ToRole="Item" />
+          <NavigationProperty Name="ItemSetMappings" Relationship="MCGameDataModel.FK_ItemSetMapping" FromRole="ItemSet" ToRole="ItemSetMapping" />
+          <NavigationProperty Name="Items" Relationship="MCGameDataModel.FK_ItemSetRequired" FromRole="ItemSet" ToRole="Item" />
         </EntityType>
         <EntityType Name="Unit">
           <Key>
@@ -749,38 +800,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="Item">
-          <Key>
-            <PropertyRef Name="ItemID" />
-          </Key>
-          <Property Name="ItemID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ItemSetID" Type="Int32" />
-          <Property Name="Type" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Cost" Type="Int32" Nullable="false" />
-          <Property Name="RankRequired" Type="Int32" />
-          <Property Name="ImgShopPath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="ImgIconPath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="ImgLargePath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="ImgAlternatePath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="ItemSet" Relationship="MCGameDataModel.FK_Item" FromRole="Item" ToRole="ItemSet" />
-          <NavigationProperty Name="ItemStats" Relationship="MCGameDataModel.FK_ItemStat" FromRole="Item" ToRole="ItemStat" />
-          <Property Name="CorporationRequired" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="IsSoldInShop" Type="Boolean" Nullable="false" />
-        </EntityType>
-        <Association Name="FK_Item">
-          <End Type="MCGameDataModel.ItemSet" Role="ItemSet" Multiplicity="0..1" />
-          <End Type="MCGameDataModel.Item" Role="Item" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ItemSet">
-              <PropertyRef Name="ItemSetID" />
-            </Principal>
-            <Dependent Role="Item">
-              <PropertyRef Name="ItemSetID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="ItemStat">
           <Key>
             <PropertyRef Name="ItemStatID" />
@@ -796,18 +815,6 @@
           <Property Name="Special" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Item" Relationship="MCGameDataModel.FK_ItemStat" FromRole="ItemStat" ToRole="Item" />
         </EntityType>
-        <Association Name="FK_ItemStat">
-          <End Type="MCGameDataModel.Item" Role="Item" Multiplicity="1" />
-          <End Type="MCGameDataModel.ItemStat" Role="ItemStat" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Item">
-              <PropertyRef Name="ItemID" />
-            </Principal>
-            <Dependent Role="ItemStat">
-              <PropertyRef Name="ItemID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="Entrance">
           <Key>
             <PropertyRef Name="EntranceID" />
@@ -918,6 +925,85 @@
             </Principal>
             <Dependent Role="Objective">
               <PropertyRef Name="MissionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ItemSetMapping">
+          <Key>
+            <PropertyRef Name="ItemSetMappingID" />
+          </Key>
+          <Property Name="ItemSetMappingID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ItemID" Type="Int32" Nullable="false" />
+          <Property Name="ItemSetID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="ItemSet" Relationship="MCGameDataModel.FK_ItemSetMapping" FromRole="ItemSetMapping" ToRole="ItemSet" />
+          <NavigationProperty Name="Item" Relationship="MCGameDataModel.FK_Item" FromRole="ItemSetMapping" ToRole="Item" />
+        </EntityType>
+        <Association Name="FK_ItemSetMapping">
+          <End Type="MCGameDataModel.ItemSet" Role="ItemSet" Multiplicity="1" />
+          <End Type="MCGameDataModel.ItemSetMapping" Role="ItemSetMapping" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ItemSet">
+              <PropertyRef Name="ItemSetID" />
+            </Principal>
+            <Dependent Role="ItemSetMapping">
+              <PropertyRef Name="ItemSetID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Item">
+          <Key>
+            <PropertyRef Name="ItemID" />
+          </Key>
+          <Property Name="ItemID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Type" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Cost" Type="Int32" Nullable="false" />
+          <Property Name="RankRequired" Type="Int32" />
+          <Property Name="CorporationRequired" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ItemSetRequired" Type="Int32" />
+          <Property Name="IsSoldInShop" Type="Boolean" Nullable="false" />
+          <Property Name="ImgShopPath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ImgIconPath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ImgLargePath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ImgAlternatePath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ItemSetMappings" Relationship="MCGameDataModel.FK_Item" FromRole="Item" ToRole="ItemSetMapping" />
+          <NavigationProperty Name="ItemStats" Relationship="MCGameDataModel.FK_ItemStat" FromRole="Item" ToRole="ItemStat" />
+          <NavigationProperty Name="ItemSet" Relationship="MCGameDataModel.FK_ItemSetRequired" FromRole="Item" ToRole="ItemSet" />
+        </EntityType>
+        <Association Name="FK_Item">
+          <End Type="MCGameDataModel.Item" Role="Item" Multiplicity="1" />
+          <End Type="MCGameDataModel.ItemSetMapping" Role="ItemSetMapping" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Item">
+              <PropertyRef Name="ItemID" />
+            </Principal>
+            <Dependent Role="ItemSetMapping">
+              <PropertyRef Name="ItemID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ItemStat">
+          <End Type="MCGameDataModel.Item" Role="Item" Multiplicity="1" />
+          <End Type="MCGameDataModel.ItemStat" Role="ItemStat" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Item">
+              <PropertyRef Name="ItemID" />
+            </Principal>
+            <Dependent Role="ItemStat">
+              <PropertyRef Name="ItemID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ItemSetRequired">
+          <End Type="MCGameDataModel.ItemSet" Role="ItemSet" Multiplicity="0..1" />
+          <End Type="MCGameDataModel.Item" Role="Item" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ItemSet">
+              <PropertyRef Name="ItemSetID" />
+            </Principal>
+            <Dependent Role="Item">
+              <PropertyRef Name="ItemSetRequired" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1062,25 +1148,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Items">
-            <EntityTypeMapping TypeName="MCGameDataModel.Item">
-              <MappingFragment StoreEntitySet="Item">
-                <ScalarProperty Name="IsSoldInShop" ColumnName="IsSoldInShop" />
-                <ScalarProperty Name="CorporationRequired" ColumnName="CorporationRequired" />
-                <ScalarProperty Name="ImgAlternatePath" ColumnName="ImgAlternatePath" />
-                <ScalarProperty Name="ImgLargePath" ColumnName="ImgLargePath" />
-                <ScalarProperty Name="ImgIconPath" ColumnName="ImgIconPath" />
-                <ScalarProperty Name="ImgShopPath" ColumnName="ImgShopPath" />
-                <ScalarProperty Name="RankRequired" ColumnName="RankRequired" />
-                <ScalarProperty Name="Cost" ColumnName="Cost" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Type" ColumnName="Type" />
-                <ScalarProperty Name="ItemSetID" ColumnName="ItemSetID" />
-                <ScalarProperty Name="ItemID" ColumnName="ItemID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="ItemStats">
             <EntityTypeMapping TypeName="MCGameDataModel.ItemStat">
               <MappingFragment StoreEntitySet="ItemStat">
@@ -1157,6 +1224,34 @@
                 <ScalarProperty Name="Type" ColumnName="Type" />
                 <ScalarProperty Name="MissionID" ColumnName="MissionID" />
                 <ScalarProperty Name="ObjectiveID" ColumnName="ObjectiveID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ItemSetMappings">
+            <EntityTypeMapping TypeName="MCGameDataModel.ItemSetMapping">
+              <MappingFragment StoreEntitySet="ItemSetMapping">
+                <ScalarProperty Name="ItemSetID" ColumnName="ItemSetID" />
+                <ScalarProperty Name="ItemID" ColumnName="ItemID" />
+                <ScalarProperty Name="ItemSetMappingID" ColumnName="ItemSetMappingID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Items">
+            <EntityTypeMapping TypeName="MCGameDataModel.Item">
+              <MappingFragment StoreEntitySet="Item">
+                <ScalarProperty Name="ImgAlternatePath" ColumnName="ImgAlternatePath" />
+                <ScalarProperty Name="ImgLargePath" ColumnName="ImgLargePath" />
+                <ScalarProperty Name="ImgIconPath" ColumnName="ImgIconPath" />
+                <ScalarProperty Name="ImgShopPath" ColumnName="ImgShopPath" />
+                <ScalarProperty Name="IsSoldInShop" ColumnName="IsSoldInShop" />
+                <ScalarProperty Name="ItemSetRequired" ColumnName="ItemSetRequired" />
+                <ScalarProperty Name="CorporationRequired" ColumnName="CorporationRequired" />
+                <ScalarProperty Name="RankRequired" ColumnName="RankRequired" />
+                <ScalarProperty Name="Cost" ColumnName="Cost" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="ItemID" ColumnName="ItemID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -612,9 +612,9 @@ Board.Sectors.CreateMiniGridCell = function (fromCell, toCell, nearbyCell, miniG
     nearbyCell.isFromCell = false;
     nearbyCell.isToCell = false;
     //set from and to cells
-    if (nearbyCell == fromCell) {
+    if (nearbyCell.CellID == fromCell.CellID) {
         nearbyCell.isFromCell = true;
-    } else if (nearbyCell == toCell) {
+    } else if (nearbyCell.CellID == toCell.CellID) {
         nearbyCell.isToCell = true;
     }
     miniGrid[nearbyCell.miniX][nearbyCell.miniY] = nearbyCell;

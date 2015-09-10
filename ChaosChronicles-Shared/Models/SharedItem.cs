@@ -3,7 +3,6 @@
 namespace ChaosChronicles_Shared.Models {
     public class SharedItem {
         public int ItemID { get; set; }
-        public int ItemSetID { get; set; }
         public string Type { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
@@ -16,6 +15,8 @@ namespace ChaosChronicles_Shared.Models {
         public string ImgLargePath { get; set; }
         public string ImgAlternatePath { get; set; }
 
+        public SharedItemSet ItemSetRequired { get; set; }
         public List<SharedItemStat> ItemStats { get; set; }
+        public List<SharedItemSet> ItemSets { get; set; }
     }
 }

@@ -44,6 +44,7 @@
     <Compile Include="Interfaces\Repository\IUnitRepository.cs" />
     <Compile Include="Interfaces\Repository\IMissionRepository.cs" />
     <Compile Include="Interfaces\Repository\ISectorRepository.cs" />
+    <Compile Include="Models\SharedItemSetMapping.cs" />
     <Compile Include="Models\SharedSectorMap.cs" />
     <Compile Include="Models\SharedEntrance.cs" />
     <Compile Include="Models\SharedObjective.cs" />

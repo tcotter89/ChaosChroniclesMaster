@@ -4,30 +4,41 @@ GameConstants.DICEWHITEPROBABILITY = 2;   //how many sides of a D6 dice are hits
 GameConstants.DICEREDPROBABILITY =   3;   //how many sides of a D6 dice are hits
 GameConstants.DICEBLACKPROBABILITY = 4;   //how many sides of a D6 dice are hits
 
-Combat.RollDice = function (weaponStats, bufferStats) {
+Combat.RollDice = function (weaponStats, bufferStats, victimArmor) {
     var hits = 0;
     var probability = Combat.GetDiceProbability(weaponStats.DiceColor);
-
-    var diceCount = weaponStats.DiceCount;
+    var diceCount = 0;
+    if (typeof (weaponStats) != "undefined") {
+        diceCount = weaponStats.DiceCount;
+    }
     for (i = 0; i < bufferStats.length; i++) {
         if (typeof (bufferStats[i].DiceCount) != "undefined") {
             diceCount += bufferStats[i].DiceCount;
         }
     }
 
-    for (i = 0; i < weaponStats.DiceCount; i++) {
+    if (diceCount == 0 || victimArmor >= diceCount) {
+        return -1;  //attack unsuccessful, rolling 0 dice or having no chance of hurting the enemy
+    }
+    
+    console.log("Rolling " + diceCount + " dice");
+    for (i = 0; i < diceCount; i++) {
         if (Combat.PerformDiceRoll(probability, 6) == true) {
             hits++;
         }
     }
 
-    var diceRerolls = weaponStats.DiceReroll;
+    var diceRerolls = 0;
+    if (typeof (weaponStats) != "undefined") {
+        diceRerolls = weaponStats.DiceReroll;
+    }
     for (i = 0; i < bufferStats.length; i++) {
         if (typeof (bufferStats[i].DiceReroll) != "undefined") {
             diceRerolls += bufferStats[i].DiceReroll;
         }
     }
 
+    console.log("Re-rolling up to " + diceRerolls + " dice");
     for (i = 0; i < diceCount - hits && diceRerolls > 0; i++) {
         if (Combat.PerformDiceRoll(probability, 6) == true) {
             hits++;

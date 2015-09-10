@@ -9,6 +9,7 @@ CreateArmorSet
 CreateItem
 CreateItemStat
 CreateItemSet
+CreateItemSetMapping
 
 InsertItems
 InsertArmor

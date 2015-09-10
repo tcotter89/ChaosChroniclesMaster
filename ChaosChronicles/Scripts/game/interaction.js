@@ -19,25 +19,33 @@ Interaction.TargetUnit = function (data, unit) {
     Interaction.AttackUnit(data, unit);
 }
 Interaction.AttackUnit = function () {
-    console.log(Interaction.currentSelected.name + " is attacking " + Interaction.currentTargeted.name);
+    var results;
 
     //first determine attack type: ranged or melee
     var attackerBoardLocation = Interaction.currentSelected.boardLocation;
-    var victimBoardLocation = Interaction.currentSelected.boardLocation;
+    var victimBoardLocation = Interaction.currentTargeted.boardLocation;
     var fromSector = $.grep(Board.currentBoard.sectorMap, function (e) { return e.Sector.sectorNumber == attackerBoardLocation.sectorNumber })[0].Sector;
     var toSector = $.grep(Board.currentBoard.sectorMap, function (e) { return e.Sector.sectorNumber == victimBoardLocation.sectorNumber })[0].Sector;
     var miniGrid = Board.Sectors.ConstructMiniGrid(attackerBoardLocation, victimBoardLocation, fromSector, toSector, GameConstants.MOVEMENTGRIDSIZEX, GameConstants.MOVEMENTGRIDSIZEY);
     var inMeleeRange = Board.Sectors.AreCellsWithinOne(miniGrid);
     if (inMeleeRange == true) {
-        Units.AttackUnit(Interaction.currentSelected, Interaction.currentTargeted, 'Melee');
+        console.log(Interaction.currentSelected.name + " is attacking " + Interaction.currentTargeted.name + " with a melee attack");
+        results = Units.AttackUnit(Interaction.currentSelected, Interaction.currentTargeted, 'Melee');
     } else {
-        Units.AttackUnit(Interaction.currentSelected, Interaction.currentTargeted, 'Firearms');
+        console.log(Interaction.currentSelected.name + " is attacking " + Interaction.currentTargeted.name + " with a firearms attack");
+        results = Units.AttackUnit(Interaction.currentSelected, Interaction.currentTargeted, 'Firearms');
+    }
+
+    if (results.success === false) {
+        console.log("Attack failed, you are unable to damage the target from this range with this weapon");
     }
 }
 Interaction.SelectSector = function (data, sector) {
     Interaction.currentSector = sector;
     //console.log("Sector " + sector.index + " Selected");
-    Interaction.AttemptMove(data);
+    if (Board.currentBoard.dragging == false) {
+        Interaction.AttemptMove(data);
+    }
     //if (Interaction.AttemptMove(data) == true) {
         //var cellCoords = Utilities.ConvertCoordToCell(data.global.x, data.global.y)
         //Networking.SendDoomtrooperMove(Interaction.currentSelected.index, sector.index, cellCoords.x, cellCoords.y);
@@ -104,12 +112,13 @@ Interaction.AttemptMove = function (data) {
 //    Doomtroopers.MoveDoomtrooper(Doomtroopers.doomtrooperList[doomtrooperIndex], Board.Sectors.sectorList[fromSectorIndex], Board.Sectors.sectorList[toSectorIndex], cellCoords);
 //}
 Interaction.PerformMove = function (unitIndex, toSectorIndex, gridCellX, gridCellY) {
-    var cellCoords = new Object();
-    cellCoords.x = gridCellX;
-    cellCoords.y = gridCellY;
 
-    var fromSectorIndex = Units.unitList[unitIndex].boardLocation.sectorIndex;
-    Units.MoveUnit(Units.unitList[unitIndex], Board.currentBoard.sectorMap[fromSectorIndex].Sector, Board.currentBoard.sectorMap[toSectorIndex].Sector, cellCoords);
+    var unit = Units.unitList[unitIndex]
+    var fromSector = Board.currentBoard.sectorMap[Units.unitList[unitIndex].boardLocation.sectorIndex].Sector;
+    var toSector = Board.currentBoard.sectorMap[toSectorIndex].Sector;
+    var toCell = toSector.cells[gridCellX][gridCellY];
+
+    Units.MoveUnit(unit, fromSector, toSector, toCell);
 }
 
 //Interaction.HandleLeftClick = function (event) {

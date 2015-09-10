@@ -22,24 +22,25 @@
         <AssociationConnector Association="MCGameDataModel.FK_DefenseSetDefenseRoll" />
         <AssociationConnector Association="MCGameDataModel.FK_DefenseSet" />
         <AssociationConnector Association="MCGameDataModel.FK_ItemSet" />
-        <EntityTypeShape EntityType="MCGameDataModel.Item" Width="1.5" PointX="5.125" PointY="10.75" />
-        <AssociationConnector Association="MCGameDataModel.FK_Item" />
         <EntityTypeShape EntityType="MCGameDataModel.ItemStat" Width="1.5" PointX="7.375" PointY="11" />
-        <AssociationConnector Association="MCGameDataModel.FK_ItemStat" />
         <EntityTypeShape EntityType="MCGameDataModel.Entrance" Width="1.5" PointX="0.625" PointY="1.125" />
         <AssociationConnector Association="MCGameDataModel.FK_SectorEntrance" />
         <EntityTypeShape EntityType="MCGameDataModel.SectorMap" Width="1.5" PointX="3.125" PointY="12.25" />
         <AssociationConnector Association="MCGameDataModel.FK_SectorMapMission" ManuallyRouted="true" >
-          <ConnectorPoint PointX="2.2499999999999996" PointY="9.3648079427083335" />
-          <ConnectorPoint PointX="2.5035744349011213" PointY="9.6183823776094535" />
-          <ConnectorPoint PointX="2.6214255650988791" PointY="9.7362335078072118" />
-          <ConnectorPoint PointX="2.625" PointY="9.7398079427083335" />
-          <ConnectorPoint PointX="2.625" PointY="14.586253255208334" />
-          <ConnectorPoint PointX="3.125" PointY="14.586253255208334" />
+          <ConnectorPoint PointX="2.25" PointY="6.9401349420480472" />
+          <ConnectorPoint PointX="2.615585588132848" PointY="10.15546354317539" />
+          <ConnectorPoint PointX="2.6344144118671529" PointY="10.321063220634496" />
+          <ConnectorPoint PointX="3.125" PointY="14.635767968380803" />
         </AssociationConnector>
         <AssociationConnector Association="MCGameDataModel.FK_SectorMapSector" />
         <EntityTypeShape EntityType="MCGameDataModel.Objective" Width="1.5" PointX="0.75" PointY="11.5" />
         <AssociationConnector Association="MCGameDataModel.FK_Mission" />
+        <EntityTypeShape EntityType="MCGameDataModel.ItemSetMapping" Width="1.5" PointX="10.375" PointY="11.375" />
+        <AssociationConnector Association="MCGameDataModel.FK_ItemSetMapping" />
+        <EntityTypeShape EntityType="MCGameDataModel.Item" Width="1.5" PointX="5.5" PointY="11.125" />
+        <AssociationConnector Association="MCGameDataModel.FK_Item" />
+        <AssociationConnector Association="MCGameDataModel.FK_ItemStat" />
+        <AssociationConnector Association="MCGameDataModel.FK_ItemSetRequired" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -2,7 +2,7 @@
 Board.currentBoard = new Object();
 
 Board.FRAMEOFFSETX = 10;
-Board.FRAMEOFFSETY = 10;
+Board.FRAMEOFFSETY = 40;
 
 $(function () {
     //alert('load doomtrooper script');
@@ -66,21 +66,25 @@ Board.OnDragStart = function (event) {
     //var newPositionY = yOffset;// - (this.height * this.anchor.y);
     //this.position.x = newPositionX;
     //this.position.y = newPositionY;
-    this.dragging = true;
+    this.startDrag = true;
 }
 
 Board.OnDragEnd = function () {
     //this.alpha = 1;
     this.dragging = false;
+    this.startDrag = false;
     this.data = null;
 }
 Board.OnDragMove = function () {
-    if (this.dragging) {
+    if (this.startDrag) {
+        if (this.position.x != this.start.x || this.position.y != this.start.y) {
+            this.dragging = true;
+        }
         //var oldPositionX = this.position.x - ((this.width * this.anchor.x) + 10);
         //var oldPositionY = this.position.y - ((this.height * this.anchor.y) + 10);
         var xOffset = this.data.getLocalPosition(this.parent).x;
         var yOffset = this.data.getLocalPosition(this.parent).y;
-        this.position.x = this.start.x + xOffset + Board.FRAMEOFFSETX - this.anchor.x;
-        this.position.y = this.start.y + yOffset + Board.FRAMEOFFSETY - this.anchor.y;
+        this.position.x = this.start.x + xOffset - this.anchor.x;
+        this.position.y = this.start.y + yOffset - this.anchor.y;
     }
 }
