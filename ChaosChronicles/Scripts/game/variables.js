@@ -16,9 +16,9 @@ GameConstants.Setup.LOADINGSTEP_MISSIONS = 0;
 GameConstants.Setup.LOADINGSTEP_PLAYERS = 1;
 GameConstants.Setup.LOADINGSTEP_DOOMTROOPERS = 5;
 GameConstants.Setup.LOADINGSTEP_LEGION = 11;
-GameConstants.Setup.LOADINGSTEP_ITEMS = 11;
-GameConstants.Setup.LOADINGSTEP_OVERLAY = 12;
-GameConstants.Setup.LOADINGSTEP_COMPLETE = 13;
+GameConstants.Setup.LOADINGSTEP_ITEMS = 12;
+GameConstants.Setup.LOADINGSTEP_OVERLAY = 13;
+GameConstants.Setup.LOADINGSTEP_COMPLETE = 14;
  
 GameConstants.Images = new Object();
 GameConstants.Images.MISSING = "missing.png";

@@ -71,9 +71,11 @@ Setup.ProcessLoadingQueue = function () {
         var gallagherCell = sector5.cells[2][2];
         Units.AddNewUnit('Gallagher', Players.playerList[3].index, sector5, gallagherCell, true);
     }
-        //else if (Setup.loadingStep == GameConstants.Setup.LOADINGSTEP_LEGION) {
-    //    Units.AddNewUnit('Legionnaire', Players.playerList[2].index, Board.Sectors.sectorList[0], new Object({ x: 6, y: 6 }), true);
-    //}
+    else if (Setup.loadingStep == GameConstants.Setup.LOADINGSTEP_LEGION) {
+        var sector2 = $.grep(Board.currentBoard.sectorMap, function (e) { return e.Sector.sectorNumber == "2" })[0].Sector;
+        var legionnaireCell = sector2.cells[3][3];
+        Units.AddNewUnit('Legionnaire', Players.playerList[1].index, sector2, legionnaireCell, true);
+    }
     else if (Setup.loadingStep == GameConstants.Setup.LOADINGSTEP_ITEMS) {
         Items.AddAllItems(true);
     }

@@ -43,7 +43,7 @@ Interaction.AttackUnit = function () {
 Interaction.SelectSector = function (data, sector) {
     Interaction.currentSector = sector;
     //console.log("Sector " + sector.index + " Selected");
-    if (Board.currentBoard.dragging == false) {
+    if (typeof(Board.currentBoard.dragging) == "undefined" || Board.currentBoard.dragging == false) {
         Interaction.AttemptMove(data);
     }
     //if (Interaction.AttemptMove(data) == true) {

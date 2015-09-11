@@ -101,7 +101,7 @@ Units.GiveItemToUnit = function (item, unit) {
 }
 
 Units.SelectUnit = function (event) {
-    if (Board.currentBoard.dragging == false) {
+    if (typeof(Board.currentBoard.dragging) == "undefined" || Board.currentBoard.dragging == false) {
         var underlayTexture;
 
         //unselect previous
@@ -128,7 +128,7 @@ Units.SelectUnit = function (event) {
 }
 
 Units.TargetUnit = function (event) {
-    if (Board.currentBoard.dragging == false) {
+    if (typeof (Board.currentBoard.dragging) == "undefined" || Board.currentBoard.dragging == false) {
         var underlayTexture;
 
         //untarget previous

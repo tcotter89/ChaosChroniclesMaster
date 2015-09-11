@@ -153,6 +153,8 @@ INSERT INTO ItemSetMapping (ItemID, ItemSetID)
                     VALUES (     4,        10)
 INSERT INTO ItemSetMapping (ItemID, ItemSetID)
                     VALUES (     4,        11)
+INSERT INTO ItemSetMapping (ItemID, ItemSetID)
+                    VALUES (     4,         4)
 
 SET IDENTITY_INSERT ItemSet ON
 INSERT INTO ItemSet (ItemSetID,          Name)
@@ -190,6 +192,8 @@ INSERT INTO ItemSetMapping (ItemID, ItemSetID)
                     VALUES (     5,        10)
 INSERT INTO ItemSetMapping (ItemID, ItemSetID)
                     VALUES (     5,        11)
+INSERT INTO ItemSetMapping (ItemID, ItemSetID)
+                    VALUES (     5,         5)
 
 SET IDENTITY_INSERT ItemSet ON
 INSERT INTO ItemSet (ItemSetID,        Name)
@@ -227,6 +231,8 @@ INSERT INTO ItemSetMapping (ItemID, ItemSetID)
                     VALUES (     6,        10)
 INSERT INTO ItemSetMapping (ItemID, ItemSetID)
                     VALUES (     6,        11)
+INSERT INTO ItemSetMapping (ItemID, ItemSetID)
+                    VALUES (     6,         6)
 
 SET IDENTITY_INSERT ItemSet ON
 INSERT INTO ItemSet (ItemSetID,     Name)
@@ -264,6 +270,8 @@ INSERT INTO ItemSetMapping (ItemID, ItemSetID)
                     VALUES (     7,        10)
 INSERT INTO ItemSetMapping (ItemID, ItemSetID)
                     VALUES (     7,        11)
+INSERT INTO ItemSetMapping (ItemID, ItemSetID)
+                    VALUES (     7,         7)
 
 SET IDENTITY_INSERT ItemSet ON
 INSERT INTO ItemSet (ItemSetID,        Name)
@@ -301,6 +309,8 @@ INSERT INTO ItemSetMapping (ItemID, ItemSetID)
                     VALUES (     8,        10)
 INSERT INTO ItemSetMapping (ItemID, ItemSetID)
                     VALUES (     8,        11)
+INSERT INTO ItemSetMapping (ItemID, ItemSetID)
+                    VALUES (     8,         8)
 
 SET IDENTITY_INSERT ItemSet ON
 INSERT INTO ItemSet (ItemSetID,       Name)
@@ -338,6 +348,8 @@ INSERT INTO ItemSetMapping (ItemID, ItemSetID)
                     VALUES (     9,        10)
 INSERT INTO ItemSetMapping (ItemID, ItemSetID)
                     VALUES (     9,        11)
+INSERT INTO ItemSetMapping (ItemID, ItemSetID)
+                    VALUES (     9,         9)
 
 -- MISC ITEMS ---------------------------------------------------------------------------------------------------------
 SET IDENTITY_INSERT Item ON
