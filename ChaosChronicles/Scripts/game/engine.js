@@ -12,6 +12,13 @@ var frames = 0;
 
 Engine.RunApplication = function () {
     setInterval(Engine.Tick, 1000 / 30);
+    setInterval(Engine.TickSecond, 1000);
+}
+
+Engine.TickSecond = function () {
+    if (Corporations.selectScreen.active == true) {
+        Corporations.UpdateSelectScreen();
+    }
 }
 
 Engine.Tick = function () {
@@ -43,8 +50,8 @@ Engine.Animate = function () {
     // render
     GameGlobals.renderer.render(GameGlobals.stage);
 
-    //// request new frame
+    // request new frame
     //requestAnimationFrame(function () {
-    //    Animate();
+    //    Engine.Animate();
     //});
 }

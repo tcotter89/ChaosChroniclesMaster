@@ -44,13 +44,13 @@ namespace ChaosChronicles_Repository.Converters {
                 IsEntranceTBlocked = RemoveNullable(repo.IsEntranceTBlocked, true),
                 IsEntranceTForDoomtroopers = RemoveNullable(repo.IsEntranceTForDoomtroopers),
                 IsEntranceTForLegion = RemoveNullable(repo.IsEntranceTForLegion),
-                IsEntranceRBlocked = RemoveNullable(repo.IsEntranceTBlocked, true),
+                IsEntranceRBlocked = RemoveNullable(repo.IsEntranceRBlocked, true),
                 IsEntranceRForDoomtroopers = RemoveNullable(repo.IsEntranceRForDoomtroopers),
                 IsEntranceRForLegion = RemoveNullable(repo.IsEntranceRForLegion),
-                IsEntranceBBlocked = RemoveNullable(repo.IsEntranceTBlocked, true),
+                IsEntranceBBlocked = RemoveNullable(repo.IsEntranceBBlocked, true),
                 IsEntranceBForDoomtroopers = RemoveNullable(repo.IsEntranceBForDoomtroopers),
                 IsEntranceBForLegion = RemoveNullable(repo.IsEntranceBForLegion),
-                IsEntranceLBlocked = RemoveNullable(repo.IsEntranceTBlocked, true),
+                IsEntranceLBlocked = RemoveNullable(repo.IsEntranceLBlocked, true),
                 IsEntranceLForDoomtroopers = RemoveNullable(repo.IsEntranceLForDoomtroopers),
                 IsEntranceLForLegion = RemoveNullable(repo.IsEntranceLForLegion),
                 Sector = repo.Sector.ToSharedModel()
@@ -245,11 +245,7 @@ namespace ChaosChronicles_Repository.Converters {
                 var sharedItemStat = itemStat.ToSharedModel();
                 sharedItemStats.Add(sharedItemStat);
             }
-            //var sharedItemSets = new List<SharedItemSet>();
-            //foreach (var itemSetMapping in repo.ItemSetMappings) {
-            //    var sharedItemSetTmp = itemSetMapping.ItemSet.ToSharedModel();
-            //    sharedItemSets.Add(sharedItemSetTmp);
-            //}
+
             return new SharedItem() {
                 ItemID = repo.ItemID,
                 Type = repo.Type,
@@ -264,8 +260,7 @@ namespace ChaosChronicles_Repository.Converters {
                 ImgIconPath = RemoveNullable(repo.ImgIconPath, "missing.png"),
                 ImgLargePath = RemoveNullable(repo.ImgLargePath, "missing.png"),
                 ImgAlternatePath = RemoveNullable(repo.ImgAlternatePath, "missing.png"),
-                ItemStats = sharedItemStats,
-                //ItemSets = sharedItemSets
+                ItemStats = sharedItemStats
             };
         }
 
@@ -305,7 +300,9 @@ namespace ChaosChronicles_Repository.Converters {
                 ImgAlternatePath = RemoveNullable(repo.ImgAlternatePath, Constants.MISSING_IMG),
                 ImgTrayPath = RemoveNullable(repo.ImgTrayPath, Constants.MISSING_IMG),
                 ImgTurnMarkerPath = RemoveNullable(repo.ImgTurnMarkerPath, Constants.MISSING_IMG),
-                BonusDescription = RemoveNullable(repo.BonusDescription, "Unknown Bonus")
+                ImgPerkPath = RemoveNullable(repo.ImgPerkPath, Constants.MISSING_IMG),
+                BonusName = RemoveNullable(repo.BonusName, "No Perk"),
+                BonusDescription = RemoveNullable(repo.BonusDescription, "This corporation does not have a perk")
             };
         }
 

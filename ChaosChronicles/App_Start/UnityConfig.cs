@@ -39,8 +39,9 @@ namespace ChaosChronicles.App_Start
 
             // TODO: Register your types here
             // container.RegisterType<IProductRepository, ProductRepository>();
-            container.RegisterType<ISectorRepository, SectorRepository>();
             container.RegisterType<IMissionRepository, MissionRepository>();
+            container.RegisterType<ICorporationRepository, CorporationRepository>();
+            container.RegisterType<ISectorRepository, SectorRepository>();
             container.RegisterType<IUnitRepository, UnitRepository>();
             container.RegisterType<IItemRepository, ItemRepository>();
         }

@@ -11,72 +11,72 @@ $(function () {
     //alert('load sector script');
 });
 
-Board.Sectors.AddNewSector = function (sectorNumber, firstTimeLoad) {
-    var sector = new Object();
+//Board.Sectors.AddNewSector = function (sectorNumber, firstTimeLoad) {
+//    var sector = new Object();
 
-    //sector.grid = new Array(Board.Sectors.CELLSPERSECTORSIDE); //2d array 
-    //for (i = 0; i < Board.Sectors.CELLSPERSECTORSIDE; i++) {
-    //    sector.grid[i] = new Array(Board.Sectors.CELLSPERSECTORSIDE);
-    //}
+//    //sector.grid = new Array(Board.Sectors.CELLSPERSECTORSIDE); //2d array 
+//    //for (i = 0; i < Board.Sectors.CELLSPERSECTORSIDE; i++) {
+//    //    sector.grid[i] = new Array(Board.Sectors.CELLSPERSECTORSIDE);
+//    //}
 
-    //load from database
-    $.ajax({
-        url: "/Home/GetSectorData",
-        type: "POST",
-        data: { 'ObjectIdentifier': sectorNumber },
-        dataType: "json",
-        success: function (result) {
-            switch (result.Result) {
-                case true:
-                    sector = new PIXI.Container();
+//    //load from database
+//    $.ajax({
+//        url: "/Home/GetSectorData",
+//        type: "POST",
+//        data: { 'ObjectIdentifier': sectorNumber },
+//        dataType: "json",
+//        success: function (result) {
+//            switch (result.Result) {
+//                case true:
+//                    sector = new PIXI.Container();
 
-                    //from database
-                    sector.imgPath = result.Data.ImgPath;
-                    var texture = PIXI.Texture.fromImage(GameConstants.IMAGESROOT + sector.imgPath);
-                    var background = new PIXI.Sprite(texture);
-                    sector.addChild(background);
+//                    //from database
+//                    sector.imgPath = result.Data.ImgPath;
+//                    var texture = PIXI.Texture.fromImage(GameConstants.IMAGESROOT + sector.imgPath);
+//                    var background = new PIXI.Sprite(texture);
+//                    sector.addChild(background);
 
-                    sector.sectorNumber = result.Data.SectorNumber;
-                    sector.name = result.Data.SectorName;
-                    sector.description = result.Data.SectorDescription;
+//                    sector.sectorNumber = result.Data.SectorNumber;
+//                    sector.name = result.Data.SectorName;
+//                    sector.description = result.Data.SectorDescription;
 
-                    background.interactive = true;
-                    //sector.buttonMode = true;
-                    background.on('click', Board.Sectors.SelectSector);
+//                    background.interactive = true;
+//                    //sector.buttonMode = true;
+//                    background.on('click', Board.Sectors.SelectSector);
 
-                    sector.cellsX = result.Data.Width;
-                    sector.cellsY = result.Data.Height;
-                    sector.anchor.set(0.5); //centered
-                    sector.width = Board.Sectors.CELLWIDTH * sector.cellsX;
-                    sector.height = Board.Sectors.CELLHEIGHT * sector.cellsY;
-                    sector.position.x = (sector.width * sector.anchor.x) + Board.FRAMEOFFSETX;
-                    sector.position.y = (sector.height * sector.anchor.y) + Board.FRAMEOFFSETY;
+//                    sector.cellsX = result.Data.Width;
+//                    sector.cellsY = result.Data.Height;
+//                    sector.anchor.set(0.5); //centered
+//                    sector.width = Board.Sectors.CELLWIDTH * sector.cellsX;
+//                    sector.height = Board.Sectors.CELLHEIGHT * sector.cellsY;
+//                    sector.position.x = (sector.width * sector.anchor.x) + Board.FRAMEOFFSETX;
+//                    sector.position.y = (sector.height * sector.anchor.y) + Board.FRAMEOFFSETY;
 
-                    sector.cells = result.Data.Cells;
+//                    sector.cells = result.Data.Cells;
 
-                    //array logic
-                    sector.index = Board.Sectors.sectorList.length;   //the length will find the index that the new sector will be pushed to
-                    Board.Sectors.sectorList.push(sector);
+//                    //array logic
+//                    sector.index = Board.Sectors.sectorList.length;   //the length will find the index that the new sector will be pushed to
+//                    Board.Sectors.sectorList.push(sector);
 
-                    //GameGlobals.stage.addChild(sector);
+//                    //GameGlobals.stage.addChild(sector);
 
-                    if (firstTimeLoad == true) {
-                        Setup.loadingStep++;
-                        Setup.ProcessLoadingQueue();
-                        break;
-                    } else {
-                        return sector.index;
-                    }
-                default:
-                    GameGlobals.error.html("Sector " + sectorNumber + " was not found in the database");
-                    break;
-            }
-        },
-        error: function () {
-            GameGlobals.error.html("There was an unknown error while trying to load sector " + sectorNumber + " data");
-        }
-    });
-}
+//                    if (firstTimeLoad == true) {
+//                        Setup.loadingStep++;
+//                        Setup.ProcessLoadingQueue();
+//                        break;
+//                    } else {
+//                        return sector.index;
+//                    }
+//                default:
+//                    GameGlobals.error.html("Sector " + sectorNumber + " was not found in the database");
+//                    break;
+//            }
+//        },
+//        error: function () {
+//            GameGlobals.error.html("There was an unknown error while trying to load sector " + sectorNumber + " data");
+//        }
+//    });
+//}
 
 Board.Sectors.LoadSector = function (sectorMap) {
     var sector = sectorMap.Sector;  //the c# version
@@ -90,78 +90,174 @@ Board.Sectors.LoadSector = function (sectorMap) {
     boardSector.description = sector.SectorDescription;
 
     background.interactive = true;
-    //boardSector.buttonMode = true;
     background.on('click', Board.Sectors.SelectSector);
 
     boardSector.cellsX = sector.Width;
     boardSector.cellsY = sector.Height;
-    boardSector.width = Board.Sectors.CELLWIDTH * boardSector.cellsX;
+    boardSector.width  = Board.Sectors.CELLWIDTH * boardSector.cellsX;
     boardSector.height = Board.Sectors.CELLHEIGHT * boardSector.cellsY;
-    background.width = Board.Sectors.CELLWIDTH * boardSector.cellsX;
+    background.width  = Board.Sectors.CELLWIDTH * boardSector.cellsX;
     background.height = Board.Sectors.CELLHEIGHT * boardSector.cellsY;
 
     boardSector.scale.x = 1;
     boardSector.scale.y = 1;
-    //boardSector.anchor.set(0.5); //centered
 
     boardSector.LocationX = sectorMap.LocationX;
     boardSector.LocationY = sectorMap.LocationY;
     var boardLocationX = sectorMap.LocationX;   //this is the offset of the sector map. if sector is at top left, next to it, etc
     var boardLocationY = sectorMap.LocationY;
-    var anchorOffsetX = 0;//boardSector.width * boardSector.anchor.x;   //this is the offset to fix positioning for the anchor. (difficult to understand)
-    var anchorOffsetY = 0//boardSector.height * boardSector.anchor.y;
+    var anchorOffsetX = 0;
+    var anchorOffsetY = 0;
     boardSector.position.x = ((Board.Sectors.CELLWIDTH * boardSector.cellsX) * boardLocationX) + Board.FRAMEOFFSETX + anchorOffsetX;
     boardSector.position.y = ((Board.Sectors.CELLHEIGHT * boardSector.cellsY) * boardLocationY) + Board.FRAMEOFFSETY + anchorOffsetY;
 
     boardSector.cells = sector.Cells;
 
-    //boardSector.entrances = Board.Sectors.LoadEntrances(sectorMap, sector.Entrances);
-
+    //first put background down
     boardSector.addChild(background);
+    //next add entrances on top of background
+    boardSector.entrances = Board.Sectors.LoadEntrances(boardSector, sectorMap, sector.Entrances);
+
     boardSector.background = background; //there is only 1 background per sector, therefore give an easy reference to it.
     //GameGlobals.stage.addChild(boardSector);
 
     return boardSector;
 }
 
-Board.Sectors.LoadEntrances = function (sectorMap, sharedEntrances) {
+Board.Sectors.LoadEntrances = function (boardSector, sectorMap, sharedEntrances) {
     var entrances = [];
-    Board.Sectors.CreateEntrance(entrances, sharedEntrances, sectorMap.Sector, 'T',    sectorMap.IsEntranceTBlocked, sectorMap.IsEntranceTForDoomtroopers, sectorMap.IsEntranceTForLegion);
-    Board.Sectors.CreateEntrance(entrances, sharedEntrances, sectorMap.Sector, 'R', sectorMap.IsEntranceRBlocked, sectorMap.IsEntranceRForDoomtroopers, sectorMap.IsEntranceRForLegion);
-    Board.Sectors.CreateEntrance(entrances, sharedEntrances, sectorMap.Sector, 'B', sectorMap.IsEntranceBBlocked, sectorMap.IsEntranceBForDoomtroopers, sectorMap.IsEntranceBForLegion);
-    Board.Sectors.CreateEntrance(entrances, sharedEntrances, sectorMap.Sector, 'L', sectorMap.IsEntranceLBlocked, sectorMap.IsEntranceLForDoomtroopers, sectorMap.IsEntranceLForLegion);
+    if (sharedEntrances.length > 0) {
+        Board.Sectors.EntranceCreate(boardSector, entrances, sharedEntrances, sectorMap.Sector, 'T', sectorMap.IsEntranceTBlocked, sectorMap.IsEntranceTForDoomtroopers, sectorMap.IsEntranceTForLegion);
+        Board.Sectors.EntranceCreate(boardSector, entrances, sharedEntrances, sectorMap.Sector, 'R', sectorMap.IsEntranceRBlocked, sectorMap.IsEntranceRForDoomtroopers, sectorMap.IsEntranceRForLegion);
+        Board.Sectors.EntranceCreate(boardSector, entrances, sharedEntrances, sectorMap.Sector, 'B', sectorMap.IsEntranceBBlocked, sectorMap.IsEntranceBForDoomtroopers, sectorMap.IsEntranceBForLegion);
+        Board.Sectors.EntranceCreate(boardSector, entrances, sharedEntrances, sectorMap.Sector, 'L', sectorMap.IsEntranceLBlocked, sectorMap.IsEntranceLForDoomtroopers, sectorMap.IsEntranceLForLegion);
+    }
+    return entrances;
 }
 
-Board.Sectors.CreateEntrance = function (entrances, sharedEntrances, sector, orientation, isEntranceBlocked, isEntranceForDoomtroopers, isEntranceForLegion) {
-    var entrance = new Object();
+Board.Sectors.EntranceCreate = function (boardSector, entrances, sharedEntrances, sector, orientation, isEntranceBlocked, isEntranceForDoomtroopers, isEntranceForLegion) {
+    var entrance = new PIXI.Container();
+    entrance.name = orientation;
     var sharedEntrance = $.grep(sharedEntrances, function (e) { return e.Name.toUpperCase() == orientation.toUpperCase() })[0];
-    if (isEntranceBlocked == true) {
-        var imgPath;
+    if (typeof (sharedEntrance) != "undefined" && isEntranceBlocked != true) {
+
+        //determine image
+        var imgPath = GameConstants.Images.MISSING;
         if (isEntranceForDoomtroopers == true && isEntranceForLegion == true) {
-            imgPath = 'decals/bothEntrance.png';
+            imgPath = GameConstants.Images.DECAL_ENTRANCE_BOTH;
         } else if (isEntranceForDoomtroopers == true && isEntranceForLegion == false) {
-            imgPath = 'decals/doomEntrance.png';
+            imgPath = GameConstants.Images.DECAL_ENTRANCE_DOOMTROOPERS;
         } else if (isEntranceForDoomtroopers == false && isEntranceForLegion == true) {
-            imgPath = 'decals/legionEntrance.png';
+            imgPath = GameConstants.Images.DECAL_ENTRANCE_LEGION;
         }
         var texture = PIXI.Texture.fromImage(GameConstants.IMAGESROOT + imgPath);
-        entrance = new PIXI.Sprite(texture);
-        entrance.imgPath = imgPath;
 
-        entrance.width =  Board.Sectors.CELLWIDTH;
-        entrance.height = Board.Sectors.CELLHEIGHT;
-        entrance.position.x = sharedEntrance.CellX * Board.Sectors.CELLWIDTH;
-        entrance.position.y = sharedEntrance.CellY * Board.Sectors.CELLHEIGHT;
+        //entrance1
+        var entrance1 = new PIXI.Sprite(texture);
+        entrance1.imgPath = imgPath;
+        entrance1.width = Board.Sectors.CELLWIDTH;
+        entrance1.height = Board.Sectors.CELLHEIGHT;
+        entrance1.cellX = sharedEntrance.Cell1X;
+        entrance1.cellY = sharedEntrance.Cell1Y;
+        entrance1.anchor.x = 0.5;
+        entrance1.anchor.y = 0.5;
+        entrance1.interactive = true;
+        entrance1.on("click", Board.Sectors.EntranceSelect);
 
-        //sector.addChild(entrance);
+        //entrance2
+        var entrance2 = new PIXI.Sprite(texture);
+        entrance2.imgPath = imgPath;
+        entrance2.width = Board.Sectors.CELLWIDTH;
+        entrance2.height = Board.Sectors.CELLHEIGHT;
+        entrance2.cellX = sharedEntrance.Cell2X;
+        entrance2.cellY = sharedEntrance.Cell2Y;
+        entrance2.anchor.x = 0.5;
+        entrance2.anchor.y = 0.5;
+        entrance2.interactive = true;
+        entrance2.on("click", Board.Sectors.EntranceSelect);
+
+        //determine orientation
+        entrance.position.x = sharedEntrance.Cell1X * Board.Sectors.CELLWIDTH;
+        entrance.position.y = sharedEntrance.Cell1Y * Board.Sectors.CELLHEIGHT;
+        if (orientation == "T") {
+            entrance.width  = (Board.Sectors.CELLWIDTH  * 2);
+            entrance.height = (Board.Sectors.CELLHEIGHT * 1);
+
+            entrance1.rotation = 0.5 * Math.PI; //90 degrees
+            entrance1.position.x = (Board.Sectors.CELLWIDTH  / 2);
+            entrance1.position.y = (Board.Sectors.CELLHEIGHT / 2);
+
+            entrance2.rotation = 0.5 * Math.PI; //90 degrees
+            entrance2.position.x = Board.Sectors.CELLWIDTH + (Board.Sectors.CELLWIDTH / 2);
+            entrance2.position.y = (Board.Sectors.CELLHEIGHT / 2);
+        }
+        else if (orientation == "B") {
+            entrance.width = (Board.Sectors.CELLWIDTH * 2);
+            entrance.height = (Board.Sectors.CELLHEIGHT * 1);
+
+            entrance1.rotation = 1.5 * Math.PI; //270 degrees
+            entrance1.position.x = (Board.Sectors.CELLWIDTH / 2);
+            entrance1.position.y = (Board.Sectors.CELLHEIGHT / 2);
+
+            entrance2.rotation = 1.5 * Math.PI; //270 degrees
+            entrance2.position.x = Board.Sectors.CELLWIDTH + (Board.Sectors.CELLWIDTH / 2);
+            entrance2.position.y = (Board.Sectors.CELLHEIGHT / 2);
+        }
+        else if (orientation == "L") {
+            entrance.width = (Board.Sectors.CELLWIDTH * 1);
+            entrance.height = (Board.Sectors.CELLHEIGHT * 2);
+
+            entrance1.rotation = 0.0 * Math.PI; //0 degrees
+            entrance1.position.x = (Board.Sectors.CELLWIDTH / 2);
+            entrance1.position.y = (Board.Sectors.CELLHEIGHT / 2);
+
+            entrance2.rotation = 0.0 * Math.PI; //0 degrees
+            entrance2.position.x = (Board.Sectors.CELLWIDTH / 2);
+            entrance2.position.y = Board.Sectors.CELLHEIGHT + (Board.Sectors.CELLHEIGHT / 2);
+        }
+        else if (orientation == "R") {
+            entrance.width = (Board.Sectors.CELLWIDTH * 1);
+            entrance.height = (Board.Sectors.CELLHEIGHT * 2);
+
+            entrance1.rotation = 1.0 * Math.PI; //180 degrees
+            entrance1.position.x = (Board.Sectors.CELLWIDTH / 2);
+            entrance1.position.y = (Board.Sectors.CELLHEIGHT / 2);
+
+            entrance2.rotation = 1.0 * Math.PI; //180 degrees
+            entrance2.position.x = (Board.Sectors.CELLWIDTH / 2);
+            entrance2.position.y = Board.Sectors.CELLHEIGHT + (Board.Sectors.CELLHEIGHT / 2);
+        }
+        //save to array and find index
+        entrance.addChild(entrance1);
+        entrance1.index = entrance.getChildIndex(entrance1);
+        entrance.addChild(entrance2);
+        entrance2.index = entrance.getChildIndex(entrance2);
+
+        //save to array and find index
+        entrance.index = entrances.length;   //the length will find the index that the new unit will be pushed to
         entrances.push(entrance);
+        boardSector.addChild(entrance);
     }
     return entrance;
 }
 
+
+Board.Sectors.EntranceSelect = function (event) {
+    if (Utilities.IsClickDragging() == false) {
+        if (typeof (Interaction.currentSelected.type) != "undefined") {
+            var entrance = this;
+            var entranceGroup = this.parent;
+            var entranceSector = this.parent.parent;
+            Interaction.AttemptEnter(entrance, entranceGroup, entranceSector);
+        }
+    }
+}
+
 Board.Sectors.SelectSector = function (event) {
-    var sector = this.parent;
-    Interaction.SelectSector(event.data, sector);
+    if (Utilities.IsClickDragging() == false) {
+        var sector = this.parent;
+        Interaction.SelectSector(event.data, sector);
+    }
 }
 
 Board.Sectors.AreCellsWithinOne = function (miniGrid) {

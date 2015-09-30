@@ -74,6 +74,7 @@
     <Compile Include="Item.cs">
       <DependentUpon>MCGameData.tt</DependentUpon>
     </Compile>
+    <Compile Include="CorporationRepository.cs" />
     <Compile Include="ItemSet.cs">
       <DependentUpon>MCGameData.tt</DependentUpon>
     </Compile>

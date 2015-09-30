@@ -8,15 +8,15 @@ Interaction.currentSector = new Object();
 //    Interaction.currentSelected = doomtrooper;
 //    console.log("Doomtrooper " + doomtrooper.index + " Selected");
 //}
-Interaction.SelectUnit = function (data, unit) {
+Interaction.SelectUnit = function (unit) {
     Interaction.currentSelected = unit;
     console.log("Unit of type " + unit.type + " with index " + unit.index + " Selected");
 }
-Interaction.TargetUnit = function (data, unit) {
+Interaction.TargetUnit = function (unit) {
     Interaction.currentTargeted = unit;
     console.log("Unit of type " + unit.type + " with index " + unit.index + " Targeted");
 
-    Interaction.AttackUnit(data, unit);
+    Interaction.AttackUnit();
 }
 Interaction.AttackUnit = function () {
     var results;
@@ -43,13 +43,23 @@ Interaction.AttackUnit = function () {
 Interaction.SelectSector = function (data, sector) {
     Interaction.currentSector = sector;
     //console.log("Sector " + sector.index + " Selected");
-    if (typeof(Board.currentBoard.dragging) == "undefined" || Board.currentBoard.dragging == false) {
-        Interaction.AttemptMove(data);
+
+    //make sure the unit is already on the board
+    if (typeof(Interaction.currentSelected.type) != "undefined") {
+        if (typeof (Interaction.currentSelected.boardLocation) != "undefined" &&
+            typeof (Interaction.currentSelected.boardLocation.sectorIndex) != "undefined" &&
+            Interaction.currentSelected.boardLocation.sectorIndex != "-1" &&
+            Interaction.currentSelected.dead == false) {
+            Interaction.AttemptMove(data);
+        }
+        ////otherwise, attempt to enter a unit to the board
+        //else {
+        //    Interaction.AttemptEnter(data);
+        //}
+    } else {
+        console.log("Error: Nothing is selected");
+        return false;
     }
-    //if (Interaction.AttemptMove(data) == true) {
-        //var cellCoords = Utilities.ConvertCoordToCell(data.global.x, data.global.y)
-        //Networking.SendDoomtrooperMove(Interaction.currentSelected.index, sector.index, cellCoords.x, cellCoords.y);
-    //}
 }
 
 //Interaction.AttemptMove = function (data) {
@@ -74,32 +84,67 @@ Interaction.SelectSector = function (data, sector) {
 //    }
 //}
 
+Interaction.AttemptEnter = function (entrance, entranceGroup, sector) {
+    //var sectorCoordinates = data.getLocalPosition(Interaction.currentSector);
+    //var cellCoords = Utilities.ConvertCoordToCellWithScale(sectorCoordinates.x, sectorCoordinates.y, Interaction.currentSector.scale);
+    var unit = Interaction.currentSelected;
+    //var enteringCell = Board.currentBoard.sectorMap[Interaction.currentSector.index].Sector.cells[cellCoords.x][cellCoords.y];
+    //var enteringEntrance = $.grep(Board.currentBoard.sectorMap, function (e) {
+    //    return $.grep(e.Sector.entrances, function (f) {
+    //        $.grep(f.children, function (g) { return g.CellX == entrance.cellX && g.CellY == entrance.cellY })[0];
+    //    })[0];
+    //})[0];
+
+    //check if the player has already entered a sector
+    if (typeof (Players.playerList[Interaction.currentSelected.playerIndex].corporation.units.entranceGroup) != "undefined") {
+        if (Players.playerList[Interaction.currentSelected.playerIndex].corporation.units.entranceGroup == entranceGroup) {
+            Interaction.PerformEnter(unit.index, entrance.index, entranceGroup.index, sector.index);
+        } else {
+            console.log("Error: You must enter all of your units through the same entrance");
+        }
+    }
+    //otherwise register that they are using this entrance
+    else {
+        Interaction.PerformEnter(unit.index, entrance.index, entranceGroup.index, sector.index);
+        //Players.playerList[Interaction.currentSelected.playerIndex].corporation.units.entranceGroup = entranceGroup;
+    }
+}
+
+Interaction.PerformEnter = function (unitIndex, entranceIndex, entranceGroupIndex, sectorIndex) {
+    //find appropriate objects using passed indices
+    var unit = Units.instanceList[unitIndex];
+    var sector = Board.currentBoard.sectorMap[sectorIndex].Sector;
+    var entranceGroup = sector.entrances[entranceGroupIndex];
+    var entrance = entranceGroup.children[entranceIndex];
+
+    //register that this player is using this entrance
+    Players.playerList[unit.playerIndex].corporation.units.entranceGroup = entranceGroup;
+
+    //find the cell of the entrance and move the unit there
+    var destinationCell = sector.cells[entrance.cellX][entrance.cellY];
+    Units.MoveUnit(unit, sector, sector, destinationCell);
+}
+
 Interaction.AttemptMove = function (data) {
     var sectorCoordinates = data.getLocalPosition(Interaction.currentSector);
+    var cellCoords = Utilities.ConvertCoordToCellWithScale(sectorCoordinates.x, sectorCoordinates.y, Interaction.currentSector.scale);
+    //console.log("Click: (" + cellCoords.x + "," + cellCoords.y + ") Sector " + Interaction.currentSector.sectorNumber +
+    //    " with global coords (" + data.global.x + "," + data.global.y + ")");
 
-    if (Interaction.currentSelected.type != undefined) {
-        cellCoords = Utilities.ConvertCoordToCellWithScale(sectorCoordinates.x, sectorCoordinates.y, Interaction.currentSector.scale);
-        //console.log("Click: (" + cellCoords.x + "," + cellCoords.y + ") Sector " + Interaction.currentSector.sectorNumber +
-        //    " with global coords (" + data.global.x + "," + data.global.y + ")");
+    //parameter setup
+    var unit = Interaction.currentSelected;
+    var fromSector = $.grep(Board.currentBoard.sectorMap, function (e) { return e.Sector.sectorNumber == Interaction.currentSelected.boardLocation.sectorNumber })[0].Sector;
+    var toSector = Interaction.currentSector;
+    var destinationCell = Board.currentBoard.sectorMap[Interaction.currentSector.index].Sector.cells[cellCoords.x][cellCoords.y];
 
-        //parameter setup
-        var unit = Interaction.currentSelected;
-        var fromSector = $.grep(Board.currentBoard.sectorMap, function (e) { return e.Sector.sectorNumber == Interaction.currentSelected.boardLocation.sectorNumber })[0].Sector;
-        var toSector = Interaction.currentSector;
-        var destinationCell = Board.currentBoard.sectorMap[Interaction.currentSector.index].Sector.cells[cellCoords.x][cellCoords.y];
-
-        var movementCheck = Units.VerifyUnitMoveValid(unit, fromSector, toSector, destinationCell);
-        if (movementCheck == "Success") {
-            //Interaction.PerformMove(Interaction.currentSelected.index, Interaction.currentSector.index, cellCoords.x, cellCoords.y);
-            //Doomtroopers.MoveDoomtrooper(Interaction.currentSelected, Board.Sectors.sectorList[Interaction.currentSelected.boardLocation.sectorIndex], Interaction.currentSector, cellCoords);
-            Networking.SendUnitMove(Interaction.currentSelected.index, Interaction.currentSector.index, cellCoords.x, cellCoords.y);
-            return true;
-        } else {
-            console.log("Error: " + movementCheck);
-            return false;
-        }
+    var movementCheck = Units.VerifyUnitMoveValid(unit, fromSector, toSector, destinationCell);
+    if (movementCheck == "Success") {
+        //Interaction.PerformMove(Interaction.currentSelected.index, Interaction.currentSector.index, cellCoords.x, cellCoords.y);
+        //Doomtroopers.MoveDoomtrooper(Interaction.currentSelected, Board.Sectors.sectorList[Interaction.currentSelected.boardLocation.sectorIndex], Interaction.currentSector, cellCoords);
+        Networking.SendUnitMove(Interaction.currentSelected.index, Interaction.currentSector.index, cellCoords.x, cellCoords.y);
+        return true;
     } else {
-        console.log("Error: Nothing is selected");
+        console.log("Error: " + movementCheck);
         return false;
     }
 }
@@ -113,8 +158,8 @@ Interaction.AttemptMove = function (data) {
 //}
 Interaction.PerformMove = function (unitIndex, toSectorIndex, gridCellX, gridCellY) {
 
-    var unit = Units.unitList[unitIndex]
-    var fromSector = Board.currentBoard.sectorMap[Units.unitList[unitIndex].boardLocation.sectorIndex].Sector;
+    var unit = Units.instanceList[unitIndex]
+    var fromSector = Board.currentBoard.sectorMap[Units.instanceList[unitIndex].boardLocation.sectorIndex].Sector;
     var toSector = Board.currentBoard.sectorMap[toSectorIndex].Sector;
     var toCell = toSector.cells[gridCellX][gridCellY];
 

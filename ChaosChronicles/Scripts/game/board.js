@@ -36,7 +36,7 @@ Board.AddNewBoard = function (data) {
     Board.currentBoard.scale.x = 1;
     Board.currentBoard.scale.y = 1;
 
-    GameGlobals.stage.addChild(Board.currentBoard);
+    //GameGlobals.stage.addChild(Board.currentBoard);
 }
 
 Board.OnDragStart = function (event) {
@@ -87,4 +87,11 @@ Board.OnDragMove = function () {
         this.position.x = this.start.x + xOffset - this.anchor.x;
         this.position.y = this.start.y + yOffset - this.anchor.y;
     }
+}
+
+//currently called from Corporations.PerformChooseCorporation
+Board.ShowBoard = function () {
+    GameGlobals.stage.addChild(Board.currentBoard);
+    Overlay.CreateOverlay(false);
+    GameGlobals.stage.addChild(Overlay.currentOverlay); //overlay loads on top of game board
 }

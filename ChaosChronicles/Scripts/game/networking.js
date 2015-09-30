@@ -14,26 +14,27 @@ $(function () {
         Notifications.PageTitleNotification.On("New Message", 3000);
     };
 
-    Networking.interaction = $.connection.interactionHub;
+    // Start the connection
+    $.connection.hub.start().done(function () {
+        $("#send").click(function () {
+            // Call the chat method on the server
+            Networking.chat.server.sendMessage(InstanceData.currentPlayer, $('#msg').val());
+        });
+    });
 
-    //Networking.interaction.client.sendDoomtrooperMove = function (doomtrooperIndex, toSectorIndex, gridCellX, gridCellY) {
-    //    //$('#messages').append('<li>' + doomtrooperIndex + ",TS:" + toSectorIndex + ",(" + gridCellX + "," + gridCellY + ")" + '</li>');
-    //    console.log("Doomtrooper Index: " + doomtrooperIndex + ", To Sector Index: " + toSectorIndex + ", Moving To: (" + gridCellX + "," + gridCellY + ")");
-    //    Interaction.PerformMove(doomtrooperIndex, toSectorIndex, gridCellX, gridCellY);
-    //};
+    Networking.interaction = $.connection.interactionHub;
     Networking.interaction.client.sendUnitMove = function (unitIndex, toSectorIndex, gridCellX, gridCellY) {
         //$('#messages').append('<li>' + doomtrooperIndex + ",TS:" + toSectorIndex + ",(" + gridCellX + "," + gridCellY + ")" + '</li>');
         console.log("Unit Index: " + unitIndex + ", To Sector Index: " + toSectorIndex + ", Moving To: (" + gridCellX + "," + gridCellY + ")");
         Interaction.PerformMove(unitIndex, toSectorIndex, gridCellX, gridCellY);
     };
 
-    // Start the connection
-    $.connection.hub.start().done(function () {
-        $("#send").click(function () {
-            // Call the chat method on the server
-            Networking.chat.server.sendMessage($('#displayname').val(), $('#msg').val());
-        });
-    });
+    Networking.players = $.connection.playersHub;
+    Networking.players.client.sendPlayerCorporation = function (playerIndex, corporationIndex, nextPlayerIndex) {
+        //$('#messages').append('<li>' + doomtrooperIndex + ",TS:" + toSectorIndex + ",(" + gridCellX + "," + gridCellY + ")" + '</li>');
+        console.log("Player Index: " + playerIndex + ", Corporation Index: " + corporationIndex);
+        Corporations.PerformChooseCorporation(playerIndex, corporationIndex, nextPlayerIndex);
+    };
 });
 
 //Networking.SendDoomtrooperMove = function (doomtrooperIndex, toSectorIndex, gridCellX, gridCellY) {
@@ -41,4 +42,7 @@ $(function () {
 //}
 Networking.SendUnitMove = function (unitIndex, toSectorIndex, gridCellX, gridCellY) {
     Networking.interaction.server.sendUnitMove(unitIndex, toSectorIndex, gridCellX, gridCellY);
+}
+Networking.SendPlayerCorporation = function (playerIndex, corporationIndex, nextPlayerIndex) {
+    Networking.players.server.sendPlayerCorporation(playerIndex, corporationIndex, nextPlayerIndex);
 }

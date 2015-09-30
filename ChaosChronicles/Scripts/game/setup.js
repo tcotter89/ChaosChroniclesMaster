@@ -40,56 +40,58 @@ $(function () {
 });
 
 Setup.ProcessLoadingQueue = function () {
-    if (Setup.loadingStep == GameConstants.Setup.LOADINGSTEP_MISSIONS) {
+    if (Setup.loadingStep == GameConstants.Setup.LOADINGSTEP_UNITS) {
+        Units.LoadUnitData(true);
+        //var sector1 = $.grep(Board.currentBoard.sectorMap, function (e) { return e.Sector.sectorNumber == "1" })[0].Sector;
+        //var steinerCell = sector1.cells[1][1];
+        //Units.AddNewUnit('Steiner', Players.playerList[1].index, sector1, steinerCell, true);
+        //var valerieCell = sector1.cells[3][4];
+        //Units.AddNewUnit('Valerie', Players.playerList[1].index, sector1, valerieCell, true);
+
+        //var sector4 = $.grep(Board.currentBoard.sectorMap, function (e) { return e.Sector.sectorNumber == "4" })[0].Sector;
+        //var yojimboCell = sector4.cells[1][1];
+        //Units.AddNewUnit('Yojimbo', Players.playerList[2].index, sector4, yojimboCell, true);
+        //var murdochCell = sector4.cells[4][2];
+        //Units.AddNewUnit('Murdoch', Players.playerList[3].index, sector4, murdochCell, true);
+
+        //var sector5 = $.grep(Board.currentBoard.sectorMap, function (e) { return e.Sector.sectorNumber == "5" })[0].Sector;
+        //var tatsuCell = sector5.cells[0][3];
+        //Units.AddNewUnit('Tatsu', Players.playerList[2].index, sector5, tatsuCell, true);
+        //var gallagherCell = sector5.cells[2][2];
+        //Units.AddNewUnit('Gallagher', Players.playerList[3].index, sector5, gallagherCell, true);
+    }
+    //else if (Setup.loadingStep == GameConstants.Setup.LOADINGSTEP_LEGION) {
+    //    //var sector2 = $.grep(Board.currentBoard.sectorMap, function (e) { return e.Sector.sectorNumber == "2" })[0].Sector;
+    //    //var legionnaireCell = sector2.cells[3][3];
+    //    //Units.AddNewUnit('Legionnaire', Players.playerList[1].index, sector2, legionnaireCell, true);
+    //}
+    else if (Setup.loadingStep == GameConstants.Setup.LOADINGSTEP_PLAYERS) {
+        Players.AddNewPlayer('tcotter89', 'Thomas', 25, 2, true);
+        Players.AddNewPlayer('rymatt22', 'Ryan', 0, 2, true);
+        Players.AddNewPlayer('rman', 'Randy', 0, 2, true);
+        Players.AddNewPlayer('joedog', 'Joe', 0, 2, true);
+        Players.AddNewPlayer('theclay', 'Clay', 0, 2, true);
+    }
+    else if (Setup.loadingStep == GameConstants.Setup.LOADINGSTEP_CORPORATIONS) {
+        Corporations.LoadAllCorporations(true);
+    }
+    else if (Setup.loadingStep == GameConstants.Setup.LOADINGSTEP_MISSIONS) {
         Mission.AddNewMission('1', true);
     }
-    //else if (Setup.loadingStep == GameConstants.LOADINGSTEP_SECTORS) {
-    //    Board.Sectors.AddNewSector('5', true);
-    //} 
-    else if (Setup.loadingStep == GameConstants.Setup.LOADINGSTEP_PLAYERS) {
-        Players.AddNewPlayer('Placeholder', 'None', 0, 0, true);
-        Players.AddNewPlayer('Thomas', 'Bauhaus', 0, 2, true);
-        Players.AddNewPlayer('Ryan', 'Mishima', 0, 2, true);
-        Players.AddNewPlayer('Randy', 'Imperial', 0, 2, true);
-    } 
-    else if (Setup.loadingStep == GameConstants.Setup.LOADINGSTEP_DOOMTROOPERS) {
-        var sector1 = $.grep(Board.currentBoard.sectorMap, function (e) { return e.Sector.sectorNumber == "1" })[0].Sector;
-        var steinerCell = sector1.cells[1][1];
-        Units.AddNewUnit('Steiner', Players.playerList[1].index, sector1, steinerCell, true);
-        var valerieCell = sector1.cells[3][4];
-        Units.AddNewUnit('Valerie', Players.playerList[1].index, sector1, valerieCell, true);
-
-        var sector4 = $.grep(Board.currentBoard.sectorMap, function (e) { return e.Sector.sectorNumber == "4" })[0].Sector;
-        var yojimboCell = sector4.cells[1][1];
-        Units.AddNewUnit('Yojimbo', Players.playerList[2].index, sector4, yojimboCell, true);
-        var murdochCell = sector4.cells[4][2];
-        Units.AddNewUnit('Murdoch', Players.playerList[3].index, sector4, murdochCell, true);
-
-        var sector5 = $.grep(Board.currentBoard.sectorMap, function (e) { return e.Sector.sectorNumber == "5" })[0].Sector;
-        var tatsuCell = sector5.cells[0][3];
-        Units.AddNewUnit('Tatsu', Players.playerList[2].index, sector5, tatsuCell, true);
-        var gallagherCell = sector5.cells[2][2];
-        Units.AddNewUnit('Gallagher', Players.playerList[3].index, sector5, gallagherCell, true);
-    }
-    else if (Setup.loadingStep == GameConstants.Setup.LOADINGSTEP_LEGION) {
-        var sector2 = $.grep(Board.currentBoard.sectorMap, function (e) { return e.Sector.sectorNumber == "2" })[0].Sector;
-        var legionnaireCell = sector2.cells[3][3];
-        Units.AddNewUnit('Legionnaire', Players.playerList[1].index, sector2, legionnaireCell, true);
-    }
     else if (Setup.loadingStep == GameConstants.Setup.LOADINGSTEP_ITEMS) {
-        Items.AddAllItems(true);
+        Items.LoadAllItems(true);
     }
-    else if (Setup.loadingStep == GameConstants.Setup.LOADINGSTEP_OVERLAY) {
-        Overlay.SetupOverlay(true);
-    }
+    //else if (Setup.loadingStep == GameConstants.Setup.LOADINGSTEP_OVERLAY) {
+    //    Overlay.SetupOverlay(true);
+    //}
     else if (Setup.loadingStep == GameConstants.Setup.LOADINGSTEP_COMPLETE) {
 
-        var laserSight = $.grep(Items.itemList, function (e) { return e.Name.toUpperCase() == "LASER SIGHT" })[0];
-        var reverberatingSharpener = $.grep(Items.itemList, function (e) { return e.Name.toUpperCase() == "REVERBERATING SHARPENER" })[0];
-        var steiner = $.grep(Units.unitList, function (e) { return e.name.toUpperCase() == "STEINER" })[0];
-        var yojimbo = $.grep(Units.unitList, function (e) { return e.name.toUpperCase() == "YOJIMBO" })[0];
-        Units.GiveItemToUnit(laserSight, steiner);
-        Units.GiveItemToUnit(reverberatingSharpener, yojimbo);
+        //var laserSight = $.grep(Items.itemList, function (e) { return e.Name.toUpperCase() == "LASER SIGHT" })[0];
+        //var reverberatingSharpener = $.grep(Items.itemList, function (e) { return e.Name.toUpperCase() == "REVERBERATING SHARPENER" })[0];
+        //var steiner = $.grep(Units.detailList, function (e) { return e.name.toUpperCase() == "STEINER" })[0];
+        //var yojimbo = $.grep(Units.detailList, function (e) { return e.name.toUpperCase() == "YOJIMBO" })[0];
+        //Units.GiveItemToUnit(laserSight, steiner);
+        //Units.GiveItemToUnit(reverberatingSharpener, yojimbo);
 
         Engine.RunApplication();
     }

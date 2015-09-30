@@ -8,6 +8,8 @@
         public string ImgAlternatePath { get; set; }
         public string ImgTrayPath { get; set; }
         public string ImgTurnMarkerPath { get; set; }
+        public string ImgPerkPath { get; set; }
+        public string BonusName { get; set; }
         public string BonusDescription { get; set; }
     }
 }

@@ -1,5 +1,5 @@
 ﻿Legion.Legionnaires = {};
-Legion.Legionnaires.unitList = [];
+Legion.Legionnaires.detailList = [];
 
 Legion.Legionnaires.AddNewLegionnaire = function (sector, cell, imgPath) {
     var unit = new Object();
@@ -21,8 +21,8 @@ Legion.Legionnaires.AddNewLegionnaire = function (sector, cell, imgPath) {
     unit.interactive = true;
     unit.on('mousedown', Legion.Legionnaires.SelectUnit);
 
-    unit.index = Legion.Legionnaires.unitList.length;   //the length will find the index that the new legionnaire will be pushed to
-    Legion.Legionnaires.unitList.push(unit);
+    unit.index = Legion.Legionnaires.detailList.length;   //the length will find the index that the new legionnaire will be pushed to
+    Legion.Legionnaires.detailList.push(unit);
 
     //game logic/data
     unit.type = "legionnaire";
@@ -35,7 +35,7 @@ Legion.Legionnaires.AddNewLegionnaire = function (sector, cell, imgPath) {
     //register the legionnaire on the sector
     //sector.cells[cell.x][cell.y] = new Object();
     sector.cells[cell.x][cell.y].type = unit.type;
-    sector.cells[cell.x][cell.y].index = Legion.Legionnaires.unitList.length - 1;
+    sector.cells[cell.x][cell.y].index = Legion.Legionnaires.detailList.length - 1;
 
     GameGlobals.stage.addChild(unit);
 
@@ -73,7 +73,7 @@ Legion.Legionnaires.MoveLegionnaire = function (unit, fromSector, toSector, dest
     //register the uit on the sector of the new spot
     //toSector.cells[destinationCell.x][destinationCell.y] = new Object();
     toSector.cells[destinationCell.x][destinationCell.y].type = unit.type;
-    toSector.cells[destinationCell.x][destinationCell.y].index = Legion.Legionnaires.unitList.length - 1;
+    toSector.cells[destinationCell.x][destinationCell.y].index = Legion.Legionnaires.detailList.length - 1;
 }
 
 Legion.Legionnaires.VerifyUnitMoveValid = function (unit, fromSector, toSector, destinationCell) {

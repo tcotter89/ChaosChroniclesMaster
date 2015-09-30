@@ -29,6 +29,7 @@ namespace ChaosChronicles_Repository
         public string ImgTurnMarkerPath { get; set; }
         public string BonusDescription { get; set; }
         public string BonusName { get; set; }
+        public string ImgPerkPath { get; set; }
     
         public virtual ICollection<Unit> Units { get; set; }
     }

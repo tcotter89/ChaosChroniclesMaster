@@ -1,5 +1,6 @@
 ﻿var Combat = {};
 
+GameConstants.DEFAULTDICESIDES = 6;
 GameConstants.DICEWHITEPROBABILITY = 2;   //how many sides of a D6 dice are hits
 GameConstants.DICEREDPROBABILITY =   3;   //how many sides of a D6 dice are hits
 GameConstants.DICEBLACKPROBABILITY = 4;   //how many sides of a D6 dice are hits

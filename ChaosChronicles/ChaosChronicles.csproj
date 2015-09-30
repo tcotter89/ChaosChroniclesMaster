@@ -195,6 +195,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Hubs\ChatHub.cs" />
+    <Compile Include="Hubs\PlayersHub.cs" />
     <Compile Include="Hubs\InteractionHub.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\BasicJsonMessage.cs" />
@@ -216,6 +217,8 @@
     <None Include="Properties\PublishProfiles\GoDaddy.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\game\combat.js" />
+    <Content Include="Scripts\game\corporation.js" />
+    <Content Include="Scripts\game\instanceData.js" />
     <Content Include="Scripts\game\item.js" />
     <Content Include="Scripts\game\legion.js" />
     <Content Include="Scripts\game\board.js" />

@@ -4,7 +4,7 @@ Items.itemList = [];
 GameConstants.WEAPONINDEX = 0;    //the weapon is always the first item added to a unit
 
 //types = Weapon, Attachment, Enhancement
-Items.AddAllItems = function (firstTimeLoad) {
+Items.LoadAllItems = function (firstTimeLoad) {
     //load from database
     $.ajax({
         url: "/Home/GetItemData",

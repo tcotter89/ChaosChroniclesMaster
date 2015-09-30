@@ -7,6 +7,7 @@ using ChaosChronicles_Shared.Models;
 
 namespace ChaosChronicles_Shared.Interfaces.Repository {
     public interface IUnitRepository {
+        List<SharedUnit> LoadUnitData();
         SharedUnit LoadUnitData(string name);
     }
 }
