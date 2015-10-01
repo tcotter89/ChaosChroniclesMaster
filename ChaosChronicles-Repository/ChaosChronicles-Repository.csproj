@@ -71,6 +71,12 @@
     <Compile Include="Entrance.cs">
       <DependentUpon>MCGameData.tt</DependentUpon>
     </Compile>
+    <Compile Include="ExtraAction.cs">
+      <DependentUpon>MCGameData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ExtraActionsSet.cs">
+      <DependentUpon>MCGameData.tt</DependentUpon>
+    </Compile>
     <Compile Include="Item.cs">
       <DependentUpon>MCGameData.tt</DependentUpon>
     </Compile>

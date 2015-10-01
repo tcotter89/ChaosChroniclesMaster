@@ -35,6 +35,7 @@ Corporations.LoadAllCorporations = function (firstTimeLoad) {
                     //DEBUG ONLY========================
                     var ryan = $.grep(Players.playerList, function (e) { return e.username == "rymatt22" })[0];
                     ryan.corporation = Corporations.filteredCorporations[4];
+                    ryan.extraActions = Corporations.filteredCorporations[4].ExtraActionsSet.ExtraActions[Players.DetermineRankIndex(ryan.promotionPoints)].Count;
                     Corporations.filteredCorporations[4].player = ryan;
                     var ryanDoomtroopers = $.grep(Units.detailList, function (e) { return e.Corporation.Name.toUpperCase() == Corporations.filteredCorporations[4].Name.toUpperCase() });
                     var ryanDoomtrooperInstances = [];
@@ -44,6 +45,7 @@ Corporations.LoadAllCorporations = function (firstTimeLoad) {
 
                     var randy = $.grep(Players.playerList, function (e) { return e.username == "rman" })[0];
                     randy.corporation = Corporations.filteredCorporations[1];
+                    randy.extraActions = Corporations.filteredCorporations[1].ExtraActionsSet.ExtraActions[Players.DetermineRankIndex(randy.promotionPoints)].Count;
                     Corporations.filteredCorporations[1].player = randy;
                     var randyDoomtroopers = $.grep(Units.detailList, function (e) { return e.Corporation.Name.toUpperCase() == Corporations.filteredCorporations[1].Name.toUpperCase() });
                     var randyDoomtrooperInstances = [];
@@ -53,6 +55,7 @@ Corporations.LoadAllCorporations = function (firstTimeLoad) {
 
                     var joe = $.grep(Players.playerList, function (e) { return e.username == "joedog" })[0];
                     joe.corporation = Corporations.filteredCorporations[2];
+                    joe.extraActions = Corporations.filteredCorporations[2].ExtraActionsSet.ExtraActions[Players.DetermineRankIndex(joe.promotionPoints)].Count;
                     Corporations.filteredCorporations[2].player = joe;
                     var joeDoomtroopers = $.grep(Units.detailList, function (e) { return e.Corporation.Name.toUpperCase() == Corporations.filteredCorporations[2].Name.toUpperCase() });
                     var joeDoomtrooperInstances = [];
@@ -62,11 +65,12 @@ Corporations.LoadAllCorporations = function (firstTimeLoad) {
 
                     var clay = $.grep(Players.playerList, function (e) { return e.username == "theclay" })[0];
                     clay.corporation = Corporations.filteredCorporations[3];
+                    clay.extraActions = Corporations.filteredCorporations[3].ExtraActionsSet.ExtraActions[Players.DetermineRankIndex(clay.promotionPoints)].Count;
                     Corporations.filteredCorporations[3].player = clay;
                     var clayDoomtroopers = $.grep(Units.detailList, function (e) { return e.Corporation.Name.toUpperCase() == Corporations.filteredCorporations[3].Name.toUpperCase() });
                     var clayDoomtrooperInstances = [];
-                    clayDoomtrooperInstances.push(Units.CreateUnitInstance(clayDoomtroopers[0], joe.index));
-                    clayDoomtrooperInstances.push(Units.CreateUnitInstance(clayDoomtroopers[1], joe.index));
+                    clayDoomtrooperInstances.push(Units.CreateUnitInstance(clayDoomtroopers[0], clay.index));
+                    clayDoomtrooperInstances.push(Units.CreateUnitInstance(clayDoomtroopers[1], clay.index));
                     Corporations.filteredCorporations[3].units = clayDoomtrooperInstances;
                     //==================================
 
@@ -629,6 +633,7 @@ Corporations.PerformChooseCorporation = function (playerIndex, corporationIndex,
     //set corporation
     var corporation = Corporations.corporationList[corporationIndex];
     Players.playerList[playerIndex].corporation = corporation;
+    Players.playerList[playerIndex].extraActions = corporation.ExtraActionsSet.ExtraActions[Players.DetermineRankIndex(Players.playerList[playerIndex].promotionPoints)].Count;
     corporation.player = Players.playerList[playerIndex];
 
     //initialize corporation units

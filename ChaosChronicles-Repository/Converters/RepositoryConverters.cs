@@ -171,6 +171,29 @@ namespace ChaosChronicles_Repository.Converters {
             };
         }
 
+        internal static SharedExtraActions ToSharedModel(this ExtraAction repo) {
+            return new SharedExtraActions() {
+                ExtraActionsID = repo.ExtraActionsID,
+                Rank = repo.Rank,
+                Count = repo.Count
+            };
+        }
+
+        internal static SharedExtraActionsSet ToSharedModel(this ExtraActionsSet repo) {
+
+            var sharedExtraActions = new List<SharedExtraActions>();
+            foreach (var extraAction in repo.ExtraActions) {
+                var sharedExtraAction = extraAction.ToSharedModel();
+                sharedExtraActions.Add(sharedExtraAction);
+            }
+
+            return new SharedExtraActionsSet() {
+                ExtraActionsSetID = repo.ExtraActionsSetID,
+                Name = RemoveNullable(repo.Name),
+                ExtraActions = sharedExtraActions
+            };
+        }
+
         internal static SharedArmor ToSharedModel(this Armor repo) {
             return new SharedArmor() {
                 ArmorID = repo.ArmorID,
@@ -291,6 +314,9 @@ namespace ChaosChronicles_Repository.Converters {
         }
 
         internal static SharedCorporation ToSharedModel(this Corporation repo) {
+
+            var repoExtraActionsSet = repo.ExtraActionsSet.ToSharedModel();
+
             return new SharedCorporation() {
                 CorporationID = repo.CorporationID,
                 Name = RemoveNullable(repo.Name),
@@ -302,7 +328,8 @@ namespace ChaosChronicles_Repository.Converters {
                 ImgTurnMarkerPath = RemoveNullable(repo.ImgTurnMarkerPath, Constants.MISSING_IMG),
                 ImgPerkPath = RemoveNullable(repo.ImgPerkPath, Constants.MISSING_IMG),
                 BonusName = RemoveNullable(repo.BonusName, "No Perk"),
-                BonusDescription = RemoveNullable(repo.BonusDescription, "This corporation does not have a perk")
+                BonusDescription = RemoveNullable(repo.BonusDescription, "This corporation does not have a perk"),
+                ExtraActionsSet = repoExtraActionsSet
             };
         }
 

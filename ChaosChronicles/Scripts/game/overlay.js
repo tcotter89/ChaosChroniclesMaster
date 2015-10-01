@@ -10,7 +10,7 @@ Overlay.triangleHeight   = 0.15;    //15%
 Overlay.CreateOverlay = function (firstTimeLoad) {
     Overlay.currentOverlay = new PIXI.Container();
     Overlay.DisplaySelectedTargetedCreate();
-    Overlay.DisplayPlayersCreate(190, 190, 0, 50, true);
+    Overlay.DisplayPlayersCreate(190, 205, 0, 50, false);
 
     //GameGlobals.stage.addChild(Overlay.currentOverlay);
 
@@ -18,6 +18,14 @@ Overlay.CreateOverlay = function (firstTimeLoad) {
         Setup.loadingStep++;
         Setup.ProcessLoadingQueue();
     }
+}
+
+Overlay.ShowOverlay = function () {
+    GameGlobals.stage.addChild(Overlay.currentOverlay);
+}
+
+Overlay.HideOverlay = function () {
+    GameGlobals.stage.removeChild(Overlay.currentOverlay);
 }
 
 //== GENERIC/UTILITY FUNCTIONS ======================================================================================================================================
@@ -207,7 +215,6 @@ Overlay.DisplaySelectedTargetedCreate = function () {
         wordWrapWidth: 440
     };
     var selectedText = new PIXI.Text("Selected:", style);
-    //selectedText.width = 200;
     selectedText.x = selectedLeftOffset;
     selectedText.y = 2;
     selectedDisplay.addChild(selectedText);
@@ -302,7 +309,6 @@ Overlay.DisplaySelectedTargetedCreate = function () {
         wordWrapWidth: 440
     };
     var targetedText = new PIXI.Text("Targeted:", style);
-    //targetedText.width = 200;
     targetedText.x = targetedLeftOffset;
     targetedText.y = 2;
     targetedDisplay.addChild(targetedText);
@@ -406,7 +412,7 @@ Overlay.DisplayPlayersCreate = function (width, height, offsetX, offsetY, startC
 
     //pull out tab
     var tabContainer = new PIXI.Container();
-    Overlay.CreatePullOutTab(playerDisplay, tabContainer, width);
+    Overlay.CreatePullOutTab(playerDisplay, tabContainer, height);
     tabContainer.position.x = width - Overlay.pullOutTabRounding;
 
     playerDisplay.tab = tabContainer.tab;
@@ -416,7 +422,7 @@ Overlay.DisplayPlayersCreate = function (width, height, offsetX, offsetY, startC
     //background
     var background = new PIXI.Graphics();
     background.beginFill(Utilities.LoadHexColor(GameConstants.Colors.SELECTEDGRAY));
-    background.drawRect(0, 0, width, width);
+    background.drawRect(0, 0, width, height);
     playerDisplay.addChild(background);
 
     //row of icons to select a corporation from
@@ -440,6 +446,8 @@ Overlay.DisplayPlayersCreate = function (width, height, offsetX, offsetY, startC
     //check if it should start closed
     if (startClosed == true) {
         playerDisplay.position.x = playerDisplay.hidePoint;
+    } else {
+        Overlay.TabFlipArrows(playerDisplay.tabContainer);
     }
 
     //add shadow to player display
@@ -583,10 +591,34 @@ Overlay.DisplayPlayersSelectedCorporationCreate = function (playerDisplay, width
     iconsContainer.position.y = corporationName.position.y + corporationName.height + iconsContainerOffsetY;
     selectedCorporation.addChild(iconsContainer);
 
-    //rank, promo points, and credits
+    //extra actions, rank, promo points, and credits
     var statsContainer = new PIXI.Container();
     var statsContainerOffsetY = 5;
+
+    //extra actions
+    var extraActionsOffsetX = 0;
+    var extraActionsOffsetY = 0;
+    var style = {
+        font: '12px Arial',
+        fill: '#FFFFFF',
+        stroke: '#000000',
+        strokeThickness: 1,
+        dropShadow: false,
+        dropShadowColor: '#000000',
+        dropShadowAngle: Math.PI / 2,
+        dropShadowDistance: 2,
+        wordWrap: false,
+        wordWrapWidth: 440
+    };
+    var extraActions = new PIXI.Text("Extra Actions: " + playerDisplay.corporation.player.extraActions, style);
+    extraActions.position.x = extraActionsOffsetX;
+    extraActions.position.y = extraActionsOffsetY;
+    selectedCorporation.extraActions = extraActions;
+    statsContainer.addChild(extraActions);
+
     //promo points
+    var promoPointsOffsetX = 0;
+    var promoPointsOffsetY = 0;
     var style = {
         font: '12px Arial',
         fill: '#FFFFFF',
@@ -600,6 +632,8 @@ Overlay.DisplayPlayersSelectedCorporationCreate = function (playerDisplay, width
         wordWrapWidth: 440
     };
     var promoPoints = new PIXI.Text("Promotion Points: " + playerDisplay.corporation.player.promotionPoints, style);
+    promoPoints.position.x = promoPointsOffsetX;
+    promoPoints.position.y = extraActions.position.y + extraActions.height + promoPointsOffsetY;
     selectedCorporation.promoPoints = promoPoints;
     statsContainer.addChild(promoPoints);
 
@@ -662,10 +696,12 @@ Overlay.DisplayPlayersSelectedCorporationCreate = function (playerDisplay, width
     rankDiceColorContainer.addChild(diceContainer);
 
     statsContainer.addChild(rankDiceColorContainer);
+
+    //wait until after things are rendered to center (otherwise some widths/heights are unknown)
     statsContainer.position.x = (width / 2) - (statsContainer.width / 2);  //horizontally centered
     statsContainer.position.y = iconsContainer.position.y + iconsContainer.height + statsContainerOffsetY;
+    extraActions.position.x = (statsContainer.width / 2) - (extraActions.width / 2);  //horizontally centered
     promoPoints.position.x = (statsContainer.width / 2) - (promoPoints.width / 2);  //horizontally centered
-    promoPoints.position.y = 0;
     selectedCorporation.addChild(statsContainer);
 
     return selectedCorporation;
@@ -683,15 +719,18 @@ Overlay.DisplayPlayersSelectedCorporationUpdate = function (event) {
     selectedCorporation.corporationIcon.texture = corporationIconTexture;
 
     //units
-    var corporationUnits = $.grep(Units.instanceList, function (e) { return e.Corporation.Name.toUpperCase() == corporation.Name.toUpperCase() });
+    var corporationUnits = $.grep(Units.instanceList, function (e) { return e.corporation.Name.toUpperCase() == corporation.Name.toUpperCase() });
     //doomtrooper 1
-    var doomtrooper1IconTexture = PIXI.Texture.fromImage(GameConstants.IMAGESROOT + corporationUnits[0].ImgIconPath);
+    var doomtrooper1IconTexture = PIXI.Texture.fromImage(GameConstants.IMAGESROOT + corporationUnits[0].icon);
     selectedCorporation.doomtrooper1Icon.texture = doomtrooper1IconTexture;
+    selectedCorporation.doomtrooper1Icon.unit = corporationUnits[0];
     //doomtrooper 2
-    var doomtrooper2IconTexture = PIXI.Texture.fromImage(GameConstants.IMAGESROOT + corporationUnits[1].ImgIconPath);
+    var doomtrooper2IconTexture = PIXI.Texture.fromImage(GameConstants.IMAGESROOT + corporationUnits[1].icon);
     selectedCorporation.doomtrooper2Icon.texture = doomtrooper2IconTexture;
+    selectedCorporation.doomtrooper2Icon.unit = corporationUnits[1];
 
     //stats
+    selectedCorporation.extraActions.text = "Extra Actions: " + corporation.player.extraActions;
     selectedCorporation.promoPoints.text = "Promotion Points: " + corporation.player.promotionPoints;
     var rank = Players.DetermineRank(corporation.player.promotionPoints)
     selectedCorporation.rank.text = "Rank: " + rank;
@@ -712,7 +751,8 @@ Overlay.DisplayPlayersSelectedCorporationUpdate = function (event) {
 
 Overlay.DisplayPlayersSelectedCorporationClickDoomtrooper = function (event) {
     if (Utilities.IsClickDragging() == false) {
-        Interaction.SelectUnit(event.target.unit);
+        //Interaction.SelectUnit(event.target.unit);
+        Units.SelectUnit(event.target.unit);
         Overlay.DisplaySelectedTargetedUpdateSelected();
     }
 }

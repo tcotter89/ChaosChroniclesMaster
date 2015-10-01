@@ -20,6 +20,7 @@ Players.AddNewPlayer = function (username, name, promotionPoints, credits, first
     player.name = name;
     player.promotionPoints = promotionPoints;
     //player.rank = Players.DetermineRank(player.promotionPoints);
+    player.extraActions = 0;    //set by the corporation chosen
     player.credits = credits;
 
     //save to array and find index
@@ -43,6 +44,10 @@ Players.DetermineRank = function (promotionPoints) {
         }
     }
     return rank;
+}
+
+Players.DetermineRankIndex = function (promotionPoints) {
+    return Players.DetermineRank(promotionPoints) - 1;
 }
 
 Players.DetermineDiceColor = function (rank) {

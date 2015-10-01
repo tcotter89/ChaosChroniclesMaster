@@ -120,6 +120,9 @@ Interaction.PerformEnter = function (unitIndex, entranceIndex, entranceGroupInde
     //register that this player is using this entrance
     Players.playerList[unit.playerIndex].corporation.units.entranceGroup = entranceGroup;
 
+    ////unselect previous unit, select entering unit
+    //Units.SelectUnit(unit);
+
     //find the cell of the entrance and move the unit there
     var destinationCell = sector.cells[entrance.cellX][entrance.cellY];
     Units.MoveUnit(unit, sector, sector, destinationCell);

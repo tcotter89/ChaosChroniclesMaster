@@ -41,5 +41,7 @@ namespace ChaosChronicles_Repository
         public virtual DbSet<Objective> Objectives { get; set; }
         public virtual DbSet<ItemSetMapping> ItemSetMappings { get; set; }
         public virtual DbSet<Item> Items { get; set; }
+        public virtual DbSet<ExtraAction> ExtraActions { get; set; }
+        public virtual DbSet<ExtraActionsSet> ExtraActionsSets { get; set; }
     }
 }

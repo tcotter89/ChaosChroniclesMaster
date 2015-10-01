@@ -1,0 +1,25 @@
+SET IDENTITY_INSERT ExtraActionsSet ON
+INSERT INTO ExtraActionsSet (ExtraActionsSetID, Name) VALUES (1, 'Standard')
+INSERT INTO ExtraActions (ExtraActionsSetID, Rank, Count) VALUES (1, 1, 2)
+INSERT INTO ExtraActions (ExtraActionsSetID, Rank, Count) VALUES (1, 2, 3)
+INSERT INTO ExtraActions (ExtraActionsSetID, Rank, Count) VALUES (1, 3, 3)
+INSERT INTO ExtraActions (ExtraActionsSetID, Rank, Count) VALUES (1, 4, 4)
+INSERT INTO ExtraActions (ExtraActionsSetID, Rank, Count) VALUES (1, 5, 4)
+INSERT INTO ExtraActions (ExtraActionsSetID, Rank, Count) VALUES (1, 6, 5)
+INSERT INTO ExtraActionsSet (ExtraActionsSetID, Name) VALUES (2, 'Imperial')
+INSERT INTO ExtraActions (ExtraActionsSetID, Rank, Count) VALUES (2, 1, 0)
+INSERT INTO ExtraActions (ExtraActionsSetID, Rank, Count) VALUES (2, 2, 1)
+INSERT INTO ExtraActions (ExtraActionsSetID, Rank, Count) VALUES (2, 3, 1)
+INSERT INTO ExtraActions (ExtraActionsSetID, Rank, Count) VALUES (2, 4, 2)
+INSERT INTO ExtraActions (ExtraActionsSetID, Rank, Count) VALUES (2, 5, 2)
+INSERT INTO ExtraActions (ExtraActionsSetID, Rank, Count) VALUES (2, 6, 3)
+INSERT INTO ExtraActionsSet (ExtraActionsSetID, Name) VALUES (3, 'Brotherhood')
+INSERT INTO ExtraActions (ExtraActionsSetID, Rank, Count) VALUES (3, 1, 0)
+INSERT INTO ExtraActions (ExtraActionsSetID, Rank, Count) VALUES (3, 2, 1)
+INSERT INTO ExtraActions (ExtraActionsSetID, Rank, Count) VALUES (3, 3, 1)
+INSERT INTO ExtraActions (ExtraActionsSetID, Rank, Count) VALUES (3, 4, 2)
+INSERT INTO ExtraActions (ExtraActionsSetID, Rank, Count) VALUES (3, 5, 2)
+INSERT INTO ExtraActions (ExtraActionsSetID, Rank, Count) VALUES (3, 6, 3)
+SET IDENTITY_INSERT ExtraActionsSet OFF
+
+DELETE FROM ExtraActions

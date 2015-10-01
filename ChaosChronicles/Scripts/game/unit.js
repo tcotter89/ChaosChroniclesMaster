@@ -65,7 +65,7 @@ Units.CreateUnitInstance = function (unitInfo, playerIndex) {
     //other
     figure.interactive = true;
     figure.buttonMode = true;
-    figure.on('click', Units.SelectUnit);
+    figure.on('click', Units.ClickSelectUnit);
     figure.on('rightclick', Units.TargetUnit);
 
     unit.width      = Board.Sectors.CELLWIDTH;
@@ -143,7 +143,7 @@ Units.AddNewUnit = function (name, playerIndex, sector, cell, firstTimeLoad) {
 
                         //other
                         figure.interactive = true;
-                        figure.on('click', Units.SelectUnit);
+                        figure.on('click', Units.ClickSelectUnit);
                         figure.on('rightclick', Units.TargetUnit);
 
                         unit.width      = Board.Sectors.CELLWIDTH;
@@ -215,11 +215,19 @@ Units.DetermineUnderlayTexture = function (unit) {
         else if (Interaction.currentTargeted.name == unit.name) {
             underlayTexture = PIXI.Texture.fromImage(GameConstants.IMAGESROOT + GameConstants.Images.DECAL_TARGETED);
         }
+        //default, unselected & untargeted
+        else {
+            underlayTexture = PIXI.Texture.fromImage(GameConstants.IMAGESROOT + GameConstants.Images.DECAL_DOOMTROOPER);
+        }
         return underlayTexture;
     }
 }
 
-Units.SelectUnit = function (event) {
+Units.ClickSelectUnit = function (event) {
+    Units.SelectUnit(this.parent)
+}
+
+Units.SelectUnit = function (unit) {
     if (Utilities.IsClickDragging() == false) {
         var underlayTexture;
 
@@ -233,10 +241,10 @@ Units.SelectUnit = function (event) {
             Interaction.currentSelected.underlay.texture = underlayTexture;
         }
 
-        Interaction.SelectUnit(this.parent);
+        Interaction.SelectUnit(unit);
 
         //select and check if the unit is targeted as well
-        this.parent.underlay.texture = Units.DetermineUnderlayTexture(this.parent);
+        unit.underlay.texture = Units.DetermineUnderlayTexture(unit);
         //underlayTexture = PIXI.Texture.fromImage(GameConstants.IMAGESROOT + GameConstants.Images.DECAL_SELECTED);
         //if (Interaction.currentSelected == Interaction.currentTargeted) {
         //    underlayTexture = PIXI.Texture.fromImage(GameConstants.IMAGESROOT + GameConstants.Images.DECAL_BOTH);
@@ -280,15 +288,15 @@ Units.AttackUnit = function (attackingUnit, victimUnit, combatType) {
     //filter through items to find the weapon (max 1 weapon per unit)
     var weapon = $.grep(attackingUnit.itemSet.Items, function (e) { return e.Type.toUpperCase() == "WEAPON" })[0];
     //filter based on what type of combat and what rank the attacking player is
-    var attackingPlayerRank = Players.DetermineRank(Players.playerList[attackingUnit.playerIndex].promotionPoints);
-    var weaponStats = $.grep(weapon.ItemStats, function (e) { return e.StatType.toUpperCase() == combatType.toUpperCase() })[attackingPlayerRank];
+    var attackingPlayerRankIndex = Players.DetermineRankIndex(Players.playerList[attackingUnit.playerIndex].promotionPoints);
+    var weaponStats = $.grep(weapon.ItemStats, function (e) { return e.StatType.toUpperCase() == combatType.toUpperCase() })[attackingPlayerRankIndex];
 
     //filter through items to find attachments/enhancements
     var buffers = $.grep(attackingUnit.itemSet.Items, function (e) { return (e.Type.toUpperCase() == "ATTACHMENT" || e.Type.toUpperCase() == "ENHANCEMENT") });
     //filter based on what type of combat and what rank the attacking player is
     var bufferStats = [];
     for (i = 0; i < buffers.length; i++) {
-        var bufferStat = $.grep(buffers[i].ItemStats, function (e) { return e.StatType.toUpperCase() == combatType.toUpperCase() })[attackingPlayerRank];
+        var bufferStat = $.grep(buffers[i].ItemStats, function (e) { return e.StatType.toUpperCase() == combatType.toUpperCase() })[attackingPlayerRankIndex];
         if (typeof (bufferStat) != "undefined") {
             bufferStats.push(bufferStat);
         }
@@ -301,13 +309,13 @@ Units.AttackUnit = function (attackingUnit, victimUnit, combatType) {
     }
 
     results.diceColor = weaponStats.DiceColor;
-    results.hits = Combat.RollDice(weaponStats, bufferStats, victimUnit.armorSet.Armor[attackingPlayerRank].DamageReduction);
+    results.hits = Combat.RollDice(weaponStats, bufferStats, victimUnit.armorSet.Armor[attackingPlayerRankIndex].DamageReduction);
     if (results.hits == -1) {
         results.success = false;
         return results;
     }
 
-    results.damage = Combat.CalculateDamage(results.hits, victimUnit.armorSet.Armor[attackingPlayerRank].DamageReduction, victimUnit.defenseSet.Defenses[attackingPlayerRank]);
+    results.damage = Combat.CalculateDamage(results.hits, victimUnit.armorSet.Armor[attackingPlayerRankIndex].DamageReduction, victimUnit.defenseSet.Defenses[attackingPlayerRankIndex]);
     console.log(attackingUnit.name + " rolled " + results.hits + " hits and has dealt " + results.damage + " damage to " + victimUnit.name + " using " + results.diceColor + " dice");
     victimUnit.remainingHealth -= results.damage;
 

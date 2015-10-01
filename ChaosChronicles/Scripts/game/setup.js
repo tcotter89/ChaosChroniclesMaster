@@ -66,7 +66,7 @@ Setup.ProcessLoadingQueue = function () {
     //    //Units.AddNewUnit('Legionnaire', Players.playerList[1].index, sector2, legionnaireCell, true);
     //}
     else if (Setup.loadingStep == GameConstants.Setup.LOADINGSTEP_PLAYERS) {
-        Players.AddNewPlayer('tcotter89', 'Thomas', 25, 2, true);
+        Players.AddNewPlayer('tcotter89', 'Thomas', 0, 2, true);
         Players.AddNewPlayer('rymatt22', 'Ryan', 0, 2, true);
         Players.AddNewPlayer('rman', 'Randy', 0, 2, true);
         Players.AddNewPlayer('joedog', 'Joe', 0, 2, true);

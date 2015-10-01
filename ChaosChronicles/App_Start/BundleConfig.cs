@@ -41,6 +41,7 @@ namespace ChaosChronicles {
                       "~/Scripts/game/corporation.js",
                       "~/Scripts/game/player.js",
                       "~/Scripts/game/overlay.js",
+                      "~/Scripts/game/transitions.js",
                       "~/Scripts/game/engine.js",
                       "~/Scripts/game/interaction.js",
                       "~/Scripts/game/notifications.js",

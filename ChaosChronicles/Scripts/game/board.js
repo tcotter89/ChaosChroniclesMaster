@@ -93,5 +93,5 @@ Board.OnDragMove = function () {
 Board.ShowBoard = function () {
     GameGlobals.stage.addChild(Board.currentBoard);
     Overlay.CreateOverlay(false);
-    GameGlobals.stage.addChild(Overlay.currentOverlay); //overlay loads on top of game board
+    Overlay. //overlay loads on top of game board
 }

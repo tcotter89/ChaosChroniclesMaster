@@ -11,5 +11,7 @@
         public string ImgPerkPath { get; set; }
         public string BonusName { get; set; }
         public string BonusDescription { get; set; }
+
+        public SharedExtraActionsSet ExtraActionsSet { get; set; }
     }
 }

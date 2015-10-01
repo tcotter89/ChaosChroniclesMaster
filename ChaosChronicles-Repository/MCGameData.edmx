@@ -49,6 +49,7 @@
           <Property Name="ImgPerkPath" Type="nvarchar(max)" />
           <Property Name="BonusName" Type="nvarchar" MaxLength="50" />
           <Property Name="BonusDescription" Type="nvarchar(max)" />
+          <Property Name="ExtraActionsSetID" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Defense">
           <Key>
@@ -78,6 +79,22 @@
           <Property Name="Cell1Y" Type="int" Nullable="false" />
           <Property Name="Cell2X" Type="int" Nullable="false" />
           <Property Name="Cell2Y" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ExtraActions">
+          <Key>
+            <PropertyRef Name="ExtraActionsID" />
+          </Key>
+          <Property Name="ExtraActionsID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ExtraActionsSetID" Type="int" Nullable="false" />
+          <Property Name="Rank" Type="int" Nullable="false" />
+          <Property Name="Count" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ExtraActionsSet">
+          <Key>
+            <PropertyRef Name="ExtraActionsSetID" />
+          </Key>
+          <Property Name="ExtraActionsSetID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="Item">
           <Key>
@@ -292,6 +309,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_ExtraActionsSet">
+          <End Role="ExtraActionsSet" Type="Self.ExtraActionsSet" Multiplicity="1" />
+          <End Role="Corporation" Type="Self.Corporation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ExtraActionsSet">
+              <PropertyRef Name="ExtraActionsSetID" />
+            </Principal>
+            <Dependent Role="Corporation">
+              <PropertyRef Name="ExtraActionsSetID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ExtraActionsSetExtraActions">
+          <End Role="ExtraActionsSet" Type="Self.ExtraActionsSet" Multiplicity="1" />
+          <End Role="ExtraActions" Type="Self.ExtraActions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ExtraActionsSet">
+              <PropertyRef Name="ExtraActionsSetID" />
+            </Principal>
+            <Dependent Role="ExtraActions">
+              <PropertyRef Name="ExtraActionsSetID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Item">
           <End Role="Item" Type="Self.Item" Multiplicity="1" />
           <End Role="ItemSetMapping" Type="Self.ItemSetMapping" Multiplicity="*" />
@@ -420,6 +461,8 @@
           <EntitySet Name="Defense" EntityType="Self.Defense" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DefenseSet" EntityType="Self.DefenseSet" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Entrance" EntityType="Self.Entrance" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ExtraActions" EntityType="Self.ExtraActions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ExtraActionsSet" EntityType="Self.ExtraActionsSet" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Item" EntityType="Self.Item" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ItemSet" EntityType="Self.ItemSet" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ItemSetMapping" EntityType="Self.ItemSetMapping" Schema="dbo" store:Type="Tables" />
@@ -448,6 +491,14 @@
           <AssociationSet Name="FK_DefenseSetDefenseRoll" Association="Self.FK_DefenseSetDefenseRoll">
             <End Role="DefenseSet" EntitySet="DefenseSet" />
             <End Role="Defense" EntitySet="Defense" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ExtraActionsSet" Association="Self.FK_ExtraActionsSet">
+            <End Role="ExtraActionsSet" EntitySet="ExtraActionsSet" />
+            <End Role="Corporation" EntitySet="Corporation" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ExtraActionsSetExtraActions" Association="Self.FK_ExtraActionsSetExtraActions">
+            <End Role="ExtraActionsSet" EntitySet="ExtraActionsSet" />
+            <End Role="ExtraActions" EntitySet="ExtraActions" />
           </AssociationSet>
           <AssociationSet Name="FK_Item" Association="Self.FK_Item">
             <End Role="Item" EntitySet="Item" />
@@ -612,6 +663,16 @@
             <End Role="ItemSet" EntitySet="ItemSets" />
             <End Role="Item" EntitySet="Items" />
           </AssociationSet>
+          <EntitySet Name="ExtraActions" EntityType="MCGameDataModel.ExtraAction" />
+          <EntitySet Name="ExtraActionsSets" EntityType="MCGameDataModel.ExtraActionsSet" />
+          <AssociationSet Name="FK_ExtraActionsSet" Association="MCGameDataModel.FK_ExtraActionsSet">
+            <End Role="ExtraActionsSet" EntitySet="ExtraActionsSets" />
+            <End Role="Corporation" EntitySet="Corporations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ExtraActionsSetExtraActions" Association="MCGameDataModel.FK_ExtraActionsSetExtraActions">
+            <End Role="ExtraActionsSet" EntitySet="ExtraActionsSets" />
+            <End Role="ExtraAction" EntitySet="ExtraActions" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="Mission">
           <Key>
@@ -673,6 +734,8 @@
           <NavigationProperty Name="Units" Relationship="MCGameDataModel.FK_Corporation" FromRole="Corporation" ToRole="Unit" />
           <Property Name="BonusName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ImgPerkPath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ExtraActionsSetID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="ExtraActionsSet" Relationship="MCGameDataModel.FK_ExtraActionsSet" FromRole="Corporation" ToRole="ExtraActionsSet" />
         </EntityType>
         <EntityType Name="Defense">
           <Key>
@@ -1009,6 +1072,49 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="ExtraAction">
+          <Key>
+            <PropertyRef Name="ExtraActionsID" />
+          </Key>
+          <Property Name="ExtraActionsID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ExtraActionsSetID" Type="Int32" Nullable="false" />
+          <Property Name="Rank" Type="Int32" Nullable="false" />
+          <Property Name="Count" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="ExtraActionsSet" Relationship="MCGameDataModel.FK_ExtraActionsSetExtraActions" FromRole="ExtraAction" ToRole="ExtraActionsSet" />
+        </EntityType>
+        <EntityType Name="ExtraActionsSet">
+          <Key>
+            <PropertyRef Name="ExtraActionsSetID" />
+          </Key>
+          <Property Name="ExtraActionsSetID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Corporations" Relationship="MCGameDataModel.FK_ExtraActionsSet" FromRole="ExtraActionsSet" ToRole="Corporation" />
+          <NavigationProperty Name="ExtraActions" Relationship="MCGameDataModel.FK_ExtraActionsSetExtraActions" FromRole="ExtraActionsSet" ToRole="ExtraAction" />
+        </EntityType>
+        <Association Name="FK_ExtraActionsSet">
+          <End Type="MCGameDataModel.ExtraActionsSet" Role="ExtraActionsSet" Multiplicity="1" />
+          <End Type="MCGameDataModel.Corporation" Role="Corporation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ExtraActionsSet">
+              <PropertyRef Name="ExtraActionsSetID" />
+            </Principal>
+            <Dependent Role="Corporation">
+              <PropertyRef Name="ExtraActionsSetID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ExtraActionsSetExtraActions">
+          <End Type="MCGameDataModel.ExtraActionsSet" Role="ExtraActionsSet" Multiplicity="1" />
+          <End Type="MCGameDataModel.ExtraAction" Role="ExtraAction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ExtraActionsSet">
+              <PropertyRef Name="ExtraActionsSetID" />
+            </Principal>
+            <Dependent Role="ExtraAction">
+              <PropertyRef Name="ExtraActionsSetID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1087,6 +1193,7 @@
           <EntitySetMapping Name="Corporations">
             <EntityTypeMapping TypeName="MCGameDataModel.Corporation">
               <MappingFragment StoreEntitySet="Corporation">
+                <ScalarProperty Name="ExtraActionsSetID" ColumnName="ExtraActionsSetID" />
                 <ScalarProperty Name="ImgPerkPath" ColumnName="ImgPerkPath" />
                 <ScalarProperty Name="BonusName" ColumnName="BonusName" />
                 <ScalarProperty Name="BonusDescription" ColumnName="BonusDescription" />
@@ -1255,6 +1362,24 @@
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Type" ColumnName="Type" />
                 <ScalarProperty Name="ItemID" ColumnName="ItemID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ExtraActions">
+            <EntityTypeMapping TypeName="MCGameDataModel.ExtraAction">
+              <MappingFragment StoreEntitySet="ExtraActions">
+                <ScalarProperty Name="Count" ColumnName="Count" />
+                <ScalarProperty Name="Rank" ColumnName="Rank" />
+                <ScalarProperty Name="ExtraActionsSetID" ColumnName="ExtraActionsSetID" />
+                <ScalarProperty Name="ExtraActionsID" ColumnName="ExtraActionsID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ExtraActionsSets">
+            <EntityTypeMapping TypeName="MCGameDataModel.ExtraActionsSet">
+              <MappingFragment StoreEntitySet="ExtraActionsSet">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ExtraActionsSetID" ColumnName="ExtraActionsSetID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

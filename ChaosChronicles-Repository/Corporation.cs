@@ -30,7 +30,9 @@ namespace ChaosChronicles_Repository
         public string BonusDescription { get; set; }
         public string BonusName { get; set; }
         public string ImgPerkPath { get; set; }
+        public int ExtraActionsSetID { get; set; }
     
         public virtual ICollection<Unit> Units { get; set; }
+        public virtual ExtraActionsSet ExtraActionsSet { get; set; }
     }
 }
